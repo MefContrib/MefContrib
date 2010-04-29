@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{346FED7E-DD26-47E5-94CF-8037C4B34098}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MefContrib.Hosting.Conventions</RootNamespace>
+    <AssemblyName>MefContrib.Hosting.Conventions</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.ComponentModel.Composition, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\MefContrib\Properties\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Configuration\ConventionRegistry.cs" />
+    <Compile Include="Configuration\ExportConventionBuilder.cs" />
+    <Compile Include="Configuration\ExportRegistry.cs" />
+    <Compile Include="Configuration\ExpressionBuilder.cs" />
+    <Compile Include="Configuration\IConventionBuilder.cs" />
+    <Compile Include="Configuration\IConventionRegistry.cs" />
+    <Compile Include="Configuration\IExportConventionBuilder.cs" />
+    <Compile Include="Configuration\IExportRegistry.cs" />
+    <Compile Include="Configuration\IImportConventionBuilder.cs" />
+    <Compile Include="Configuration\IImportRegistry.cs" />
+    <Compile Include="Configuration\ImportConventionBuilder.cs" />
+    <Compile Include="Configuration\ImportRegistry.cs" />
+    <Compile Include="Configuration\IPartConventionBuilder.cs" />
+    <Compile Include="Configuration\IPartRegistry.cs" />
+    <Compile Include="Configuration\ITypeLoaderExtensions.cs" />
+    <Compile Include="Configuration\PartConventionBuilder.cs" />
+    <Compile Include="Configuration\PartRegistry.cs" />
+    <Compile Include="ConventionCatalog.cs" />
+    <Compile Include="ConventionPart.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="ExportConvention.cs" />
+    <Compile Include="ExpressionExtensions.cs" />
+    <Compile Include="IExportConvention.cs" />
+    <Compile Include="IHideObjectMembers.cs" />
+    <Compile Include="IImportConvention.cs" />
+    <Compile Include="ImportConvention.cs" />
+    <Compile Include="IPartConvention.cs" />
+    <Compile Include="ITypeLoader.cs" />
+    <Compile Include="MemberInfoExtensions.cs" />
+    <Compile Include="MetadataItem.cs" />
+    <Compile Include="PartConvention.cs" />
+    <Compile Include="RequiredMetadataItem.cs" />
+    <Compile Include="TypeExtensions.cs" />
+    <Compile Include="TypeLoader.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
