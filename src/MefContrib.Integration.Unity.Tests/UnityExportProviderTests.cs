@@ -111,7 +111,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.That(delegate
             {
                 var unity = provider.UnityContainer;
-            }, Throws.TypeOf<Exception>().And.Property("Message").EqualTo("Returned Unity instance is null."));
+            }, Throws.TypeOf<InvalidOperationException>().And.Property("Message").EqualTo("Returned Unity instance is null."));
         }
 
         private static IUnityContainer TestUnityResolver()

@@ -38,11 +38,15 @@ namespace MefContrib.Integration.Unity.Tests.Helpers
 
     public class UnityComponent1 : IUnityComponent
     {
+        public static int InstanceCount;
+
         private readonly IMefComponent m_MefComponent;
 
         public UnityComponent1(IMefComponent mefComponent)
         {
             m_MefComponent = mefComponent;
+
+            InstanceCount++;
         }
 
         public void Foo()

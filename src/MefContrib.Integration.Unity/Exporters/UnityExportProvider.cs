@@ -103,7 +103,7 @@ namespace MefContrib.Integration.Unity.Exporters
                             m_UnityContainer = m_UnityContainerResolver.Invoke();
 
                             if (m_UnityContainer == null)
-                                throw new Exception(Resources.UnityNullException);
+                                throw new InvalidOperationException(Resources.UnityNullException);
 
                             ConfigureUnityContainer();
                         }

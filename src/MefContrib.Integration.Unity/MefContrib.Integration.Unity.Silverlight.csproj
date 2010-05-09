@@ -71,6 +71,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CompositionIntegration.cs" />
+    <Compile Include="ContainerServices.cs" />
     <Compile Include="Exporters\ExporterConstants.cs" />
     <Compile Include="Exporters\ExternalExportDefinition.cs" />
     <Compile Include="Exporters\ExternalExportProvider.cs" />
@@ -82,7 +83,9 @@
     <Compile Include="Strategies\ComposeStrategy.cs" />
     <Compile Include="Strategies\CompositionContainerPolicy.cs" />
     <Compile Include="Strategies\CompositionStrategy.cs" />
+    <Compile Include="Strategies\EnumerableResolutionStrategy.cs" />
     <Compile Include="Strategies\ICompositionContainerPolicy.cs" />
+    <Compile Include="Strategies\LazyResolveBuildPlanPolicy.cs" />
     <Compile Include="UnityContainerExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

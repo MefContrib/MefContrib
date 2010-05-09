@@ -60,9 +60,17 @@ namespace MefContrib.Integration.Unity
 
             m_CompositionContainer = PrepareCompositionContainer();
 
-            Context.Policies.SetDefault<ICompositionContainerPolicy>(new CompositionContainerPolicy(m_CompositionContainer));
+            // Main strategies
+            Context.Strategies.AddNew<EnumerableResolutionStrategy>(UnityBuildStage.TypeMapping);
             Context.Strategies.AddNew<CompositionStrategy>(UnityBuildStage.TypeMapping);
             Context.Strategies.AddNew<ComposeStrategy>(UnityBuildStage.Initialization);
+
+            // Policies
+            Context.Policies.Set<IBuildPlanPolicy>(
+                new LazyResolveBuildPlanPolicy(), typeof(Lazy<>));
+
+            Context.Policies.SetDefault<ICompositionContainerPolicy>(
+                new CompositionContainerPolicy(m_CompositionContainer));
         }
 
         private CompositionContainer PrepareCompositionContainer()
