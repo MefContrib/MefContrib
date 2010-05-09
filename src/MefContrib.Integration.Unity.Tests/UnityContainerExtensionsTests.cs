@@ -17,13 +17,6 @@ namespace MefContrib.Integration.Unity.Tests
         [Export(typeof(IMefExposedComponent))]
         public class MefComponent : IMefExposedComponent
         {
-            private static int InstanceCount;
-            private readonly int m_InstanceID = ++InstanceCount;
-
-            public override string ToString()
-            {
-                return "MefComponent " + m_InstanceID;
-            }
         }
 
         public interface IUnityComponent
@@ -32,13 +25,6 @@ namespace MefContrib.Integration.Unity.Tests
 
         public class UnityComponent : IUnityComponent
         {
-            private static int InstanceCount;
-            private readonly int m_InstanceID = ++InstanceCount;
-
-            public override string ToString()
-            {
-                return "UnityComponent " + m_InstanceID;
-            }
         }
 
         public interface IMefDependingOnUnity
@@ -54,36 +40,20 @@ namespace MefContrib.Integration.Unity.Tests
         [Export(typeof(IMefDependingOnUnity))]
         public class MefComponentDependingOnUnity : IMefDependingOnUnity
         {
-            private static int InstanceCount;
-            private readonly int m_InstanceID = ++InstanceCount;
-
-            public override string ToString()
-            {
-                return "MefComponentDependingOnUnity " + m_InstanceID;
-            }
-
-            IUnityComponent _unityComponent;
+            private readonly IUnityComponent m_UnityComponent;
 
             [ImportingConstructor]
             public MefComponentDependingOnUnity(IUnityComponent unityComponent)
             {
-                _unityComponent = unityComponent;
+                m_UnityComponent = unityComponent;
             }
 
-            public IUnityComponent UnityComponent { get { return _unityComponent; } }
+            public IUnityComponent UnityComponent { get { return m_UnityComponent; } }
         }
 
         [Export(typeof(IMefDependingOnUnity2))]
         public class MefComponentDependingOnUnityByProperty : IMefDependingOnUnity2
         {
-            private static int InstanceCount = 0;
-            private readonly int m_InstanceID = ++InstanceCount;
-
-            public override string ToString()
-            {
-                return "MefComponentDependingOnUnityByProperty " + m_InstanceID;
-            }
-
             [Import]
             public IUnityComponent UnityComponent { get; set; }
         }
@@ -206,7 +176,7 @@ namespace MefContrib.Integration.Unity.Tests
 
             var unityComponent = container.Resolve<IUnityComponent>();
             container = container.CreateChildContainer(true);
-            container.RegisterInstance<IUnityComponent>(unityComponent);
+            container.RegisterInstance(unityComponent);
 
             var component = container.Resolve<IMefDependingOnUnity>();
             Assert.IsNotNull(component);
@@ -222,7 +192,7 @@ namespace MefContrib.Integration.Unity.Tests
             var unityComponent = container.Resolve<IUnityComponent>();
             container = container.CreateChildContainer();
             container.EnableCompositionIntegration();
-            container.RegisterInstance<IUnityComponent>(unityComponent);
+            container.RegisterInstance(unityComponent);
 
             var component = container.Resolve<IMefDependingOnUnity>();
             Assert.IsNotNull(component);
@@ -238,7 +208,7 @@ namespace MefContrib.Integration.Unity.Tests
             var unityComponent = container.Resolve<IUnityComponent>();
             container = container.CreateChildContainer();
             container.EnableCompositionIntegration();
-            container.RegisterInstance<IUnityComponent>(unityComponent);
+            container.RegisterInstance(unityComponent);
 
             var component = container.Resolve<IMefDependingOnUnity2>();
             Assert.IsNotNull(component);
@@ -254,7 +224,7 @@ namespace MefContrib.Integration.Unity.Tests
             var unityComponent = container.Resolve<IUnityComponent>();
             container = container.CreateChildContainer();
             container.EnableCompositionIntegration();
-            container.RegisterInstance<IUnityComponent>(unityComponent);
+            container.RegisterInstance(unityComponent);
 
             var component = container.Resolve<IMefDependingOnUnity2>();
             Assert.IsNotNull(component);
@@ -276,26 +246,29 @@ namespace MefContrib.Integration.Unity.Tests
         public class CountableUnityComponent : ICountableUnityComponent
         {
             private static int m_InstanceCount;
-            private readonly int m_InstanceID = ++m_InstanceCount;
+
+            public CountableUnityComponent()
+            {
+                ++m_InstanceCount;
+            }
 
             public static void ResetInstanceCount()
             {
                 m_InstanceCount = 0;
             }
 
-
             public int InstanceCount { get { return m_InstanceCount; } }
-            public override string ToString()
-            {
-                return "CountableUnityComponent " + m_InstanceID;
-            }
         }
 
         [Export(typeof(ICountableMefComponent))]
         public class CountableMefComponent : ICountableMefComponent
         {
             private static int m_InstanceCount;
-            private readonly int m_InstanceID = ++m_InstanceCount;
+
+            public CountableMefComponent()
+            {
+                ++m_InstanceCount;
+            }
 
             public static void ResetInstanceCount()
             {
@@ -303,10 +276,6 @@ namespace MefContrib.Integration.Unity.Tests
             }
 
             public int InstanceCount { get { return m_InstanceCount; } }
-            public override string ToString()
-            {
-                return "CountableUnityComponent " + m_InstanceID;
-            }
         }
 
         [Test]

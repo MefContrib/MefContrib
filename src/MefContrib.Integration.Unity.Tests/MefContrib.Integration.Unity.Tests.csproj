@@ -74,11 +74,9 @@
     </Compile>
     <Compile Include="CompositionIntegrationTests.cs" />
     <Compile Include="ExternalExportProviderTests.cs" />
-    <Compile Include="FullIntegrationTests.cs" />
-    <Compile Include="Helpers\External\ExternalComponents.cs" />
-    <Compile Include="Helpers\External\MefComponents.cs" />
-    <Compile Include="Helpers\MefComponents.cs" />
-    <Compile Include="Helpers\UnityComponents.cs" />
+    <Compile Include="BidirectionalIntegrationTests.cs" />
+    <Compile Include="FakeMefComponents.cs" />
+    <Compile Include="FakeUnityComponents.cs" />
     <Compile Include="LazyResolutionTests.cs" />
     <Compile Include="UnityContainerExtensionsTests.cs" />
     <Compile Include="UnityExportProviderTests.cs" />

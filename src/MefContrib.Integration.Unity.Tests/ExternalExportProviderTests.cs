@@ -1,8 +1,8 @@
 using System;
+using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
 using MefContrib.Integration.Unity.Exporters;
-using MefContrib.Integration.Unity.Tests.Helpers.External;
 using NUnit.Framework;
 
 namespace MefContrib.Integration.Unity.Tests
@@ -10,6 +10,92 @@ namespace MefContrib.Integration.Unity.Tests
     [TestFixture]
     public class ExternalExportProviderTests
     {
+        #region Fake External Components
+
+        public interface IExternalComponent
+        {
+            void Foo();
+        }
+
+        public class ExternalComponent1 : IExternalComponent
+        {
+            public void Foo()
+            {
+            }
+        }
+
+        public class ExternalComponent2 : IExternalComponent
+        {
+            public void Foo()
+            {
+            }
+        }
+
+        #endregion
+
+        #region Fake MEF Components
+
+        public interface IMefComponent
+        {
+            void Foo();
+
+            IExternalComponent Component1 { get; }
+
+            IExternalComponent Component1A { get; set; }
+        }
+
+        [Export(typeof(IMefComponent))]
+        [PartCreationPolicy(CreationPolicy.Shared)]
+        public class MefComponent1 : IMefComponent
+        {
+            private readonly IExternalComponent m_Component1;
+
+            [ImportingConstructor]
+            public MefComponent1(IExternalComponent component1)
+            {
+                m_Component1 = component1;
+            }
+
+            public void Foo()
+            {
+            }
+
+            public IExternalComponent Component1
+            {
+                get { return m_Component1; }
+            }
+
+            [Import]
+            public IExternalComponent Component1A { get; set; }
+        }
+
+        [Export("component2", typeof(IMefComponent))]
+        [PartCreationPolicy(CreationPolicy.Shared)]
+        public class MefComponent2 : IMefComponent
+        {
+            private readonly IExternalComponent m_Component1;
+
+            [ImportingConstructor]
+            public MefComponent2([Import("external2")] IExternalComponent component1)
+            {
+                m_Component1 = component1;
+            }
+
+            public void Foo()
+            {
+            }
+
+            public IExternalComponent Component1
+            {
+                get { return m_Component1; }
+            }
+
+            [Import("external2")]
+            public IExternalComponent Component1A { get; set; }
+        }
+
+        #endregion
+
         [Test]
         public void ExportProviderResolvesServiceRegisteredByTypeTest()
         {

@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
-using MefContrib.Integration.Unity.Tests.Helpers;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
 

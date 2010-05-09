@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
-using MefContrib.Integration.Unity.Tests.Helpers;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
 

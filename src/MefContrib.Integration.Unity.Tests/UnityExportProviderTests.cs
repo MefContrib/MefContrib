@@ -4,7 +4,6 @@ using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
 using MefContrib.Integration.Unity.Exporters;
 using MefContrib.Integration.Unity.Extensions;
-using MefContrib.Integration.Unity.Tests.Helpers;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
 
@@ -107,11 +106,13 @@ namespace MefContrib.Integration.Unity.Tests
         public void UnityContainerResolverCannotReturnNullInstanceTest()
         {
             var provider = new UnityExportProvider(TestUnityResolver);
+            IUnityContainer container = null;
 
             Assert.That(delegate
             {
-                var unity = provider.UnityContainer;
+                container = provider.UnityContainer;
             }, Throws.TypeOf<InvalidOperationException>().And.Property("Message").EqualTo("Returned Unity instance is null."));
+            Assert.That(container, Is.Null);
         }
 
         private static IUnityContainer TestUnityResolver()
