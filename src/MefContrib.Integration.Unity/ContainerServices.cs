@@ -8,11 +8,25 @@ using MefContrib.Integration.Unity.Properties;
 
 namespace MefContrib.Integration.Unity
 {
+    /// <summary>
+    /// Provides common services.
+    /// </summary>
     public static class ContainerServices
     {
-        public static Lazy<object> Resolve(CompositionContainer compositionContainer, Type type, string name)
+        /// <summary>
+        /// Resolves an object wrapped inside <see cref="Lazy{T}"/> from an <see cref="ExportProvider"/>.
+        /// </summary>
+        /// <param name="exportProvider">Export provider.</param>
+        /// <param name="type">Type to be resolved.</param>
+        /// <param name="name">Optional name.</param>
+        /// <returns>Resolved instance or null, if no instance has been found.</returns>
+        /// <remarks>
+        /// Does not resolve instances which are provided by means of
+        /// <see cref="ExternalExportProvider"/>.
+        /// </remarks>
+        public static Lazy<object> Resolve(ExportProvider exportProvider, Type type, string name)
         {
-            var exports = compositionContainer.GetExports(type, null, name);
+            var exports = exportProvider.GetExports(type, null, name);
 
             if (exports.Count() == 0)
                 return null;
@@ -32,9 +46,21 @@ namespace MefContrib.Integration.Unity
             return lazyExport;
         }
 
-        public static IEnumerable<Lazy<object>> ResolveAll(CompositionContainer compositionContainer, Type type, string name)
+        /// <summary>
+        /// Resolves an collection of objects wrapped inside <see cref="Lazy{T}"/>
+        /// from an <see cref="ExportProvider"/>.
+        /// </summary>
+        /// <param name="exportProvider">Export provider.</param>
+        /// <param name="type">Type to be resolved.</param>
+        /// <param name="name">Optional name.</param>
+        /// <returns>Resolved collection of lazy instances or null, if no instance has been found.</returns>
+        /// <remarks>
+        /// Does not resolve instances which are provided by means of
+        /// <see cref="ExternalExportProvider"/>.
+        /// </remarks>
+        public static IEnumerable<Lazy<object>> ResolveAll(ExportProvider exportProvider, Type type, string name)
         {
-            var exports = compositionContainer.GetExports(type, null, name);
+            var exports = exportProvider.GetExports(type, null, name);
 
             if (exports.Count() == 0)
                 return Enumerable.Empty<Lazy<object>>();

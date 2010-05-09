@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using MefContrib.Integration.Unity.Properties;
-using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 
 namespace MefContrib.Integration.Unity.Extensions
@@ -68,30 +66,6 @@ namespace MefContrib.Integration.Unity.Extensions
         public ReadOnlyCollection<TypeRegistrationEntry> Entries
         {
             get { return m_Entries.AsReadOnly(); }
-        }
-
-        /// <summary>
-        /// Evaluates if a specified type was registered in the container.
-        /// </summary>
-        /// <param name="container">The container to check if the type was registered in.</param>
-        /// <param name="type">The type to check if it was registered.</param>
-        /// <returns><see langword="true" /> if the <paramref name="type"/> was registered with the container.</returns>
-        /// <remarks>
-        /// In order to use this extension, you must first call <see cref="IUnityContainer.AddNewExtension{TExtension}"/> 
-        /// and specify <see cref="UnityContainerExtension"/> as the extension type.
-        /// </remarks>
-        public static bool IsTypeRegistered(IUnityContainer container, Type type)
-        {
-            var extension = container.Configure<TypeRegistrationTrackerExtension>();
-            if (extension == null)
-            {
-                // Extension was not added to the container.
-                throw new InvalidOperationException(string.Format(Resources.ExtensionMissing,
-                    typeof(TypeRegistrationTrackerExtension).Name));
-            }
-
-            var policy = extension.Context.Policies.Get<IBuildKeyMappingPolicy>(new NamedTypeBuildKey(type));
-            return policy != null;
         }
 
         /// <summary>
