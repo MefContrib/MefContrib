@@ -54,7 +54,8 @@
     <OutputPath>bin\x86\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.Unity.Silverlight">
+    <Reference Include="Microsoft.Practices.Unity.Silverlight, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\dependencies\silverlight\unity\Microsoft.Practices.Unity.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
