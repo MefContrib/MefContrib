@@ -79,12 +79,16 @@
     <Compile Include="FakeUnityComponents.cs" />
     <Compile Include="LazyResolutionTests.cs" />
     <Compile Include="UnityContainerExtensionsTests.cs" />
-    <Compile Include="UnityExportProviderTests.cs" />
+    <Compile Include="ContainerExportProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MefContrib.Integration.Unity\MefContrib.Integration.Unity.csproj">
       <Project>{24A770F8-AF0E-400F-8ABB-3FD68617103E}</Project>
       <Name>MefContrib.Integration.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MefContrib\MefContrib.csproj">
+      <Project>{0CCE812A-F4EB-4379-B820-D8ADA4330235}</Project>
+      <Name>MefContrib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

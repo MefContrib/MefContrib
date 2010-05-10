@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
-using MefContrib.Integration.Unity.Exporters;
-using MefContrib.Integration.Unity.Properties;
+using MefContrib.Integration.Exporters;
+using MefContrib.Properties;
 
-namespace MefContrib.Integration.Unity
+namespace MefContrib.Integration
 {
     /// <summary>
     /// Provides common services.
@@ -32,7 +32,7 @@ namespace MefContrib.Integration.Unity
                 return null;
 
             if (exports.Count() > 1)
-                throw new CompositionException(Resources.TooManyInstances);
+                throw new ImportCardinalityMismatchException(Resources.TooManyInstances);
 
             var lazyExport = exports.First();
             var lazyExportMetadata = lazyExport.Metadata as IDictionary<string, object>;

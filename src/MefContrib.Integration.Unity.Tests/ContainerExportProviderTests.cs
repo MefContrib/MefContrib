@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
-using MefContrib.Integration.Unity.Exporters;
+using MefContrib.Integration.Exporters;
 using MefContrib.Integration.Unity.Extensions;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
@@ -10,14 +10,15 @@ using NUnit.Framework;
 namespace MefContrib.Integration.Unity.Tests
 {
     [TestFixture]
-    public class UnityExportProviderTests
+    public class ContainerExportProviderTests
     {
         [Test]
         public void ExportProviderResolvesServiceRegisteredByTypeTest()
         {
             // Setup
             var unityContainer = new UnityContainer();
-            var provider = new UnityExportProvider(unityContainer);
+            var adapter = new UnityContainerAdapter(unityContainer);
+            var provider = new ContainerExportProvider(adapter);
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
             var container = new CompositionContainer(assemblyCatalog, provider);
 
@@ -34,7 +35,8 @@ namespace MefContrib.Integration.Unity.Tests
         {
             // Setup
             var unityContainer = new UnityContainer();
-            var provider = new UnityExportProvider(unityContainer);
+            var adapter = new UnityContainerAdapter(unityContainer);
+            var provider = new ContainerExportProvider(adapter);
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
             var container = new CompositionContainer(assemblyCatalog, provider);
 
@@ -56,7 +58,8 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent2>("unityComponent2");
 
             // Further setup
-            var provider = new UnityExportProvider(unityContainer);
+            var adapter = new UnityContainerAdapter(unityContainer);
+            var provider = new ContainerExportProvider(adapter);
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
             var container = new CompositionContainer(assemblyCatalog, provider);
 
@@ -79,7 +82,8 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent2>("unityComponent2");
 
             // Further setup
-            var provider = new UnityExportProvider(unityContainer);
+            var adapter = new UnityContainerAdapter(unityContainer);
+            var provider = new ContainerExportProvider(adapter);
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
             var container = new CompositionContainer(assemblyCatalog, provider);
 
@@ -93,31 +97,8 @@ namespace MefContrib.Integration.Unity.Tests
         {
             Assert.That(delegate
             {
-                new UnityExportProvider((IUnityContainer)null);
+                new ContainerExportProvider(null);
             }, Throws.TypeOf<ArgumentNullException>());
-
-            Assert.That(delegate
-            {
-                new UnityExportProvider((Func<IUnityContainer>)null);
-            }, Throws.TypeOf<ArgumentNullException>());
-        }
-
-        [Test]
-        public void UnityContainerResolverCannotReturnNullInstanceTest()
-        {
-            var provider = new UnityExportProvider(TestUnityResolver);
-            IUnityContainer container = null;
-
-            Assert.That(delegate
-            {
-                container = provider.UnityContainer;
-            }, Throws.TypeOf<InvalidOperationException>().And.Property("Message").EqualTo("Returned Unity instance is null."));
-            Assert.That(container, Is.Null);
-        }
-
-        private static IUnityContainer TestUnityResolver()
-        {
-            return null;
         }
     }
 }

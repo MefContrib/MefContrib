@@ -1,4 +1,4 @@
-namespace MefContrib.Integration.Unity.Exporters
+namespace MefContrib.Integration.Exporters
 {
     /// <summary>
     /// Contains constants used in external export metadata.

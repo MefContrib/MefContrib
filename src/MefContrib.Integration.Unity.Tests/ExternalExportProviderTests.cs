@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
-using MefContrib.Integration.Unity.Exporters;
+using MefContrib.Integration.Exporters;
 using NUnit.Framework;
 
 namespace MefContrib.Integration.Unity.Tests

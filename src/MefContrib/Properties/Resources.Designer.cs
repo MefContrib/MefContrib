@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MefContrib.Integration.Unity.Properties {
+namespace MefContrib.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace MefContrib.Integration.Unity.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MefContrib.Integration.Unity.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MefContrib.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,11 @@ namespace MefContrib.Integration.Unity.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} extension missing..
+        ///   Looks up a localized string similar to Requested type has more than one instance..
         /// </summary>
-        internal static string ExtensionMissing {
+        internal static string TooManyInstances {
             get {
-                return ResourceManager.GetString("ExtensionMissing", resourceCulture);
+                return ResourceManager.GetString("TooManyInstances", resourceCulture);
             }
         }
     }

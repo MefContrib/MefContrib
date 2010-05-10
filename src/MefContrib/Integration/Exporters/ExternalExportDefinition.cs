@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 
-namespace MefContrib.Integration.Unity.Exporters
+namespace MefContrib.Integration.Exporters
 {
     /// <summary>
     /// Represents an external export definition that has a type and a registration name.

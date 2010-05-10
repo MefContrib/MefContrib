@@ -5,7 +5,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics;
 using System.Linq;
 
-namespace MefContrib.Integration.Unity.Exporters
+namespace MefContrib.Integration.Exporters
 {
     /// <summary>
     /// Represents an external export provider.
@@ -98,7 +98,7 @@ namespace MefContrib.Integration.Unity.Exporters
         /// <summary>
         /// Gets a read only list of definitions known to the export provider.
         /// </summary>
-        public IList<ExternalExportDefinition> ReadOnlyDefinitions
+        public IEnumerable<ExternalExportDefinition> ReadOnlyDefinitions
         {
             get { return m_Definitions.AsReadOnly(); }
         }

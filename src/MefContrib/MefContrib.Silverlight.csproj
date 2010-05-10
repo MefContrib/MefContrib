@@ -9,8 +9,8 @@
     <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MefContrib.Hosting.Conventions</RootNamespace>
-    <AssemblyName>MefContrib.Hosting.Conventions.Silverlight</AssemblyName>
+    <RootNamespace>MefContrib</RootNamespace>
+    <AssemblyName>MefContrib</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
@@ -67,7 +67,20 @@
     <Compile Include="..\MefContrib\Properties\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Integration\ContainerAdapterBase.cs" />
+    <Compile Include="Integration\ContainerServices.cs" />
+    <Compile Include="Integration\Exporters\ContainerExportProvider.cs" />
+    <Compile Include="Integration\Exporters\ExporterConstants.cs" />
+    <Compile Include="Integration\Exporters\ExternalExportDefinition.cs" />
+    <Compile Include="Integration\Exporters\ExternalExportProvider.cs" />
+    <Compile Include="Integration\IContainerAdapter.cs" />
+    <Compile Include="Integration\PartNotComposableAttribute.cs" />
+    <Compile Include="Integration\RegisterComponentEventArgs.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
     <Compile Include="Properties\SharedAssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
