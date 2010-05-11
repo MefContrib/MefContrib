@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Linq;
 using System.Reflection;
 using MefContrib.Integration.Exporters;
 using MefContrib.Integration.Unity.Extensions;
@@ -19,15 +20,33 @@ namespace MefContrib.Integration.Unity.Tests
             var unityContainer = new UnityContainer();
             var adapter = new UnityContainerAdapter(unityContainer);
             var provider = new ContainerExportProvider(adapter);
-            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var container = new CompositionContainer(assemblyCatalog, provider);
 
             // Registration
             unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent1>();
 
-            var externalComponent = container.GetExportedValue<IUnityOnlyComponent>();
+            var externalComponent = provider.GetExportedValue<IUnityOnlyComponent>();
             Assert.That(externalComponent, Is.Not.Null);
             Assert.That(externalComponent.GetType(), Is.EqualTo(typeof(UnityOnlyComponent1)));
+        }
+
+        [Test]
+        public void ExportProviderResolvesServicesRegisteredByTypeTest()
+        {
+            // Setup
+            var unityContainer = new UnityContainer();
+            var adapter = new UnityContainerAdapter(unityContainer);
+            var provider = new ContainerExportProvider(adapter);
+
+            // Registration
+            unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent1>();
+            unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent2>("b");
+
+            var externalComponents = provider.GetExports<IUnityOnlyComponent>();
+            Assert.That(externalComponents, Is.Not.Null);
+            Assert.That(externalComponents.Count(), Is.EqualTo(2));
+
+            Assert.That(externalComponents.Select(t => t.Value).OfType<UnityOnlyComponent1>().Count(), Is.EqualTo(1));
+            Assert.That(externalComponents.Select(t => t.Value).OfType<UnityOnlyComponent2>().Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -37,15 +56,59 @@ namespace MefContrib.Integration.Unity.Tests
             var unityContainer = new UnityContainer();
             var adapter = new UnityContainerAdapter(unityContainer);
             var provider = new ContainerExportProvider(adapter);
-            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var container = new CompositionContainer(assemblyCatalog, provider);
 
             // Registration
             unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent2>("unityComponent2");
 
-            var externalComponent = container.GetExportedValue<IUnityOnlyComponent>("unityComponent2");
+            var externalComponent = provider.GetExportedValue<IUnityOnlyComponent>("unityComponent2");
             Assert.That(externalComponent, Is.Not.Null);
             Assert.That(externalComponent.GetType(), Is.EqualTo(typeof(UnityOnlyComponent2)));
+        }
+
+        [Test]
+        public void MefCanResolveLazyTypeRegisteredInUnityTest()
+        {
+            // Setup
+            var unityContainer = new UnityContainer();
+            var adapter = new UnityContainerAdapter(unityContainer);
+            var provider = new ContainerExportProvider(adapter);
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var container = new CompositionContainer(assemblyCatalog, provider);
+
+            UnityOnlyComponent1.InstanceCount = 0;
+            unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent1>();
+
+            var lazyUnityComponent = container.GetExport<IUnityOnlyComponent>();
+            Assert.That(lazyUnityComponent, Is.Not.Null);
+            Assert.That(UnityOnlyComponent1.InstanceCount, Is.EqualTo(0));
+
+            Assert.That(lazyUnityComponent.Value, Is.Not.Null);
+            Assert.That(lazyUnityComponent.Value.GetType(), Is.EqualTo(typeof(UnityOnlyComponent1)));
+            Assert.That(UnityOnlyComponent1.InstanceCount, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void MefCanResolveLazyTypesRegisteredInUnityTest()
+        {
+            // Setup
+            var unityContainer = new UnityContainer();
+            var adapter = new UnityContainerAdapter(unityContainer);
+            var provider = new ContainerExportProvider(adapter);
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var container = new CompositionContainer(assemblyCatalog, provider);
+
+            UnityOnlyComponent1.InstanceCount = 0;
+            unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent1>();
+            unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent2>("a");
+
+            var lazyUnityComponent = container.GetExports<IUnityOnlyComponent>().ToList();
+            Assert.That(lazyUnityComponent, Is.Not.Null);
+            Assert.That(UnityOnlyComponent1.InstanceCount, Is.EqualTo(0));
+
+            Assert.That(lazyUnityComponent, Is.Not.Null);
+            Assert.That(lazyUnityComponent[0].Value, Is.Not.Null);
+            Assert.That(lazyUnityComponent[1].Value, Is.Not.Null);
+            Assert.That(UnityOnlyComponent1.InstanceCount, Is.EqualTo(1));
         }
 
         [Test]
@@ -93,11 +156,20 @@ namespace MefContrib.Integration.Unity.Tests
         }
 
         [Test]
-        public void CannotPassNullUnityInstanceToTheConstructorTest()
+        public void CannotPassNullInstanceToTheContainerExportProviderConstructorTest()
         {
             Assert.That(delegate
             {
                 new ContainerExportProvider(null);
+            }, Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void CannotPassNullUnityInstanceToTheUnityContainerAdapterConstructorTest()
+        {
+            Assert.That(delegate
+            {
+                new UnityContainerAdapter(null);
             }, Throws.TypeOf<ArgumentNullException>());
         }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
@@ -92,7 +93,7 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.That(lazyUnityComponent.Value.GetType(), Is.EqualTo(typeof(UnityComponent1)));
             Assert.That(UnityComponent1.InstanceCount, Is.EqualTo(1));
         }
-
+        
         [Test]
         public void UnityCanResolveLazyEnumerableOfTypesRegisteredInUnityTest()
         {
@@ -161,6 +162,12 @@ namespace MefContrib.Integration.Unity.Tests
             Assert.That(MixedComponent5.InstanceCount, Is.EqualTo(1));
 
             Assert.That(list.Count, Is.EqualTo(5));
+
+            Assert.That(list.Select(t => t.Value).OfType<MixedComponent1>().Count(), Is.EqualTo(1));
+            Assert.That(list.Select(t => t.Value).OfType<MixedComponent2>().Count(), Is.EqualTo(1));
+            Assert.That(list.Select(t => t.Value).OfType<MixedComponent3>().Count(), Is.EqualTo(1));
+            Assert.That(list.Select(t => t.Value).OfType<MixedComponent4>().Count(), Is.EqualTo(1));
+            Assert.That(list.Select(t => t.Value).OfType<MixedComponent5>().Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -191,6 +198,11 @@ namespace MefContrib.Integration.Unity.Tests
 
             var list = new List<IMixedComponent>(collectionOfLazyUnityComponents);
             Assert.That(list.Count, Is.EqualTo(5));
+            Assert.That(list.OfType<MixedComponent1>().Count(), Is.EqualTo(1));
+            Assert.That(list.OfType<MixedComponent2>().Count(), Is.EqualTo(1));
+            Assert.That(list.OfType<MixedComponent3>().Count(), Is.EqualTo(1));
+            Assert.That(list.OfType<MixedComponent4>().Count(), Is.EqualTo(1));
+            Assert.That(list.OfType<MixedComponent5>().Count(), Is.EqualTo(1));
         }
 
         [Test]

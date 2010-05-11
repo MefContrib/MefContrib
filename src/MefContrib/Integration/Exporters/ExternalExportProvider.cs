@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics;
@@ -35,7 +36,29 @@ namespace MefContrib.Integration.Exporters
 
         protected override IEnumerable<Export> GetExportsCore(ImportDefinition definition, AtomicComposition atomicComposition)
         {
-            return GetExportsCore(ReadOnlyDefinitions, definition.Constraint.Compile());
+            if (definition.Cardinality == ImportCardinality.ExactlyOne || definition.Cardinality == ImportCardinality.ZeroOrOne)
+            {
+                return GetExportsCore(ReadOnlyDefinitions, definition.Constraint.Compile());
+            }
+
+            if (definition.ContractName != null)
+            {
+                var list = new List<Export>();
+                foreach (var externalExportDefinition in ReadOnlyDefinitions)
+                {
+                    if (AttributedModelServices.GetContractName(externalExportDefinition.ServiceType) == definition.ContractName)
+                    {
+                        var exportDefinition = externalExportDefinition;
+                        var export = new Export(externalExportDefinition, () => GetExportedObject(exportDefinition.ServiceType, exportDefinition.RegistrationName));
+
+                        list.Add(export);
+                    }
+                }
+
+                return list;
+            }
+
+            return Enumerable.Empty<Export>();
         }
 
         private IEnumerable<Export> GetExportsCore(
