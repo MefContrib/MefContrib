@@ -12,6 +12,13 @@ namespace MefContrib.Integration.Unity.Tests
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class MefComponent1 : IMefComponent
     {
+        public static int InstanceCount;
+
+        public MefComponent1()
+        {
+            InstanceCount++;
+        }
+
         public void Foo()
         {
         }

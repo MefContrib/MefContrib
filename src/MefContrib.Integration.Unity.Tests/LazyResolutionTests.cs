@@ -57,6 +57,8 @@ namespace MefContrib.Integration.Unity.Tests
         [Test]
         public void UnityCanResolveLazyTypeRegisteredInMefTest()
         {
+            MefComponent1.InstanceCount = 0;
+
             // Setup
             var unityContainer = new UnityContainer();
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
@@ -65,9 +67,13 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.AddExtension(new CompositionIntegration(false));
             unityContainer.Configure<CompositionIntegration>().Catalogs.Add(assemblyCatalog);
 
+            Assert.That(MefComponent1.InstanceCount, Is.EqualTo(0));
+
             var lazyMefComponent = unityContainer.Resolve<Lazy<IMefComponent>>();
+            Assert.That(MefComponent1.InstanceCount, Is.EqualTo(0));
             Assert.That(lazyMefComponent, Is.Not.Null);
             Assert.That(lazyMefComponent.Value, Is.Not.Null);
+            Assert.That(MefComponent1.InstanceCount, Is.EqualTo(1));
             Assert.That(lazyMefComponent.Value.GetType(), Is.EqualTo(typeof(MefComponent1)));
         }
 
