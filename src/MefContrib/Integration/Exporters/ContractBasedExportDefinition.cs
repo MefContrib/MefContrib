@@ -7,29 +7,30 @@ using System.ComponentModel.Composition.Primitives;
 namespace MefContrib.Integration.Exporters
 {
     /// <summary>
-    /// Represents an external export definition that has a type and a registration name.
+    /// Represents a contract-based export definition that has a type and
+    /// an option registration name.
     /// </summary>
-    public class ExternalExportDefinition : ExportDefinition
+    public class ContractBasedExportDefinition : ExportDefinition
     {
         private readonly string m_ContractName;
         private readonly IDictionary<string, object> m_Metadata;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ExternalExportDefinition"/> class.
+        /// Initializes a new instance of <see cref="ContractBasedExportDefinition"/> class.
         /// </summary>
         /// <param name="type">Type this export defines.</param>
-        public ExternalExportDefinition(Type type)
+        public ContractBasedExportDefinition(Type type)
             : this(type, null)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ExternalExportDefinition"/> class.
+        /// Initializes a new instance of <see cref="ContractBasedExportDefinition"/> class.
         /// </summary>
         /// <param name="type">Type this export defines.</param>
         /// <param name="registrationName">Registration name under which <paramref name="type"/>
         /// has been registered.</param>
-        public ExternalExportDefinition(Type type, string registrationName)
+        public ContractBasedExportDefinition(Type type, string registrationName)
         {
             if (type == null)
                 throw new ArgumentNullException("type");
@@ -37,16 +38,28 @@ namespace MefContrib.Integration.Exporters
             m_Metadata = new Dictionary<string, object>();
             m_ContractName = registrationName ?? AttributedModelServices.GetContractName(type);
 
-            ServiceType = type;
+            ContractType = type;
             RegistrationName = registrationName;
 
             m_Metadata.Add(
                 CompositionConstants.ExportTypeIdentityMetadataName,
-                AttributedModelServices.GetContractName(type));
+                AttributedModelServices.GetTypeIdentity(type));
 
             m_Metadata.Add(
-                ExporterConstants.IsExternallyProvidedMetadataName, true);
+                ExporterConstants.IsContractBasedExportMetadataName, true);
         }
+
+        /// <summary>
+        /// Gets a type this export defines.
+        /// </summary>
+        public Type ContractType { get; private set; }
+
+        /// <summary>
+        /// Gets a registration name under which <see cref="ContractType"/> has been registered.
+        /// </summary>
+        public string RegistrationName { get; private set; }
+
+        #region Overrides
 
         public override string ContractName
         {
@@ -58,14 +71,6 @@ namespace MefContrib.Integration.Exporters
             get { return m_Metadata; }
         }
 
-        /// <summary>
-        /// Gets a type this export defines.
-        /// </summary>
-        public Type ServiceType { get; private set; }
-
-        /// <summary>
-        /// Gets a registration name under which <see cref="ServiceType"/> has been registered.
-        /// </summary>
-        public string RegistrationName { get; private set; }
+        #endregion
     }
 }

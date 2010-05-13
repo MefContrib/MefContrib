@@ -1,13 +1,13 @@
 namespace MefContrib.Integration.Exporters
 {
     /// <summary>
-    /// Contains constants used in external export metadata.
+    /// Contains constants used in export metadata.
     /// </summary>
     public static class ExporterConstants
     {
         /// <summary>
-        /// Identifies an export provided by <see cref="ExternalExportProvider"/>.
+        /// Represents a metadata which identifies a contract based export.
         /// </summary>
-        public const string IsExternallyProvidedMetadataName = "IsExternallyProvided";
+        public const string IsContractBasedExportMetadataName = "IsContractBasedExport";
     }
 }

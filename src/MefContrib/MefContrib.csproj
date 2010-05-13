@@ -66,8 +66,8 @@
     <Compile Include="Integration\ContainerServices.cs" />
     <Compile Include="Integration\Exporters\ContainerExportProvider.cs" />
     <Compile Include="Integration\Exporters\ExporterConstants.cs" />
-    <Compile Include="Integration\Exporters\ExternalExportDefinition.cs" />
-    <Compile Include="Integration\Exporters\ExternalExportProvider.cs" />
+    <Compile Include="Integration\Exporters\ContractBasedExportDefinition.cs" />
+    <Compile Include="Integration\Exporters\RegistrationBasedFactoryExportProvider.cs" />
     <Compile Include="Integration\IContainerAdapter.cs" />
     <Compile Include="Integration\PartNotComposableAttribute.cs" />
     <Compile Include="Integration\RegisterComponentEventArgs.cs" />

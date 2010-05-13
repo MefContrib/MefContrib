@@ -12,7 +12,7 @@ namespace MefContrib.Integration.Exporters
     public class ContainerExportProvider : ExportProvider
     {
         private readonly IContainerAdapter m_ContainerAdapter;
-        private readonly ExternalExportProvider m_ExternalExportProvider;
+        private readonly RegistrationBasedFactoryExportProvider m_FactoryProvider;
 
         /// <summary>
         /// Initializes a new instance of <see cref="ContainerExportProvider"/> class.
@@ -23,7 +23,7 @@ namespace MefContrib.Integration.Exporters
             if (containerAdapter == null)
                 throw new ArgumentNullException("containerAdapter");
 
-            m_ExternalExportProvider = new ExternalExportProvider(FactoryMethod);
+            m_FactoryProvider = new RegistrationBasedFactoryExportProvider(FactoryMethod);
             m_ContainerAdapter = containerAdapter;
             m_ContainerAdapter.RegisteringComponent += OnRegisteringComponentHandler;
             
@@ -33,7 +33,7 @@ namespace MefContrib.Integration.Exporters
 
         private void OnRegisteringComponentHandler(object sender, RegisterComponentEventArgs e)
         {
-            m_ExternalExportProvider.AddExportDefinition(e.Type, e.Name);
+            m_FactoryProvider.Register(e.Type, e.Name);
         }
         
         private object FactoryMethod(Type requestedType, string registrationName)
@@ -43,15 +43,15 @@ namespace MefContrib.Integration.Exporters
 
         protected override IEnumerable<Export> GetExportsCore(ImportDefinition definition, AtomicComposition atomicComposition)
         {
-            return m_ExternalExportProvider.GetExports(definition);
+            return m_FactoryProvider.GetExports(definition);
         }
 
         /// <summary>
-        /// Gets the underlying <see cref="ExternalExportProvider"/> instance.
+        /// Gets the underlying <see cref="RegistrationBasedFactoryExportProvider"/> instance.
         /// </summary>
-        public ExternalExportProvider ExternalExportProvider
+        public RegistrationBasedFactoryExportProvider RegistrationBasedFactoryExportProvider
         {
-            get { return m_ExternalExportProvider; }
+            get { return m_FactoryProvider; }
         }
     }
 }

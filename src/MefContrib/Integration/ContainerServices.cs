@@ -22,7 +22,7 @@ namespace MefContrib.Integration
         /// <returns>Resolved instance or null, if no instance has been found.</returns>
         /// <remarks>
         /// Does not resolve instances which are provided by means of
-        /// <see cref="ExternalExportProvider"/>.
+        /// <see cref="RegistrationBasedFactoryExportProvider"/>.
         /// </remarks>
         public static Lazy<object> Resolve(ExportProvider exportProvider, Type type, string name)
         {
@@ -37,8 +37,8 @@ namespace MefContrib.Integration
             var lazyExport = exports.First();
             var lazyExportMetadata = lazyExport.Metadata as IDictionary<string, object>;
             if (lazyExportMetadata != null &&
-                lazyExportMetadata.ContainsKey(ExporterConstants.IsExternallyProvidedMetadataName) &&
-                true.Equals(lazyExportMetadata[ExporterConstants.IsExternallyProvidedMetadataName]))
+                lazyExportMetadata.ContainsKey(ExporterConstants.IsContractBasedExportMetadataName) &&
+                true.Equals(lazyExportMetadata[ExporterConstants.IsContractBasedExportMetadataName]))
             {
                 return null;
             }
@@ -56,7 +56,7 @@ namespace MefContrib.Integration
         /// <returns>Resolved collection of lazy instances or null, if no instance has been found.</returns>
         /// <remarks>
         /// Does not resolve instances which are provided by means of
-        /// <see cref="ExternalExportProvider"/>.
+        /// <see cref="RegistrationBasedFactoryExportProvider"/>.
         /// </remarks>
         public static IEnumerable<Lazy<object>> ResolveAll(ExportProvider exportProvider, Type type, string name)
         {
@@ -71,8 +71,8 @@ namespace MefContrib.Integration
             {
                 var lazyExportMetadata = export.Metadata as IDictionary<string, object>;
                 if (lazyExportMetadata != null &&
-                    lazyExportMetadata.ContainsKey(ExporterConstants.IsExternallyProvidedMetadataName) &&
-                    true.Equals(lazyExportMetadata[ExporterConstants.IsExternallyProvidedMetadataName]))
+                    lazyExportMetadata.ContainsKey(ExporterConstants.IsContractBasedExportMetadataName) &&
+                    true.Equals(lazyExportMetadata[ExporterConstants.IsContractBasedExportMetadataName]))
                 {
                     continue;
                 }

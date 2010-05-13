@@ -73,7 +73,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CompositionIntegrationTests.cs" />
-    <Compile Include="ExternalExportProviderTests.cs" />
+    <Compile Include="ContractBasedExportDefinitionTests.cs" />
+    <Compile Include="RegistrationBasedFactoryExportProviderTests.cs" />
     <Compile Include="BidirectionalIntegrationTests.cs" />
     <Compile Include="FakeMefComponents.cs" />
     <Compile Include="FakeUnityComponents.cs" />
