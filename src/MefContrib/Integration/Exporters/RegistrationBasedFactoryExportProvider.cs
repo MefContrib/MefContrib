@@ -44,12 +44,12 @@ namespace MefContrib.Integration.Exporters
             if (definition.ContractName != null)
             {
                 var list = new List<Export>();
-                foreach (var externalExportDefinition in ReadOnlyDefinitions)
+                foreach (var exportDefinition in ReadOnlyDefinitions)
                 {
-                    if (AttributedModelServices.GetContractName(externalExportDefinition.ContractType) == definition.ContractName)
+                    if (AttributedModelServices.GetContractName(exportDefinition.ContractType) == definition.ContractName)
                     {
-                        var exportDefinition = externalExportDefinition;
-                        var export = new Export(externalExportDefinition, () => GetExportedObject(exportDefinition.ContractType, exportDefinition.RegistrationName));
+                        var def = exportDefinition;
+                        var export = new Export(exportDefinition, () => GetExportedObject(def.ContractType, def.RegistrationName));
 
                         list.Add(export);
                     }

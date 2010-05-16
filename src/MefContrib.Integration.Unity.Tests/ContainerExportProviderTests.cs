@@ -24,9 +24,9 @@ namespace MefContrib.Integration.Unity.Tests
             // Registration
             unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent1>();
 
-            var externalComponent = provider.GetExportedValue<IUnityOnlyComponent>();
-            Assert.That(externalComponent, Is.Not.Null);
-            Assert.That(externalComponent.GetType(), Is.EqualTo(typeof(UnityOnlyComponent1)));
+            var component = provider.GetExportedValue<IUnityOnlyComponent>();
+            Assert.That(component, Is.Not.Null);
+            Assert.That(component.GetType(), Is.EqualTo(typeof(UnityOnlyComponent1)));
         }
 
         [Test]
@@ -41,12 +41,12 @@ namespace MefContrib.Integration.Unity.Tests
             unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent1>();
             unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent2>("b");
 
-            var externalComponents = provider.GetExports<IUnityOnlyComponent>();
-            Assert.That(externalComponents, Is.Not.Null);
-            Assert.That(externalComponents.Count(), Is.EqualTo(2));
+            var components = provider.GetExports<IUnityOnlyComponent>();
+            Assert.That(components, Is.Not.Null);
+            Assert.That(components.Count(), Is.EqualTo(2));
 
-            Assert.That(externalComponents.Select(t => t.Value).OfType<UnityOnlyComponent1>().Count(), Is.EqualTo(1));
-            Assert.That(externalComponents.Select(t => t.Value).OfType<UnityOnlyComponent2>().Count(), Is.EqualTo(1));
+            Assert.That(components.Select(t => t.Value).OfType<UnityOnlyComponent1>().Count(), Is.EqualTo(1));
+            Assert.That(components.Select(t => t.Value).OfType<UnityOnlyComponent2>().Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -60,9 +60,9 @@ namespace MefContrib.Integration.Unity.Tests
             // Registration
             unityContainer.RegisterType<IUnityOnlyComponent, UnityOnlyComponent2>("unityComponent2");
 
-            var externalComponent = provider.GetExportedValue<IUnityOnlyComponent>("unityComponent2");
-            Assert.That(externalComponent, Is.Not.Null);
-            Assert.That(externalComponent.GetType(), Is.EqualTo(typeof(UnityOnlyComponent2)));
+            var component = provider.GetExportedValue<IUnityOnlyComponent>("unityComponent2");
+            Assert.That(component, Is.Not.Null);
+            Assert.That(component.GetType(), Is.EqualTo(typeof(UnityOnlyComponent2)));
         }
 
         [Test]
@@ -150,9 +150,9 @@ namespace MefContrib.Integration.Unity.Tests
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
             var container = new CompositionContainer(assemblyCatalog, provider);
 
-            var externalComponent = container.GetExportedValue<IUnityOnlyComponent>("unityComponent2");
-            Assert.That(externalComponent, Is.Not.Null);
-            Assert.That(externalComponent.GetType(), Is.EqualTo(typeof(UnityOnlyComponent2)));
+            var component = container.GetExportedValue<IUnityOnlyComponent>("unityComponent2");
+            Assert.That(component, Is.Not.Null);
+            Assert.That(component.GetType(), Is.EqualTo(typeof(UnityOnlyComponent2)));
         }
 
         [Test]
