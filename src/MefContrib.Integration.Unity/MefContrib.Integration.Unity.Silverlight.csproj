@@ -72,14 +72,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CompositionIntegration.cs" />
-    <Compile Include="ContainerServices.cs" />
-    <Compile Include="Exporters\ExporterConstants.cs" />
-    <Compile Include="Exporters\ExternalExportDefinition.cs" />
-    <Compile Include="Exporters\ExternalExportProvider.cs" />
-    <Compile Include="Exporters\UnityExportProvider.cs" />
     <Compile Include="Extensions\TypeRegistrationEntry.cs" />
     <Compile Include="Extensions\TypeRegistrationTrackerExtension.cs" />
-    <Compile Include="PartNotComposableAttribute.cs" />
     <Compile Include="Properties\Resources.Designer.cs" />
     <Compile Include="Strategies\ComposeStrategy.cs" />
     <Compile Include="Strategies\CompositionContainerPolicy.cs" />
@@ -87,10 +81,17 @@
     <Compile Include="Strategies\EnumerableResolutionStrategy.cs" />
     <Compile Include="Strategies\ICompositionContainerPolicy.cs" />
     <Compile Include="Strategies\LazyResolveBuildPlanPolicy.cs" />
+    <Compile Include="UnityContainerAdapter.cs" />
     <Compile Include="UnityContainerExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MefContrib\MefContrib.Silverlight.csproj">
+      <Project>{5E0C64E0-D2B5-4E50-BD5C-7DA1BFABE3EA}</Project>
+      <Name>MefContrib.Silverlight</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

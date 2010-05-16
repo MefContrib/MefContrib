@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
-using MefContrib.Integration.Unity.Exporters;
-using MefContrib.Integration.Unity.Properties;
+using MefContrib.Integration.Exporters;
+using MefContrib.Properties;
 
-namespace MefContrib.Integration.Unity
+namespace MefContrib.Integration
 {
     /// <summary>
     /// Provides common services.
@@ -22,7 +22,7 @@ namespace MefContrib.Integration.Unity
         /// <returns>Resolved instance or null, if no instance has been found.</returns>
         /// <remarks>
         /// Does not resolve instances which are provided by means of
-        /// <see cref="ExternalExportProvider"/>.
+        /// <see cref="RegistrationBasedFactoryExportProvider"/>.
         /// </remarks>
         public static Lazy<object> Resolve(ExportProvider exportProvider, Type type, string name)
         {
@@ -32,13 +32,13 @@ namespace MefContrib.Integration.Unity
                 return null;
 
             if (exports.Count() > 1)
-                throw new CompositionException(Resources.TooManyInstances);
+                throw new ImportCardinalityMismatchException(Resources.TooManyInstances);
 
             var lazyExport = exports.First();
             var lazyExportMetadata = lazyExport.Metadata as IDictionary<string, object>;
             if (lazyExportMetadata != null &&
-                lazyExportMetadata.ContainsKey(ExporterConstants.IsExternallyProvidedMetadataName) &&
-                true.Equals(lazyExportMetadata[ExporterConstants.IsExternallyProvidedMetadataName]))
+                lazyExportMetadata.ContainsKey(ExporterConstants.IsContractBasedExportMetadataName) &&
+                true.Equals(lazyExportMetadata[ExporterConstants.IsContractBasedExportMetadataName]))
             {
                 return null;
             }
@@ -56,7 +56,7 @@ namespace MefContrib.Integration.Unity
         /// <returns>Resolved collection of lazy instances or null, if no instance has been found.</returns>
         /// <remarks>
         /// Does not resolve instances which are provided by means of
-        /// <see cref="ExternalExportProvider"/>.
+        /// <see cref="RegistrationBasedFactoryExportProvider"/>.
         /// </remarks>
         public static IEnumerable<Lazy<object>> ResolveAll(ExportProvider exportProvider, Type type, string name)
         {
@@ -71,8 +71,8 @@ namespace MefContrib.Integration.Unity
             {
                 var lazyExportMetadata = export.Metadata as IDictionary<string, object>;
                 if (lazyExportMetadata != null &&
-                    lazyExportMetadata.ContainsKey(ExporterConstants.IsExternallyProvidedMetadataName) &&
-                    true.Equals(lazyExportMetadata[ExporterConstants.IsExternallyProvidedMetadataName]))
+                    lazyExportMetadata.ContainsKey(ExporterConstants.IsContractBasedExportMetadataName) &&
+                    true.Equals(lazyExportMetadata[ExporterConstants.IsContractBasedExportMetadataName]))
                 {
                     continue;
                 }

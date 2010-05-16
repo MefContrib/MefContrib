@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
-using MefContrib.Integration.Unity.Exporters;
+using MefContrib.Integration.Exporters;
 using Microsoft.Practices.Unity;
 
 namespace MefContrib.Integration.Unity
@@ -42,7 +42,8 @@ namespace MefContrib.Integration.Unity
                 var extension = unityContainer.Configure<CompositionIntegration>();
                 if (extension == null)
                 {
-                    var unityExportProvider = new UnityExportProvider(unityContainer);
+                    var adapter = new UnityContainerAdapter(unityContainer);
+                    var containerExportProvider = new ContainerExportProvider(adapter);
                     var parentExtension = (CompositionIntegration) null;
                     
                     if (unityContainer.Parent != null)
@@ -52,24 +53,24 @@ namespace MefContrib.Integration.Unity
 
                     if (parentExtension != null)
                     {
-                        // Get the parent UnityExportProvider
-                        var parentUnityExportProvider = (UnityExportProvider)parentExtension.Providers.Where(
-                            ep => typeof(UnityExportProvider).IsAssignableFrom(ep.GetType())).First();
+                        // Get the parent ContainerExportProvider
+                        var parentContainerExportProvider = (ContainerExportProvider)parentExtension.Providers.Where(
+                            ep => typeof(ContainerExportProvider).IsAssignableFrom(ep.GetType())).First();
 
                         // Collect all the exports provided by the parent container and add
                         // them to the child export provider
-                        foreach (var definition in parentUnityExportProvider.ReadOnlyDefinitions)
+                        foreach (var definition in parentContainerExportProvider.RegistrationBasedFactoryExportProvider.ReadOnlyDefinitions)
                         {
-                            unityExportProvider.AddExportDefinition(
-                                definition.ServiceType,
+                            containerExportProvider.RegistrationBasedFactoryExportProvider.Register(
+                                definition.ContractType,
                                 definition.RegistrationName);
                         }
 
-                        // Grab all the parent export providers except the unity ones
+                        // Grab all the parent export providers except the container ones
                         var parentExporters = new List<ExportProvider>(
                             parentExtension.Providers.Where(
-                                ep => !typeof (UnityExportProvider).IsAssignableFrom(ep.GetType())))
-                                                  { unityExportProvider };
+                                ep => !typeof (ContainerExportProvider).IsAssignableFrom(ep.GetType())))
+                                                  { containerExportProvider };
 
                         var catalog = new AggregateCatalog(parentExtension.Catalogs);
 
@@ -78,7 +79,7 @@ namespace MefContrib.Integration.Unity
                     }
                     else
                     {
-                        extension = new CompositionIntegration(true, unityExportProvider);
+                        extension = new CompositionIntegration(true, containerExportProvider);
                     }
 
                     unityContainer.AddExtension(extension);

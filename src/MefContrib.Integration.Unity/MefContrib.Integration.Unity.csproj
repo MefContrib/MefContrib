@@ -70,13 +70,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CompositionIntegration.cs" />
-    <Compile Include="ContainerServices.cs" />
-    <Compile Include="Exporters\ExporterConstants.cs" />
-    <Compile Include="Exporters\ExternalExportDefinition.cs" />
-    <Compile Include="Exporters\ExternalExportProvider.cs" />
     <Compile Include="Extensions\TypeRegistrationEntry.cs" />
     <Compile Include="Extensions\TypeRegistrationTrackerExtension.cs" />
-    <Compile Include="PartNotComposableAttribute.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -88,8 +83,8 @@
     <Compile Include="Strategies\EnumerableResolutionStrategy.cs" />
     <Compile Include="Strategies\ICompositionContainerPolicy.cs" />
     <Compile Include="Strategies\LazyResolveBuildPlanPolicy.cs" />
+    <Compile Include="UnityContainerAdapter.cs" />
     <Compile Include="UnityContainerExtensions.cs" />
-    <Compile Include="Exporters\UnityExportProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -113,6 +108,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MefContrib\MefContrib.csproj">
+      <Project>{0CCE812A-F4EB-4379-B820-D8ADA4330235}</Project>
+      <Name>MefContrib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

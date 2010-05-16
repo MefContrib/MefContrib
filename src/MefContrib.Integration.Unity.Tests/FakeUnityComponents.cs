@@ -114,6 +114,13 @@ namespace MefContrib.Integration.Unity.Tests
 
     public class UnityOnlyComponent1 : IUnityOnlyComponent
     {
+        public static int InstanceCount;
+
+        public UnityOnlyComponent1()
+        {
+            InstanceCount++;
+        }
+
         public void Foo()
         {
         }

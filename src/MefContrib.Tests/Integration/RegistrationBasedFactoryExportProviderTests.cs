@@ -2,13 +2,13 @@ using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
-using MefContrib.Integration.Unity.Exporters;
+using MefContrib.Integration.Exporters;
 using NUnit.Framework;
 
-namespace MefContrib.Integration.Unity.Tests
+namespace MefContrib.Tests.Integration
 {
     [TestFixture]
-    public class ExternalExportProviderTests
+    public class RegistrationBasedFactoryExportProviderTests
     {
         #region Fake External Components
 
@@ -101,11 +101,11 @@ namespace MefContrib.Integration.Unity.Tests
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var provider = new ExternalExportProvider(FactoryMethod1);
+            var provider = new RegistrationBasedFactoryExportProvider(FactoryMethod1);
             var container = new CompositionContainer(assemblyCatalog, provider);
 
             // Registration
-            provider.AddExportDefinition(typeof(IExternalComponent));
+            provider.Register(typeof(IExternalComponent));
 
             var externalComponent = container.GetExportedValue<IExternalComponent>();
             Assert.That(externalComponent, Is.Not.Null);
@@ -122,11 +122,11 @@ namespace MefContrib.Integration.Unity.Tests
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var provider = new ExternalExportProvider(FactoryMethod1);
+            var provider = new RegistrationBasedFactoryExportProvider(FactoryMethod1);
             var container = new CompositionContainer(assemblyCatalog, provider);
 
             // Registration
-            provider.AddExportDefinition(typeof(IExternalComponent), "external2");
+            provider.Register(typeof(IExternalComponent), "external2");
 
             var externalComponent = container.GetExportedValue<IExternalComponent>("external2");
             Assert.That(externalComponent, Is.Not.Null);
