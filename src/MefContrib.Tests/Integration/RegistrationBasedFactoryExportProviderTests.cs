@@ -5,7 +5,7 @@ using System.Reflection;
 using MefContrib.Integration.Exporters;
 using NUnit.Framework;
 
-namespace MefContrib.Integration.Unity.Tests
+namespace MefContrib.Tests.Integration
 {
     [TestFixture]
     public class RegistrationBasedFactoryExportProviderTests
