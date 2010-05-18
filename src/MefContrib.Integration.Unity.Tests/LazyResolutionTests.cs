@@ -260,5 +260,48 @@ namespace MefContrib.Integration.Unity.Tests
             var list = new List<IUnityComponent>(collectionOfLazyUnityComponents);
             Assert.That(list.Count, Is.EqualTo(2));
         }
+
+        public interface IModule { }
+
+        [Export(typeof(IModule))]
+        public class Module1 : IModule { }
+
+        public class Module2 : IModule { }
+
+        [Test]
+        public void UnityCanResolveEnumerableOfTypesRegisteredInUnityEvenIfOnOfTheTypesIsExportedViaMefTest()
+        {
+            // Setup
+            var unityContainer = new UnityContainer();
+            unityContainer.AddNewExtension<CompositionIntegration>();
+
+            unityContainer.RegisterType<IModule, Module1>();
+            unityContainer.RegisterType<IModule, Module2>("mod2");
+
+            var modules1 = unityContainer.Resolve<IEnumerable<IModule>>();
+            Assert.That(modules1.Count(), Is.EqualTo(2));
+
+            var modules2 = unityContainer.Resolve<IEnumerable<IModule>>();
+            Assert.That(modules2.Count(), Is.EqualTo(2));
+        }
+        
+        [Test]
+        public void UnityCanResolveEnumerableOfTypesRegisteredInUnityAndMefEvenIfBothMefAndUnityRegisterTheSameTypeTest()
+        {
+            // Setup
+            var unityContainer = new UnityContainer();
+            unityContainer.RegisterCatalog(new AssemblyCatalog(typeof(IModule).Assembly));
+
+            unityContainer.RegisterType<IModule, Module1>();
+            unityContainer.RegisterType<IModule, Module2>("module2");
+
+            var modules1 = unityContainer.Resolve<IEnumerable<IModule>>();
+            Assert.That(modules1.Count(), Is.EqualTo(3));
+            Assert.That(modules1.OfType<Module1>().Count(), Is.EqualTo(2));
+
+            var modules2 = unityContainer.Resolve<IEnumerable<IModule>>();
+            Assert.That(modules2.Count(), Is.EqualTo(3));
+            Assert.That(modules1.OfType<Module1>().Count(), Is.EqualTo(2));
+        }
     }
 }
