@@ -98,20 +98,61 @@ namespace MefContrib.Hosting.Conventions
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ImportDefinition"/> instances.</returns>
         private static IEnumerable<ImportDefinition> CreateImportDefinitions(IEnumerable<IImportConvention> importConventions, Type type)
         {
-            var importDefinitionsFromConvention =
-                from importConvention in importConventions
-                from member in importConvention.Members.Invoke(type)
-                select ReflectionModelServices.CreateImportDefinition(
-                    member.ToLazyMemberInfo(),
-                    GetImportContractName(importConvention, member),
-                    GetImportTypeIdentity(importConvention, member),
-                    importConvention.RequiredMetadata.Select(x => new KeyValuePair<string, Type>(x.Name, x.Type)),
-                    member.GetCardinality(importConvention.AllowDefaultValue),
-                    importConvention.Recomposable,
-                    importConvention.CreationPolicy,
-                    null);
+            var importDefinitionsFromConvention = new List<ImportDefinition>();
 
-            return importDefinitionsFromConvention.Cast<ImportDefinition>().ToList();
+            foreach (var importConvention in importConventions)
+            {
+                foreach (var member in importConvention.Members.Invoke(type))
+                {
+                    if (member is ConstructorInfo)
+                    {
+                        importDefinitionsFromConvention.AddRange(((ConstructorInfo)member).GetParameters().Select(parameter => GetImportParameterDefinition(importConvention, parameter)));
+                    }
+                    else
+                    {
+                        importDefinitionsFromConvention.Add(GetImportDefinition(importConvention, member));
+                    }
+                }    
+            }
+
+            return importDefinitionsFromConvention.ToList();
+        }
+
+        /// <summary>
+        /// Gets an <see cref="ImportDefinition"/> for a <see cref="ParameterInfo"/> instance using the provided <see cref="IImportConvention"/> instance.
+        /// </summary>
+        /// <param name="importConvention"><see cref="IImportConvention"/> instances that should be used to create the <see cref="ImportDefinition"/> instances.</param>
+        /// <param name="parameter">The <see cref="ParameterInfo"/> for which the <see cref="ImportDefinition"/> instances should be created.</param>
+        /// <returns>An <see cref="ImportDefinition"/> instance.</returns>
+        private static ImportDefinition GetImportParameterDefinition(IImportConvention importConvention, ParameterInfo parameter)
+        {
+            return ReflectionModelServices.CreateImportDefinition(
+                new Lazy<ParameterInfo>(() => parameter),
+                AttributedModelServices.GetContractName(parameter.ParameterType),
+                AttributedModelServices.GetTypeIdentity(parameter.ParameterType),
+                null,
+                parameter.ParameterType.GetCardinality(importConvention.AllowDefaultValue),
+                importConvention.CreationPolicy,
+                null);
+        }
+
+        /// <summary>
+        /// Gets an <see cref="ImportDefinition"/> for a <see cref="MemberInfo"/> instance using the provided <see cref="IImportConvention"/> instance.
+        /// </summary>
+        /// <param name="importConvention"><see cref="IImportConvention"/> instances that should be used to create the <see cref="ImportDefinition"/> instances.</param>
+        /// <param name="member">The <see cref="MemberInfo"/> for which the <see cref="ImportDefinition"/> instances should be created.</param>
+        /// <returns>An <see cref="ImportDefinition"/> instance.</returns>
+        private static ImportDefinition GetImportDefinition(IImportConvention importConvention, MemberInfo member)
+        {
+            return ReflectionModelServices.CreateImportDefinition(
+                member.ToLazyMemberInfo(),
+                GetImportContractName(importConvention, member),
+                GetImportTypeIdentity(importConvention, member),
+                importConvention.RequiredMetadata.Select(x => new KeyValuePair<string, Type>(x.Name, x.Type)),
+                member.GetCardinality(importConvention.AllowDefaultValue),
+                importConvention.Recomposable,
+                importConvention.CreationPolicy,
+                null);
         }
 
         /// <summary>

@@ -96,6 +96,7 @@
     <Compile Include="IFakeMetadataView.cs" />
     <Compile Include="ImportConventionBuilderTests.cs" />
     <Compile Include="ImportConventionTests.cs" />
+    <Compile Include="Integration\IntegrationTests.cs" />
     <Compile Include="MefIntegrationTests.cs" />
     <Compile Include="MetadataItemTests.cs" />
     <Compile Include="PartConventionBuilderTests.cs" />

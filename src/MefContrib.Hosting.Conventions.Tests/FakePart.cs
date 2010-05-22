@@ -5,6 +5,15 @@
 
     public class FakePart : IFakeInterface
     {
+        public FakePart()
+        {
+        }
+
+        public FakePart(int a, string[] b)
+        {
+            
+        }
+
         public int Count;
 
         public string Name { get; set; }

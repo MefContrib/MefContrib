@@ -22,7 +22,7 @@ namespace MefContrib.Hosting.Conventions
         {
             Type importType = null;
 
-            switch(member.MemberType)
+            switch (member.MemberType)
             {
                 case MemberTypes.Field:
                     importType = ((FieldInfo)member).FieldType;
@@ -33,9 +33,21 @@ namespace MefContrib.Hosting.Conventions
                     break;
             }
 
-            if (importType != null)
+            return importType.GetCardinality(allowDefault);
+        }
+
+        /// <summary>
+        /// Gets the cardinality of the <see cref="Type"/> instance.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> to check the cardinality of.</param>
+        /// <param name="allowDefault"><see langword="true" /> if the default value of the type can be used if no exports match; otherwise <see langword="false" />.</param>
+        /// <returns>An <see cref="ImportCardinality"/> value, reflecting the cardinality of the type.</returns>
+        /// <exception cref="ImportCardinalityMismatchException">The cardinality could not be retrieved from the provided <see cref="Type"/>.</exception>
+        public static ImportCardinality GetCardinality(this Type type, bool allowDefault)
+        {
+            if (type != null)
             {
-                if (importType.IsEnumerable())
+                if (type.IsEnumerable())
                 {
                     return ImportCardinality.ZeroOrMore;
                 }

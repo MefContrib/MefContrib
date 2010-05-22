@@ -1043,5 +1043,198 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             import.RequiredMetadata.First().Key.ShouldEqual(importConvention.RequiredMetadata.First().Name);
         }
+
+        [Test]
+        public void Parts_should_return_same_number_of_import_definitions_as_parameters_when_called_with_constructor_info()
+        {
+            var catalog =
+                CreateDefaultConventionCatalog();
+
+            var importConvention =
+                catalog.Conventions.First().Imports.First();
+
+            var member =
+                 typeof(FakePart).GetConstructor(new Type[] { typeof(int), typeof(string[]) });
+
+            importConvention.ContractType = null;
+            importConvention.Members = x => new[] { member };
+
+            var definitions =
+                catalog.Parts.First().ImportDefinitions;
+
+            definitions.Count().ShouldEqual(2);
+        }
+
+        [Test]
+        public void Parts_should_set_contract_name_on_import_definition_to_contract_name_of_parameter_when_called_with_constructor_info()
+        {
+            var catalog =
+                CreateDefaultConventionCatalog();
+
+            var importConvention =
+                catalog.Conventions.First().Imports.First();
+
+            var member =
+                 typeof(FakePart).GetConstructor(new Type[] { typeof(int), typeof(string[]) });
+
+            importConvention.Members = x => new[] { member };
+
+            var definitions =
+                catalog.Parts.First().ImportDefinitions;
+
+            var expectedContractName =
+                AttributedModelServices.GetContractName(member.GetParameters()[0].ParameterType);
+
+            definitions.First().ContractName.ShouldEqual(expectedContractName);
+        }
+
+        [Test]
+        public void Parts_should_set_contract_type_on_import_definition_to_contract_type_of_parameter_when_called_with_constructor_info()
+        {
+            var catalog =
+                CreateDefaultConventionCatalog();
+
+            var importConvention =
+                catalog.Conventions.First().Imports.First();
+
+            var member =
+                 typeof(FakePart).GetConstructor(new Type[] { typeof(int), typeof(string[]) });
+
+            importConvention.Members = x => new[] { member };
+
+            var definitions =
+                catalog.Parts.First().ImportDefinitions;
+
+            var expectedTypeIdentity =
+                AttributedModelServices.GetTypeIdentity(member.GetParameters()[0].ParameterType);
+
+            definitions.Cast<ContractBasedImportDefinition>().First().RequiredTypeIdentity.ShouldEqual(expectedTypeIdentity);
+        }
+
+        [Test]
+        public void Parts_should_not_set_required_metadata_on_import_convention_when_called_with_constructor_info()
+        {
+            var catalog =
+                CreateDefaultConventionCatalog();
+
+            var importConvention =
+                catalog.Conventions.First().Imports.First();
+
+            var member =
+                 typeof(FakePart).GetConstructor(new Type[] { typeof(int), typeof(string[]) });
+
+            importConvention.RequiredMetadata = 
+                new List<RequiredMetadataItem>
+                {
+                    new RequiredMetadataItem("foo", typeof(string)),
+                    new RequiredMetadataItem("bar", typeof(int))
+                };
+
+            importConvention.Members = x => new[] { member };
+
+            var definitions =
+                catalog.Parts.First().ImportDefinitions;
+
+            var import =
+                definitions.Cast<ContractBasedImportDefinition>().First();
+
+            import.RequiredMetadata.ShouldBeSameAs(Enumerable.Empty<KeyValuePair<string, Type>>());
+        }
+
+        [Test]
+        public void Parts_should_set_creation_policy_on_import_convention_when_called_with_constructor_info()
+        {
+            var catalog =
+                CreateDefaultConventionCatalog();
+
+            var importConvention =
+                catalog.Conventions.First().Imports.First();
+
+            var member =
+                 typeof(FakePart).GetConstructor(new Type[] { typeof(int), typeof(string[]) });
+
+            importConvention.Members = x => new[] { member };
+            importConvention.CreationPolicy = CreationPolicy.NonShared;
+
+            var definitions =
+                catalog.Parts.First().ImportDefinitions;
+
+            var import =
+                definitions.Cast<ContractBasedImportDefinition>().First();
+            
+            import.RequiredCreationPolicy.ShouldEqual(CreationPolicy.NonShared);
+        }
+
+        [Test]
+        public void Parts_should_set_cardinality_on_import_defintion_to_exaclyone_when_import_convention_not_is_for_collection_and_default_values_are_not_allowed_and_called_with_constructor_info()
+        {
+            var catalog =
+                CreateDefaultConventionCatalog();
+
+            var importConvention =
+                catalog.Conventions.First().Imports.First();
+
+            var member =
+                 typeof(FakePart).GetConstructor(new Type[] { typeof(int), typeof(string[]) });
+
+            importConvention.Members = x => new[] { member };
+            importConvention.AllowDefaultValue = false;
+
+            var definitions =
+                catalog.Parts.First().ImportDefinitions;
+
+            var import =
+                definitions.Cast<ContractBasedImportDefinition>().First();
+
+            import.Cardinality.ShouldEqual(ImportCardinality.ExactlyOne);
+        }
+
+        [Test]
+        public void Parts_should_set_cardinality_on_import_defintion_to_zeroorone_when_import_convention_not_is_for_collection_and_default_values_are_allowed_and_called_with_constructor_info()
+        {
+            var catalog =
+                CreateDefaultConventionCatalog();
+
+            var importConvention =
+                catalog.Conventions.First().Imports.First();
+
+            var member =
+                 typeof(FakePart).GetConstructor(new Type[] { typeof(int), typeof(string[]) });
+
+            importConvention.Members = x => new[] { member };
+            importConvention.AllowDefaultValue = true;
+
+            var definitions =
+                catalog.Parts.First().ImportDefinitions;
+
+            var import =
+                definitions.Cast<ContractBasedImportDefinition>().First();
+
+            import.Cardinality.ShouldEqual(ImportCardinality.ZeroOrOne);
+        }
+
+        [Test]
+        public void Parts_should_set_cardinality_on_import_defintion_to_zeroormore_when_import_convention_is_for_collection_and_called_with_constructor_info()
+        {
+            var catalog =
+                CreateDefaultConventionCatalog();
+
+            var importConvention =
+                catalog.Conventions.First().Imports.First();
+
+            var member =
+                 typeof(FakePart).GetConstructor(new Type[] { typeof(int), typeof(string[]) });
+
+            importConvention.Members = x => new[] { member };
+            importConvention.AllowDefaultValue = true;
+
+            var definitions =
+                catalog.Parts.First().ImportDefinitions;
+
+            var import =
+                definitions.Cast<ContractBasedImportDefinition>().Last();
+
+            import.Cardinality.ShouldEqual(ImportCardinality.ZeroOrMore);
+        }
     }
 }
