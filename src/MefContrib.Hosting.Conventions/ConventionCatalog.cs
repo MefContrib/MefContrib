@@ -126,10 +126,13 @@ namespace MefContrib.Hosting.Conventions
         /// <returns>An <see cref="ImportDefinition"/> instance.</returns>
         private static ImportDefinition GetImportParameterDefinition(IImportConvention importConvention, ParameterInfo parameter)
         {
+            var actualType =
+                parameter.ParameterType.GetActualType();
+
             return ReflectionModelServices.CreateImportDefinition(
                 new Lazy<ParameterInfo>(() => parameter),
-                AttributedModelServices.GetContractName(parameter.ParameterType),
-                AttributedModelServices.GetTypeIdentity(parameter.ParameterType),
+                AttributedModelServices.GetContractName(actualType),
+                AttributedModelServices.GetTypeIdentity(actualType),
                 null,
                 parameter.ParameterType.GetCardinality(importConvention.AllowDefaultValue),
                 importConvention.CreationPolicy,

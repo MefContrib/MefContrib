@@ -66,7 +66,6 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
             container.Compose(batch);
 
             instance.Imports[0].Widgets.Count().ShouldEqual(2);
-            //instance.Imports[0].Widget.ShouldNotBeNull();
         }
     }
 
@@ -78,24 +77,12 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
                 .ForTypesMatching(x => x.Name.Equals("InjectedHost"))
                 .MakeShared()
                 .ImportConstructor()
-                //.Imports(x => x.Import().Members(m => new[] { m.GetConstructors().Last() }))
                 .Exports(x => x.Export().Members(m => new[] { m }));
 
             Part()
                 .ForTypesMatching(x => x.GetInterfaces().Contains(typeof(IWidget)))
                 .MakeShared()
-                .Exports(x => x.Export().Members(m => new[] { m }).ContractName("foo").ContractType<string>());
-        }
-    }
-
-    public static class CustomConventionExtensions
-    {
-        public static IPartConventionBuilder<PartConvention> ImportConstructor(
-            this IPartConventionBuilder<PartConvention> builder)
-        {
-            builder.Imports(x => x.Import().Members(m => new[] { m.GetConstructors().Last() }));
-
-            return builder;
+                .Exports(x => x.Export().Members(m => new[] { m }).ContractType<IWidget>());
         }
     }
 
@@ -116,13 +103,13 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
             Part()
                 .ForTypesMatching(x => x.GetInterfaces().Contains(typeof(IWidget)))
                 .MakeShared()
-                .Exports(x => x.Export().Members(m => new[] { m }).ContractName("Foo").ContractType<IWidget>());
+                .Exports(x => x.Export().Members(m => new[] { m }).ContractType<IWidget>());
         }
     }
 
     public class Host
     {
-        [ImportMany("Foo", typeof(IWidget))]
+        [ImportMany]
         public IEnumerable<IWidget> Widgets { get; set; }
     }
 

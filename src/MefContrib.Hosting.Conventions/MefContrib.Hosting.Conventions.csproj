@@ -84,6 +84,7 @@
     <Compile Include="Configuration\ImportConventionBuilder.cs" />
     <Compile Include="Configuration\ImportRegistry.cs" />
     <Compile Include="Configuration\IPartConventionBuilder.cs" />
+    <Compile Include="Configuration\IPartConventionBuilderExtensions.cs" />
     <Compile Include="Configuration\IPartRegistry.cs" />
     <Compile Include="Configuration\ITypeLoaderExtensions.cs" />
     <Compile Include="Configuration\PartConventionBuilder.cs" />

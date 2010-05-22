@@ -4,6 +4,7 @@ namespace MefContrib.Hosting.Conventions
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Primitives;
     using System.ComponentModel.Composition.ReflectionModel;
+    using System.Linq;
     using System.Reflection;
 
     /// <summary>

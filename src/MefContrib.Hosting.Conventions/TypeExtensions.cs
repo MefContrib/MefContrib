@@ -50,5 +50,25 @@ namespace MefContrib.Hosting.Conventions
 
             return type == typeof(IEnumerable) || type.GetInterfaces().Contains(typeof(IEnumerable));
         }
+
+        public static Type GetActualType(this Type type)
+        {
+            if (type.IsGenericType)
+            {
+                return type.GetGenericArguments()[0];
+            }
+
+            throw new NotSupportedException("Cannot call GetActualType with non-generic type.");
+        }
+
+        public static ConstructorInfo GetGreediestConstructor(this Type type)
+        {
+            var constructor = type
+                .GetConstructors(BindingFlags.Instance | BindingFlags.Public)
+                .OrderByDescending(x => x.GetParameters())
+                .FirstOrDefault();
+
+            return constructor;
+        }
     }
 }
