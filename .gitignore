@@ -1,4 +1,4 @@
-*.cache
+*.[Cc]ache
 
 
 *.csproj.user
