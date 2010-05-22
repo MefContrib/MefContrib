@@ -81,8 +81,9 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
 
             Part()
                 .ForTypesMatching(x => x.GetInterfaces().Contains(typeof(IWidget)))
-                .MakeShared()
-                .Exports(x => x.Export().Members(m => new[] { m }).ContractType<IWidget>());
+                .ExportTypeAs<IWidget>()
+                .MakeShared();
+                
         }
     }
 

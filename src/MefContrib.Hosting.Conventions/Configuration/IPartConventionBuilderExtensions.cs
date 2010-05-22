@@ -9,5 +9,13 @@ namespace MefContrib.Hosting.Conventions.Configuration
 
             return builder;
         }
+
+        public static IPartConventionBuilder<PartConvention> ExportTypeAs<T>(
+            this IPartConventionBuilder<PartConvention> builder)
+        {
+            builder.Exports(x => x.Export().Members(m => new[] { m }).ContractType<T>());
+
+            return builder;
+        }
     }
 }
