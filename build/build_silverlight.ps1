@@ -79,5 +79,5 @@ task Merge -depends Compile, Test {
     cd $previous_directory
      
     Move-Item -Path "$build_directory\\MefContrib.Silverlight\\MefContrib.Silverlight.dll" -Destination "$build_directory\\"
-    #Remove-Item "$build_directory\\MefContrib.Silverlight" -Force -Recurse -ErrorAction SilentlyContinue
+    Remove-Item "$build_directory\\MefContrib.Silverlight" -Force -Recurse -ErrorAction SilentlyContinue
 }
