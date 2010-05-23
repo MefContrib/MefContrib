@@ -58,7 +58,7 @@ namespace MefContrib.Hosting.Conventions
                 return type.GetGenericArguments()[0];
             }
 
-            throw new NotSupportedException("Cannot call GetActualType with non-generic type.");
+            return type;
         }
 
         public static ConstructorInfo GetGreediestConstructor(this Type type)
