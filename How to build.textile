@@ -1,0 +1,14 @@
+h1.How to build
+MefContrib uses the "psake":http://github.com/JamesKovacs/psake build engine to build the project. Psake is a build engine build ontop of Powershell.
+
+In order to build the projects, execute *Build MefContrib.bat* or *Build MefContrib Silverlight.bat" and the binaries will be produced in the *release* folder.
+
+You may need to allow script execution by running the following command as adminstrator:
+
+<pre>
+<code>
+	Set-ExecutionPolicy unrestricted
+</code>
+</pre>	
+
+Also note that the build script assume that you have git.exe on your path.
