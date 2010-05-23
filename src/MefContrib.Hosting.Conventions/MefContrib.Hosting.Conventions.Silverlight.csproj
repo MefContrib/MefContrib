@@ -64,9 +64,6 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\MefContrib\Properties\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="Configuration\ConventionRegistry.cs" />
     <Compile Include="Configuration\ExportConventionBuilder.cs" />
     <Compile Include="Configuration\ExportRegistry.cs" />
@@ -101,6 +98,9 @@
     <Compile Include="RequiredMetadataItem.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="TypeLoader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
