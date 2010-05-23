@@ -16,6 +16,7 @@
 *.user
 
 
+AssemblyInfo.cs
 deploy/
 
 
