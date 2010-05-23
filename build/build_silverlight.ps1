@@ -17,7 +17,7 @@ task Clean {
 
 task Init {  
     Generate-Assembly-Info `
-		-file "$source_directory\MefContrib\Properties\AssemblyInfo.cs" `
+		-file "$source_directory\MefContrib\Properties\SharedAssemblyInfo.cs" `
 		-title "MefContrib $version" `
 		-description "Community-developed library of extensions to the Managed Extensibility Framework (MEF)." `
 		-company "MefContrib" `
