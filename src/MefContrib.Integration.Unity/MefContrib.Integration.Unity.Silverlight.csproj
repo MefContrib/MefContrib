@@ -68,6 +68,9 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MefContrib\Properties\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="CompositionIntegration.cs" />
     <Compile Include="Extensions\TypeRegistrationEntry.cs" />
     <Compile Include="Extensions\TypeRegistrationTrackerExtension.cs" />
