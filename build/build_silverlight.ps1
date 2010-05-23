@@ -1,5 +1,5 @@
 properties {
-    $base_directory   = resolve-path .
+    $base_directory   = resolve-path "..\."
     $build_directory  = "$base_directory\release"
     $source_directory = "$base_directory\src"
     $tools_directory  = "$base_directory\tools"
