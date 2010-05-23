@@ -17,13 +17,13 @@ task Clean {
 
 task Init {  
     Generate-Assembly-Info `
-		-file "$source_directory\MefContrib\Properties\SharedAssemblyInfo.cs" `
+		-file "$source_directory\MefContrib\Properties\AssemblyInfo.cs" `
 		-title "MefContrib $version" `
 		-description "Community-developed library of extensions to the Managed Extensibility Framework (MEF)." `
 		-company "MefContrib" `
 		-product "MefContrib $version" `
 		-version $version `
-		-copyright "Copyright © MefContrib 2009" `
+		-copyright "Copyright © MefContrib 2009 - 2010" `
 		-clsCompliant "false"
         
     if ((Test-Path $build_directory) -eq $false) {
