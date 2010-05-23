@@ -74,7 +74,6 @@
     <Compile Include="Integration\IContainerAdapter.cs" />
     <Compile Include="Integration\PartNotComposableAttribute.cs" />
     <Compile Include="Integration\RegisterComponentEventArgs.cs" />
-    <Compile Include="Properties\SharedAssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -77,9 +77,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\MefContrib\Properties\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="Catch.cs" />
     <Compile Include="ContextSpecificationAssertions.cs" />
     <Compile Include="ConventionCatalogTests.cs" />
@@ -128,6 +125,9 @@
       <Project>{E76F737F-0B5F-48E4-85AF-0D4B2B498646}</Project>
       <Name>MefContrib.Hosting.Conventions</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
