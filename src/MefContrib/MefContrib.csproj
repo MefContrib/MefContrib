@@ -80,9 +80,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Reflection\Member.cs" />
-    <Compile Include="Reflection\OfResult.cs" />
-    <Compile Include="Reflection\OfResultExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
