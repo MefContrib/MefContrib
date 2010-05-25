@@ -1,5 +1,7 @@
 namespace MefContrib.Hosting.Conventions.Configuration
 {
+    using System;
+
     public static class IPartConventionBuilderExtensions
     {
         public static IPartConventionBuilder<PartConvention> ImportConstructor(

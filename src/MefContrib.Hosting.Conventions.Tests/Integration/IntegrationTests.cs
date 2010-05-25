@@ -16,44 +16,14 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
     public class IntegrationTests
     {
         [Test]
-        public void TargetName_should_TestExpectation()
+        public void ConventionCatalog_should_support_constructor_injection()
         {
             var loader =
                 new TypeLoader();
             loader.AddTypes(() => Assembly.GetExecutingAssembly().GetExportedTypes());
 
             var catalog =
-                new AggregateCatalog();
-
-            catalog.Catalogs.Add(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-            catalog.Catalogs.Add(new ConventionCatalog(new[] { new MyRegistry() }, loader));
-
-            var instance =
-                new Host();
-
-            var batch =
-                new CompositionBatch();
-            batch.AddPart(instance);
-
-            var container =
-                new CompositionContainer(catalog);
-
-            container.Compose(batch);
-
-            instance.Widgets.Count().ShouldEqual(2);
-        }
-
-        [Test]
-        public void Ctor_injection_test()
-        {
-            var loader =
-                new TypeLoader();
-            loader.AddTypes(() => Assembly.GetExecutingAssembly().GetExportedTypes());
-
-            var catalog =
-                new AggregateCatalog();
-
-            catalog.Catalogs.Add(new ConventionCatalog(new[] { new CtorRegistry() }, loader));
+                new ConventionCatalog(new[] { new CtorRegistry() }, loader);
 
             var instance =
                 new ConventionPart<InjectedHost>();
@@ -71,24 +41,6 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
         }
     }
 
-    public class CtorRegistry : PartRegistry
-    {
-        public CtorRegistry()
-        {
-            Part()
-                .ForTypesMatching(x => x.Name.Equals("InjectedHost"))
-                .MakeShared()
-                .ImportConstructor()
-                .Exports(x => x.Export().Members(m => new[] { m }));
-
-            Part()
-                .ForTypesMatching(x => x.GetInterfaces().Contains(typeof(IWidget)))
-                .ExportTypeAs<IWidget>()
-                .MakeShared();
-                
-        }
-    }
-
     public class InjectedHost
     {
         public InjectedHost(IEnumerable<IWidget> widgets)
@@ -99,21 +51,21 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
         public IEnumerable<IWidget> Widgets { get; set; }
     }
 
-    public class MyRegistry : PartRegistry
+    public class CtorRegistry : PartRegistry
     {
-        public MyRegistry()
+        public CtorRegistry()
         {
             Part()
-                .ForTypesMatching(x => x.GetInterfaces().Contains(typeof(IWidget)))
-                .MakeShared()
-                .Exports(x => x.Export().Members(m => new[] { m }).ContractType<IWidget>());
-        }
-    }
+                .ForTypesMatching(x => x.Equals(typeof(InjectedHost)))
+                .ExportTypeAs<InjectedHost>()
+                .ImportConstructor()
+                .MakeShared();
 
-    public class Host
-    {
-        [ImportMany]
-        public IEnumerable<IWidget> Widgets { get; set; }
+            Part()
+                .ForTypesMatching(x => x.GetInterfaces().Contains(typeof(IWidget)))
+                .ExportTypeAs<IWidget>()
+                .MakeShared();
+        }
     }
 
     public interface IWidget
