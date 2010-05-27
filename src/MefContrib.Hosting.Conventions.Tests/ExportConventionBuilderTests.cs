@@ -52,7 +52,7 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             var convention =
                 this.conventionBuilder
-                    .GetBuiltInstance();
+                    .GetConvention();
 
             var property =
                 ReflectionServices.GetProperty<ExportConvention>(x => x.ContractType);
@@ -78,7 +78,7 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             var convention =
                 this.conventionBuilder
-                    .GetBuiltInstance();
+                    .GetConvention();
 
             convention.ContractType.Invoke(null).ShouldBeOfType<IExportConvention>();
         }
@@ -101,7 +101,7 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             var convention =
                 this.conventionBuilder
-                    .GetBuiltInstance();
+                    .GetConvention();
 
             var expectedContractName =
                 typeof(IExportConvention).FullName;
@@ -136,7 +136,7 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             var convention =
                 this.conventionBuilder
-                    .GetBuiltInstance();
+                    .GetConvention();
 
             var member =
                 ReflectionServices.GetProperty<ExportConvention>(x => x.ContractName);
@@ -171,16 +171,16 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             var convention =
                 this.conventionBuilder
-                    .GetBuiltInstance();
+                    .GetConvention();
 
             convention.ContractName.Invoke(null).ShouldEqual("Foo");
         }
 
         [Test]
-        public void GetBuiltInstance_should_not_return_null_on_new_convention()
+        public void GetConvention_should_not_return_null_on_new_convention()
         {
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.ShouldNotBeNull();
         }
@@ -211,7 +211,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .Members(x => x.GetProperties());
 
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             var matchedMembers =
                 convention.Members.Invoke(typeof(IExportConvention));
@@ -245,7 +245,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         //        .Members<IPartConventionsContainer>(x => x.Configure(null));
                 
         //    var convention =
-        //        this.conventionBuilder.GetBuiltInstance();
+        //        this.conventionBuilder.GetConvention();
 
         //    var matchedMembers =
         //        convention.Members.Invoke(typeof(IPartConventionsContainer));
@@ -279,7 +279,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .Members<IExportConvention>(x => x.ContractName);
             
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             var matchedMembers =
                 convention.Members.Invoke(typeof(IExportConvention));
@@ -331,7 +331,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .AddMetadata("Foo", "Bar");
             
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             var expectedMetadata =
                 new MetadataItem("Foo", "Bar");
@@ -365,7 +365,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .AddMetadata(new { Foo = "Bar" });
 
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             var expectedMetadata =
                 new MetadataItem("Foo", "Bar");
@@ -408,7 +408,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .AddMetadata(() => new[] {new KeyValuePair<string, object>("Foo", "Bar")});
             
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             var expectedMetadata =
                 new MetadataItem("Foo", "Bar");

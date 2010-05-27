@@ -9,13 +9,13 @@
         /// Creates a convention builde for <see cref="ImportConvention"/> conventions.
         /// </summary>
         /// <returns>A <see cref="IImportConventionBuilder{TPartConvention}"/> instance for the <see cref="ImportConvention"/> type.</returns>
-        IImportConventionBuilder<ImportConvention> Import();
+        ImportConventionBuilder<ImportConvention> Import();
 
         /// <summary>
         /// Create a convention builder for the <typeparamref name="TConvention"/> convention type.
         /// </summary>
         /// <typeparam name="TConvention">The type of a class which implements the <see cref="IImportConvention"/> interface.</typeparam>
         /// <returns>A <see cref="IImportConventionBuilder{TPartConvention}"/> instance for the import convention type specified by the <typeparamref name="TConvention"/> type parameter.</returns>
-        IImportConventionBuilder<TConvention> Import<TConvention>() where TConvention : IImportConvention, new();
+        ImportConventionBuilder<TConvention> Import<TConvention>() where TConvention : IImportConvention, new();
     }
 }

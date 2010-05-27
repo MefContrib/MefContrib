@@ -36,7 +36,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                     });
 
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.Exports.Count().ShouldEqual(2);
         }
@@ -72,7 +72,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                     });
 
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.Imports.Count().ShouldEqual(2);
         }
@@ -103,7 +103,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .MakeShared();
             
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.CreationPolicy.ShouldEqual(CreationPolicy.Shared);
         }
@@ -125,7 +125,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .MakeNonShared();
             
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.CreationPolicy.ShouldEqual(CreationPolicy.NonShared);
         }
@@ -147,7 +147,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .ForTypesMatching(x => x == typeof(IPartConvention));
             
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             var availableTypes =
                 new List<Type> { typeof(IPartConvention), typeof(IImportConvention) };
@@ -182,7 +182,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         {
             var convention =
                 this.conventionBuilder
-                    .GetBuiltInstance();
+                    .GetConvention();
 
             convention.ShouldNotBeNull();
         }
@@ -231,7 +231,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .AddMetadata("Foo", "Bar");
             
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             var expectedMetadata =
                 new MetadataItem("Foo", "Bar");
@@ -265,7 +265,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .AddMetadata(new {Foo = "Bar"});
 
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             var expectedMetadata =
                 new MetadataItem("Foo", "Bar");
@@ -308,7 +308,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .AddMetadata(() => new[] {new KeyValuePair<string, object>("Foo", "Bar")});
             
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             var expectedMetadata =
                 new MetadataItem("Foo", "Bar");

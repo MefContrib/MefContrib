@@ -4,18 +4,29 @@ namespace MefContrib.Hosting.Conventions.Configuration
 
     public static class IPartConventionBuilderExtensions
     {
-        public static IPartConventionBuilder<PartConvention> ImportConstructor(
-            this IPartConventionBuilder<PartConvention> builder)
+        public static PartConventionBuilder<PartConvention> ImportConstructor(
+            this PartConventionBuilder<PartConvention> builder)
         {
             builder.Imports(x => x.Import().Members(m => new[] { m.GetGreediestConstructor() }));
 
             return builder;
         }
 
-        public static IPartConventionBuilder<PartConvention> ExportTypeAs<T>(
-            this IPartConventionBuilder<PartConvention> builder)
+        public static PartConventionBuilder<PartConvention> ExportTypeAs<T>(
+            this PartConventionBuilder<PartConvention> builder)
         {
             builder.Exports(x => x.Export().Members(m => new[] { m }).ContractType<T>());
+
+            return builder;
+        }
+
+        public static PartConventionBuilder<PartConvention> ForTypesAssignableFrom<T>(
+            this PartConventionBuilder<PartConvention> builder)
+        {
+            Predicate<Type> condition =
+                t => typeof(T).IsAssignableFrom(t) && !t.IsInterface;
+            
+            builder.ProvideValueFor(x => x.Condition, condition);
 
             return builder;
         }

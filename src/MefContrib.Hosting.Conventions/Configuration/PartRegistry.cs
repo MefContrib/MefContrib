@@ -17,9 +17,9 @@
         /// Creates a convention builde for <see cref="PartConvention"/> conventions.
         /// </summary>
         /// <returns>A <see cref="IPartConventionBuilder{TPartConvention}"/> instance for the <see cref="PartConvention"/> type.</returns>
-        public IPartConventionBuilder<PartConvention> Part()
+        public PartConventionBuilder<PartConvention> Part()
         {
-            return this.CreateExpressionBuilder<PartConvention, PartConventionBuilder<PartConvention>>();
+            return this.CreateExpressionBuilder<PartConventionBuilder<PartConvention>>();
         }
 
         /// <summary>
@@ -27,9 +27,9 @@
         /// </summary>
         /// <typeparam name="TConvention">The type of a class which implements the <see cref="IPartConvention"/> interface.</typeparam>
         /// <returns>A <see cref="IPartConventionBuilder{TPartConvention}"/> instance for the part convention type specified by the <typeparamref name="TConvention"/> type parameter.</returns>
-        public IPartConventionBuilder<TConvention> Part<TConvention>() where TConvention : IPartConvention, new()
+        public PartConventionBuilder<TConvention> Part<TConvention>() where TConvention : IPartConvention, new()
         {
-            return this.CreateExpressionBuilder<TConvention, PartConventionBuilder<TConvention>>();
+            return this.CreateExpressionBuilder<PartConventionBuilder<TConvention>>();
         }
     }
 }

@@ -71,19 +71,17 @@
     <Compile Include="..\MefContrib\Properties\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Configuration\ConventionBuilder.cs" />
     <Compile Include="Configuration\ConventionRegistry.cs" />
     <Compile Include="Configuration\ExportConventionBuilder.cs" />
     <Compile Include="Configuration\ExportRegistry.cs" />
     <Compile Include="Configuration\ExpressionBuilder.cs" />
     <Compile Include="Configuration\IConventionBuilder.cs" />
     <Compile Include="Configuration\IConventionRegistry.cs" />
-    <Compile Include="Configuration\IExportConventionBuilder.cs" />
     <Compile Include="Configuration\IExportRegistry.cs" />
-    <Compile Include="Configuration\IImportConventionBuilder.cs" />
     <Compile Include="Configuration\IImportRegistry.cs" />
     <Compile Include="Configuration\ImportConventionBuilder.cs" />
     <Compile Include="Configuration\ImportRegistry.cs" />
-    <Compile Include="Configuration\IPartConventionBuilder.cs" />
     <Compile Include="Configuration\IPartConventionBuilderExtensions.cs" />
     <Compile Include="Configuration\IPartRegistry.cs" />
     <Compile Include="Configuration\ITypeLoaderExtensions.cs" />
@@ -91,6 +89,7 @@
     <Compile Include="Configuration\PartRegistry.cs" />
     <Compile Include="ConventionCatalog.cs" />
     <Compile Include="ConventionPart.cs" />
+    <Compile Include="Dsl\Tests.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="ExportConvention.cs" />
     <Compile Include="ExpressionExtensions.cs" />

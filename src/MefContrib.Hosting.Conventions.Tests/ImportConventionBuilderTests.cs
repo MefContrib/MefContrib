@@ -52,7 +52,7 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             var convention =
                 this.conventionBuilder
-                    .GetBuiltInstance();
+                    .GetConvention();
 
             var property =
                 ReflectionServices.GetProperty<ImportConvention>(x => x.ContractType);
@@ -78,7 +78,7 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             var convention =
                 this.conventionBuilder
-                    .GetBuiltInstance();
+                    .GetConvention();
 
             convention.ContractType.Invoke(null).ShouldBeOfType<IImportConvention>();
         }
@@ -101,7 +101,7 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             var convention =
                 this.conventionBuilder
-                    .GetBuiltInstance();
+                    .GetConvention();
 
             var expectedContractName =
                 typeof(IImportConvention).FullName;
@@ -136,7 +136,7 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             var convention =
                 this.conventionBuilder
-                    .GetBuiltInstance();
+                    .GetConvention();
 
             var member =
                 ReflectionServices.GetProperty<ImportConvention>(x => x.ContractName);
@@ -171,16 +171,16 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             var convention =
                 this.conventionBuilder
-                    .GetBuiltInstance();
+                    .GetConvention();
 
             convention.ContractName.Invoke(null).ShouldEqual("Foo");
         }
 
         [Test]
-        public void GetBuiltInstance_should_not_return_null_on_new_convention()
+        public void GetConvention_should_not_return_null_on_new_convention()
         {
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.ShouldNotBeNull();
         }
@@ -198,7 +198,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         public void AllowDefaultValue_should_be_false_on_new_convention()
         {
             var convention = 
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.AllowDefaultValue.ShouldBeFalse();
         }
@@ -210,7 +210,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .AllowDefaultValue();
 
             var convention = 
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.AllowDefaultValue.ShouldBeTrue();
         }
@@ -219,7 +219,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         public void ContractName_should_be_null_on_new_convention()
         {
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.ContractName.ShouldBeNull();
         }
@@ -228,7 +228,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         public void ContractType_should_be_null_on_new_convention()
         {
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.ContractType.ShouldBeNull();
         }
@@ -237,7 +237,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         public void CreationPolicy_should_be_any_on_new_convention()
         {
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.CreationPolicy.ShouldEqual(CreationPolicy.Any);
         }
@@ -258,7 +258,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .MakeNonShared();
             
             var convention = 
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.CreationPolicy.ShouldEqual(CreationPolicy.NonShared);
         }
@@ -279,7 +279,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .MakeShared();
 
             var convention = 
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.CreationPolicy.ShouldEqual(CreationPolicy.Shared);
         }
@@ -297,7 +297,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         public void Recomposable_should_be_false_on_new_convention()
         {
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.Recomposable.ShouldBeFalse();
         }
@@ -309,7 +309,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .Recomposable();
 
             var convention = 
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             convention.Recomposable.ShouldBeTrue();
         }
@@ -330,7 +330,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .RequireMetadata<object>("Name");
 
             var convention = 
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             var expectedMetadata =
                 new RequiredMetadataItem("Name", typeof(object));
@@ -372,7 +372,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .RequireMetadata<IFakeMetadataView>();
 
             var convention = 
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             var expectedMetadata =
                 typeof(IFakeMetadataView).GetRequiredMetadata();
@@ -408,7 +408,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .Members(x => x.GetProperties());
             
             var convention = 
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             var matchedMembers =
                 convention.Members.Invoke(typeof(IImportConvention));
@@ -442,7 +442,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         //        .Members<IPartConventionsContainer>(x => x.Configure(null));
 
         //    var convention =
-        //        this.conventionBuilder.GetBuiltInstance();
+        //        this.conventionBuilder.GetConvention();
 
         //    var matchedMembers =
         //        convention.Members.Invoke(typeof(IPartConventionsContainer));
@@ -476,7 +476,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .Members<IImportConvention>(x => x.ContractName);
 
             var convention =
-                this.conventionBuilder.GetBuiltInstance();
+                this.conventionBuilder.GetConvention();
 
             var matchedMembers =
                 convention.Members.Invoke(typeof(IImportConvention));

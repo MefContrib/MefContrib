@@ -38,15 +38,12 @@ namespace MefContrib.Hosting.Conventions.Configuration
         }
 
         /// <summary>
-        /// Creates and tracks a new expression builder of the type specified by the <typeparamref name="TBuilder"/> type parameter,
-        /// for the type specified by the <typeparamref name="TConvention"/> type parameter.
+        /// Creates and tracks a new expression builder of the type specified by the <typeparamref name="TBuilder"/> type parameter.
         /// </summary>
-        /// <typeparam name="TConvention">The type of the convention that the expression builder should handle.</typeparam>
         /// <typeparam name="TBuilder">The type of the expression builder which should be created.</typeparam>
         /// <returns>A <see cref="ExpressionBuilder{T}"/> instance of the type specified by the <typeparamref name="TBuilder"/> type parameter.</returns>
-        protected TBuilder CreateExpressionBuilder<TConvention, TBuilder>()
-            where TConvention : new()
-            where TBuilder : ExpressionBuilder<TConvention>, new()
+        protected TBuilder CreateExpressionBuilder<TBuilder>()
+            where TBuilder : IExpressionBuilder, new()
         {
             var builder =
                 new TBuilder();

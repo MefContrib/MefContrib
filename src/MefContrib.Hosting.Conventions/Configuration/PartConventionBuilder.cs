@@ -8,12 +8,12 @@ namespace MefContrib.Hosting.Conventions.Configuration
     /// <summary>
     /// A convention builder for <see cref="IPartConvention"/> instances.
     /// </summary>
-    /// <typeparam name="TPartConvention">The type of the part convention that will be built by the expression builder.</typeparam>
-    public class PartConventionBuilder<TPartConvention> :
-        ExpressionBuilder<TPartConvention>, IPartConventionBuilder<TPartConvention>, IConventionBuilder<TPartConvention> where TPartConvention : IPartConvention, new()
+    /// <typeparam name="TConvention">The type of the part convention that will be built by the expression builder.</typeparam>
+    public class PartConventionBuilder<TConvention> :
+        ConventionBuilder<TConvention> where TConvention : IPartConvention, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PartConventionBuilder{TPartConvention}"/> class.
+        /// Initializes a new instance of the <see cref="PartConventionBuilder{TConvention}"/> class.
         /// </summary>
         public PartConventionBuilder()
         {
@@ -23,9 +23,9 @@ namespace MefContrib.Hosting.Conventions.Configuration
         /// Defines metadata, using property name and values extracted from an anonymous type, that will be added to the parts created by the convention.
         /// </summary>
         /// <param name="anonymousType">The anonymous type that the names and values will be extracted from.</param>
-        /// <returns>Returns a reference to the same <see cref="IPartConventionBuilder{TPartConvention}"/> instance as the method was called on.</returns>
+        /// <returns>Returns a reference to the same <see cref="PartConventionBuilder{TConvention}"/> instance as the method was called on.</returns>
         /// <exception cref="ArgumentNullException">The method was called with a null value.</exception>
-        public IPartConventionBuilder<TPartConvention> AddMetadata(object anonymousType)
+        public PartConventionBuilder<TConvention> AddMetadata(object anonymousType)
         {
             if (anonymousType == null)
             {
@@ -46,10 +46,10 @@ namespace MefContrib.Hosting.Conventions.Configuration
         /// </summary>
         /// <param name="name">The name of the metadata.</param>
         /// <param name="value">The value of the metadata.</param>
-        /// <returns>Returns a reference to the same <see cref="IPartConventionBuilder{TPartConvention}"/> instance as the method was called on.</returns>
+        /// <returns>Returns a reference to the same <see cref="PartConventionBuilder{TConvention}"/> instance as the method was called on.</returns>
         /// <exception cref="ArgumentNullException">The value of the <paramref name="name"/> or <paramref name="value"/> parameters were null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The lenght of the <paramref name="name"/> was zero.</exception>
-        public IPartConventionBuilder<TPartConvention> AddMetadata(string name, object value)
+        public PartConventionBuilder<TConvention> AddMetadata(string name, object value)
         {
             if (name == null)
             {
@@ -75,9 +75,9 @@ namespace MefContrib.Hosting.Conventions.Configuration
         /// Defines metadata, using <see cref="KeyValuePair{TKey,TValue}"/> instances retrieved from a function, that will be added to the parts created by the convention.
         /// </summary>
         /// <param name="metadataFunction">The function that the metadata can be retrieved from.</param>
-        /// <returns>Returns a reference to the same <see cref="IPartConventionBuilder{TPartConvention}"/> instance as the method was called on.</returns>
+        /// <returns>Returns a reference to the same <see cref="PartConventionBuilder{TConvention}"/> instance as the method was called on.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="metadataFunction"/>, or the value returned by it, was null.</exception>
-        public IPartConventionBuilder<TPartConvention> AddMetadata(Func<KeyValuePair<string, object>[]> metadataFunction)
+        public PartConventionBuilder<TConvention> AddMetadata(Func<KeyValuePair<string, object>[]> metadataFunction)
         {
             if (metadataFunction == null)
             {
@@ -105,9 +105,9 @@ namespace MefContrib.Hosting.Conventions.Configuration
         /// Defines the export conventions which should be assigned to the part convention.
         /// </summary>
         /// <param name="action">A closure for an <see cref="IExportRegistry"/> instance.</param>
-        /// <returns>Returns a reference to the same <see cref="IPartConventionBuilder{TPartConvention}"/> instance as the method was called on.</returns>
+        /// <returns>Returns a reference to the same <see cref="PartConventionBuilder{TConvention}"/> instance as the method was called on.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="action"/> parameter was null.</exception>
-        public IPartConventionBuilder<TPartConvention> Exports(Action<IExportRegistry> action)
+        public PartConventionBuilder<TConvention> Exports(Action<IExportRegistry> action)
         {
             if (action == null)
             {
@@ -128,9 +128,9 @@ namespace MefContrib.Hosting.Conventions.Configuration
         /// Defines the condition that a type has to pass in order for the convention to be applied to it.
         /// </summary>
         /// <param name="condition">A function that evaluates if the convention can be applied to the specified type.</param>
-        /// <returns>Returns a reference to the same <see cref="IPartConventionBuilder{TPartConvention}"/> instance as the method was called on.</returns>
+        /// <returns>Returns a reference to the same <see cref="PartConventionBuilder{TConvention}"/> instance as the method was called on.</returns>
         /// <exception cref="ArgumentNullException">The the <paramref name="condition"/> parameter was null.</exception>
-        public IPartConventionBuilder<TPartConvention> ForTypesMatching(Predicate<Type> condition)
+        public PartConventionBuilder<TConvention> ForTypesMatching(Predicate<Type> condition)
         {
             if (condition == null)
             {
@@ -143,21 +143,12 @@ namespace MefContrib.Hosting.Conventions.Configuration
         }
 
         /// <summary>
-        /// Gets the convention instance built by the convention builder.
-        /// </summary>
-        /// <returns>An instance of the convention type that the convention builder can build.</returns>
-        public TPartConvention GetBuiltInstance()
-        {
-            return (TPartConvention)this.Build();
-        }
-
-        /// <summary>
         /// Defines the import conventions which should be assigned to the part convention.
         /// </summary>
         /// <param name="action">A closure for an <see cref="IImportRegistry"/> instance.</param>
-        /// <returns>Returns a reference to the same <see cref="IPartConventionBuilder{TPartConvention}"/> instance as the method was called on.</returns>
+        /// <returns>Returns a reference to the same <see cref="PartConventionBuilder{TConvention}"/> instance as the method was called on.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="action"/> parameter was null.</exception>
-        public IPartConventionBuilder<TPartConvention> Imports(Action<IImportRegistry> action)
+        public PartConventionBuilder<TConvention> Imports(Action<IImportRegistry> action)
         {
             if (action == null)
             {
@@ -177,8 +168,8 @@ namespace MefContrib.Hosting.Conventions.Configuration
         /// <summary>
         /// Defines that all parts created using the convention should be unique instances.
         /// </summary>
-        /// <returns>Returns a reference to the same <see cref="IPartConventionBuilder{TPartConvention}"/> instance as the method was called on.</returns>
-        public IPartConventionBuilder<TPartConvention> MakeNonShared()
+        /// <returns>Returns a reference to the same <see cref="PartConventionBuilder{TConvention}"/> instance as the method was called on.</returns>
+        public PartConventionBuilder<TConvention> MakeNonShared()
         {
             this.ProvideValueFor(x => x.CreationPolicy, CreationPolicy.NonShared);
             return this;
@@ -187,8 +178,8 @@ namespace MefContrib.Hosting.Conventions.Configuration
         /// <summary>
         /// Defines that all parts created using the convention should use a shared instance.
         /// </summary>
-        /// <returns>Returns a reference to the same <see cref="IPartConventionBuilder{TPartConvention}"/> instance as the method was called on.</returns>
-        public IPartConventionBuilder<TPartConvention> MakeShared()
+        /// <returns>Returns a reference to the same <see cref="PartConventionBuilder{TConvention}"/> instance as the method was called on.</returns>
+        public PartConventionBuilder<TConvention> MakeShared()
         {
             this.ProvideValueFor(x => x.CreationPolicy, CreationPolicy.Shared);
             return this;

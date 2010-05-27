@@ -17,9 +17,9 @@
         /// Creates a convention builde for <see cref="ExportConvention"/> conventions.
         /// </summary>
         /// <returns>A <see cref="IExportConventionBuilder{TPartConvention}"/> instance for the <see cref="ExportConvention"/> type.</returns>
-        public IExportConventionBuilder<ExportConvention> Export()
+        public ExportConventionBuilder<ExportConvention> Export()
         {
-            return this.CreateExpressionBuilder<ExportConvention, ExportConventionBuilder<ExportConvention>>();
+            return this.CreateExpressionBuilder<ExportConventionBuilder<ExportConvention>>();
         }
 
         /// <summary>
@@ -27,9 +27,9 @@
         /// </summary>
         /// <typeparam name="TConvention">The type of a class which implements the <see cref="IExportConvention"/> interface.</typeparam>
         /// <returns>A <see cref="IExportConventionBuilder{TPartConvention}"/> instance for the export convention type specified by the <typeparamref name="TConvention"/> type parameter.</returns>
-        public IExportConventionBuilder<TConvention> Export<TConvention>() where TConvention : IExportConvention, new()
+        public ExportConventionBuilder<TConvention> Export<TConvention>() where TConvention : IExportConvention, new()
         {
-            return this.CreateExpressionBuilder<TConvention, ExportConventionBuilder<TConvention>>();
+            return this.CreateExpressionBuilder<ExportConventionBuilder<TConvention>>();
         }
     }
 }
