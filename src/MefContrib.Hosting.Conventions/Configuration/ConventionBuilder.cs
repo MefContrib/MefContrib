@@ -1,7 +1,7 @@
 ﻿namespace MefContrib.Hosting.Conventions.Configuration
 {
     public abstract class ConventionBuilder<TConvention>
-        : ExpressionBuilder<TConvention> where TConvention : new()
+        : ExpressionBuilder<TConvention>, IConventionBuilder<TConvention> where TConvention : new()
     {
         /// <summary>
         /// Gets the convention instance built by the convention builder.
