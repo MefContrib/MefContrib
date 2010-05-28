@@ -11,7 +11,7 @@ namespace MefContrib.Hosting.Conventions.Configuration
         /// <summary>
         /// Gets the conventions registered in the registry.
         /// </summary>
-        /// <returns>An <see cref="IEnumerable{T}"/> instance containing convention of the type specified by the<typeparamref name="TConventionInterface"/> type parameter.</returns>
+        /// <returns>An <see cref="IEnumerable{T}"/> instance containing convention of the type specified by the <typeparamref name="TConventionInterface"/> type parameter.</returns>
         IEnumerable<TConventionInterface> GetConventions();
     }
 }
