@@ -6,7 +6,7 @@ namespace MefContrib.Hosting.Conventions.Configuration
     /// Defines the functionality provided by the convention registry.
     /// </summary>
     /// <typeparam name="TConventionInterface">The type of the convention that the registry can handle.</typeparam>
-    public interface IConventionRegistry<TConventionInterface>
+    public interface IConventionRegistry<out TConventionInterface>
     {
         /// <summary>
         /// Gets the conventions registered in the registry.
