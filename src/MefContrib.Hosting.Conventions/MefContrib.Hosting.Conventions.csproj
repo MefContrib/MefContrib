@@ -82,14 +82,13 @@
     <Compile Include="Configuration\IImportRegistry.cs" />
     <Compile Include="Configuration\ImportConventionBuilder.cs" />
     <Compile Include="Configuration\ImportRegistry.cs" />
-    <Compile Include="Configuration\IPartConventionBuilderExtensions.cs" />
+    <Compile Include="Configuration\PartConventionBuilderExtensions.cs" />
     <Compile Include="Configuration\IPartRegistry.cs" />
     <Compile Include="Configuration\ITypeLoaderExtensions.cs" />
     <Compile Include="Configuration\PartConventionBuilder.cs" />
     <Compile Include="Configuration\PartRegistry.cs" />
     <Compile Include="ConventionCatalog.cs" />
     <Compile Include="ConventionPart.cs" />
-    <Compile Include="Dsl\Tests.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="ExportConvention.cs" />
     <Compile Include="ExpressionExtensions.cs" />

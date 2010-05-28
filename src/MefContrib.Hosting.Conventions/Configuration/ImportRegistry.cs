@@ -14,9 +14,9 @@
         }
 
         /// <summary>
-        /// Creates a convention builde for <see cref="ImportConvention"/> conventions.
+        /// Creates a convention builder for <see cref="ImportConvention"/> conventions.
         /// </summary>
-        /// <returns>A <see cref="IImportConventionBuilder{TPartConvention}"/> instance for the <see cref="ImportConvention"/> type.</returns>
+        /// <returns>A <see cref="ImportConventionBuilder{TPartConvention}"/> instance for the <see cref="ImportConvention"/> type.</returns>
         public ImportConventionBuilder<ImportConvention> Import()
         {
             return this.CreateExpressionBuilder<ImportConventionBuilder<ImportConvention>>();
@@ -26,7 +26,7 @@
         /// Create a convention builder for the <typeparamref name="TConvention"/> convention type.
         /// </summary>
         /// <typeparam name="TConvention">The type of a class which implements the <see cref="IImportConvention"/> interface.</typeparam>
-        /// <returns>A <see cref="IImportConventionBuilder{TPartConvention}"/> instance for the import convention type specified by the <typeparamref name="TConvention"/> type parameter.</returns>
+        /// <returns>A <see cref="ImportConventionBuilder{TPartConvention}"/> instance for the import convention type specified by the <typeparamref name="TConvention"/> type parameter.</returns>
         public ImportConventionBuilder<TConvention> Import<TConvention>() where TConvention : IImportConvention, new()
         {
             return this.CreateExpressionBuilder<ImportConventionBuilder<TConvention>>();

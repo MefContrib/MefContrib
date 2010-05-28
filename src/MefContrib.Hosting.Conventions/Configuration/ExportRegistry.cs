@@ -14,9 +14,9 @@
         }
 
         /// <summary>
-        /// Creates a convention builde for <see cref="ExportConvention"/> conventions.
+        /// Creates a convention builder for <see cref="ExportConvention"/> conventions.
         /// </summary>
-        /// <returns>A <see cref="IExportConventionBuilder{TPartConvention}"/> instance for the <see cref="ExportConvention"/> type.</returns>
+        /// <returns>A <see cref="ExportConventionBuilder{TPartConvention}"/> instance for the <see cref="ExportConvention"/> type.</returns>
         public ExportConventionBuilder<ExportConvention> Export()
         {
             return this.CreateExpressionBuilder<ExportConventionBuilder<ExportConvention>>();
@@ -26,7 +26,7 @@
         /// Create a convention builder for the <typeparamref name="TConvention"/> convention type.
         /// </summary>
         /// <typeparam name="TConvention">The type of a class which implements the <see cref="IExportConvention"/> interface.</typeparam>
-        /// <returns>A <see cref="IExportConventionBuilder{TPartConvention}"/> instance for the export convention type specified by the <typeparamref name="TConvention"/> type parameter.</returns>
+        /// <returns>A <see cref="ExportConventionBuilder{TPartConvention}"/> instance for the export convention type specified by the <typeparamref name="TConvention"/> type parameter.</returns>
         public ExportConventionBuilder<TConvention> Export<TConvention>() where TConvention : IExportConvention, new()
         {
             return this.CreateExpressionBuilder<ExportConventionBuilder<TConvention>>();
