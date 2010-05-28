@@ -8,7 +8,8 @@ namespace MefContrib.Hosting.Conventions.Configuration
     /// retrieved from the registry.
     /// </summary>
     /// <typeparam name="TConventionInterface">The type of the convention that the registry can handle.</typeparam>
-    public class ConventionRegistry<TConventionInterface> : IConventionRegistry<TConventionInterface>
+    public class ConventionRegistry<TConventionInterface> 
+        : IConventionRegistry<TConventionInterface>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConventionRegistry{TConvention}"/> class.
