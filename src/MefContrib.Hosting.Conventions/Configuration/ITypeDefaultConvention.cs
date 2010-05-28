@@ -1,6 +1,7 @@
 namespace MefContrib.Hosting.Conventions.Configuration
 {
     using System;
+    using System.Collections.Generic;
 
     public interface ITypeDefaultConvention
     {
@@ -21,5 +22,10 @@ namespace MefContrib.Hosting.Conventions.Configuration
         /// </summary>
         /// <value>The <see cref="Type"/> that the convention applies to.</value>
         Type TargetType { get; set; }
+    }
+
+    public interface ITypeDefaultConventionProvider
+    {
+        IEnumerable<ITypeDefaultConvention> TypeDefaultConventions { get; set; }
     }
 }

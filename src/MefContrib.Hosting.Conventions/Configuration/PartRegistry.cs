@@ -1,16 +1,26 @@
 ﻿namespace MefContrib.Hosting.Conventions.Configuration
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// A convention registry for types implementing the <see cref="IPartConvention"/> interface.
     /// </summary>
     public class PartRegistry :
-        ConventionRegistry<IPartConvention>, IPartRegistry
+        ConventionRegistry<IPartConvention>, IPartRegistry, ITypeDefaultConventionProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PartRegistry"/> class.
         /// </summary>
         public PartRegistry()
         {
+        }
+
+        IEnumerable<ITypeDefaultConvention> ITypeDefaultConventionProvider.TypeDefaultConventions { get; set; }
+
+        public void Defaults(Action<ITypeDefaultConventionConfigurator> configurer)
+        {
+            
         }
 
         /// <summary>
@@ -31,5 +41,10 @@
         {
             return this.CreateExpressionBuilder<PartConventionBuilder<TConvention>>();
         }
+    }
+
+    public interface ITypeDefaultConventionConfigurator
+    {
+        IEnumerable<ITypeDefaultConvention> GetTypeDefaultConventions();
     }
 }
