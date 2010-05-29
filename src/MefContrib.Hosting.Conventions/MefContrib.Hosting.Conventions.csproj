@@ -82,6 +82,7 @@
     <Compile Include="Configuration\IImportRegistry.cs" />
     <Compile Include="Configuration\ImportConventionBuilder.cs" />
     <Compile Include="Configuration\ImportRegistry.cs" />
+    <Compile Include="Configuration\ITypeDefaultConvention.cs" />
     <Compile Include="Configuration\PartConventionBuilderExtensions.cs" />
     <Compile Include="Configuration\IPartRegistry.cs" />
     <Compile Include="Configuration\ITypeLoaderExtensions.cs" />

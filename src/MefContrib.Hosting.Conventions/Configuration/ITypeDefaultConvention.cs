@@ -26,6 +26,6 @@ namespace MefContrib.Hosting.Conventions.Configuration
 
     public interface ITypeDefaultConventionProvider
     {
-        IEnumerable<ITypeDefaultConvention> TypeDefaultConventions { get; set; }
+        IEnumerable<ITypeDefaultConvention> GetTypeDefaultConventions();
     }
 }

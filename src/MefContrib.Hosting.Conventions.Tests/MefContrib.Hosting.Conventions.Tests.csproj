@@ -100,6 +100,7 @@
     <Compile Include="PartConventionTests.cs" />
     <Compile Include="ReflectionServices.cs" />
     <Compile Include="RequiredMetadataItemTests.cs" />
+    <Compile Include="TypeDefaultConventionBuilderTests.cs" />
     <Compile Include="TypeExtensionsTests.cs" />
     <Compile Include="TypeLoaderTests.cs" />
   </ItemGroup>

@@ -16,11 +16,21 @@
         {
         }
 
-        IEnumerable<ITypeDefaultConvention> ITypeDefaultConventionProvider.TypeDefaultConventions { get; set; }
-
-        public void Defaults(Action<ITypeDefaultConventionConfigurator> configurer)
+        public void Defaults(Action<ITypeDefaultConventionConfigurator> closure)
         {
-            
+            var configurator =
+                new TypeDefaultConventionConfigurator();
+
+            closure.Invoke(configurator);
+
+            this.DefaultConventions = configurator.GetTypeDefaultConventions();
+        }
+
+        private IEnumerable<ITypeDefaultConvention> DefaultConventions { get; set; }
+
+        IEnumerable<ITypeDefaultConvention> ITypeDefaultConventionProvider.GetTypeDefaultConventions()
+        {
+            return this.DefaultConventions;
         }
 
         /// <summary>
@@ -43,8 +53,90 @@
         }
     }
 
-    public interface ITypeDefaultConventionConfigurator
+    public interface ITypeDefaultConventionConfigurator : IHideObjectMembers
     {
-        IEnumerable<ITypeDefaultConvention> GetTypeDefaultConventions();
+        ITypeDefaultConventionBuilder ForType<T>();
+
+        
+    }
+
+    public class TypeDefaultConventionConfigurator : ITypeDefaultConventionConfigurator
+    {
+        public TypeDefaultConventionConfigurator()
+        {
+        }
+
+        public ITypeDefaultConventionBuilder ForType<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ITypeDefaultConvention> GetTypeDefaultConventions()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public interface ITypeDefaultConventionBuilder : IHideObjectMembers
+    {
+        ITypeDefaultConventionBuilder ContractName(string name);
+
+        ITypeDefaultConventionBuilder ContractType<T>() where T : new();
+    }
+
+    public class TypedExpressionBuilder<T>
+        : ExpressionBuilder<T> where T : new()
+    {
+        public new T Build()
+        {
+            return (T)base.Build();
+        }
+    }
+
+    public class TypeDefaultConventionBuilder
+        : TypedExpressionBuilder<TypeDefaultConvention>, ITypeDefaultConventionBuilder
+    {
+        public TypeDefaultConventionBuilder(Type targetType)
+        {
+            if (targetType == null)
+            {
+                throw new ArgumentNullException("targetType", "The target type cannot be null.");
+            }
+
+            this.ProvideValueFor(x => x.TargetType, targetType);
+        }
+
+        public ITypeDefaultConventionBuilder ContractName(string name)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException("name", "The contract name cannot be null.");
+            }
+
+            if(name.Length == 0)
+            {
+                throw new ArgumentOutOfRangeException("name", "The lenght of the contract name cannot be zero.");
+            }
+
+            this.ProvideValueFor(x => x.ContractName, name);
+
+            return this;
+        }
+
+        public ITypeDefaultConventionBuilder ContractType<T>() where T : new()
+        {
+            this.ProvideValueFor(x => x.ContractType, typeof(T));
+
+            return this;
+        }
+    }
+
+    public class TypeDefaultConvention : ITypeDefaultConvention
+    {
+        public string ContractName { get; set; }
+
+        public Type ContractType { get; set; }
+
+        public Type TargetType { get; set; }
     }
 }
