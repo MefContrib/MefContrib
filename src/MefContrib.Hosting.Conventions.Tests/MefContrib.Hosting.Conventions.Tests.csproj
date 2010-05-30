@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Catch.cs" />
     <Compile Include="ContextSpecificationAssertions.cs" />
+    <Compile Include="DefaultContractService.cs" />
     <Compile Include="ConventionCatalogTests.cs" />
     <Compile Include="CSharpAssemblyFactory.cs" />
     <Compile Include="CSharpAssemblyFactoryTests.cs" />

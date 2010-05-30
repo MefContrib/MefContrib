@@ -1,7 +1,6 @@
 namespace MefContrib.Hosting.Conventions.Tests
 {
     using System;
-    using System.Linq;
     using MefContrib.Hosting.Conventions.Configuration;
     using NUnit.Framework;
 
@@ -23,7 +22,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 new TypeDefaultConventionBuilder(typeof(string));
 
             var convention =
-                builder.Build();
+                builder.GetConvention();
 
             convention.TargetType.ShouldBeOfType<string>();
         }
@@ -78,7 +77,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 .ContractName(contractName);
             
             var convention =
-                builder.Build();
+                builder.GetConvention();
 
             convention.ContractName.ShouldEqual(contractName);
         }
@@ -105,11 +104,43 @@ namespace MefContrib.Hosting.Conventions.Tests
             var builder =
                 new TypeDefaultConventionBuilder(typeof(string));
 
-            var convention = builder
-                .ContractType<int>()
-                .Build();
+            builder
+                .ContractType<int>();
+
+            var convention =
+                builder.GetConvention();
 
             convention.ContractType.ShouldBeOfType<int>();
         }
+
+        class TestRegistry : PartRegistry
+        {
+            public TestRegistry()
+            {
+                //Defaults(x => {
+                //    x.ForType<string>().ContractName("Foo").ContractType<int>();
+                //    x.ForType<IConventionPart>().ContractName("Builder");
+                //});
+
+                Part()
+                    .ForTypesMatching(x => true)
+                    .ImportConstructor()
+                    .MakeShared()
+                    .AddMetadata(new { Name = "Foo", Value = 10 });
+            }
+        }
+
+        [Test]
+        public void TargetName_should_TestExpectation()
+        {
+            var loader = 
+                new TypeLoader();
+            loader.AddTypes(() => typeof(TypeDefaultConventionBuilderTests).Assembly.GetExportedTypes());
+
+            var catalog =
+                new ConventionCatalog(new[] { new TestRegistry() }, loader);
+
+            var parts = catalog.Parts;
+        }   
     }
 }

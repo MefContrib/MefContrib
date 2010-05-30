@@ -79,9 +79,19 @@
 
     public interface ITypeDefaultConventionBuilder : IHideObjectMembers
     {
-        ITypeDefaultConventionBuilder ContractName(string name);
+        /// <summary>
+        /// Defines the contract name that will be used as the default contract name for the configured type.
+        /// </summary>
+        /// <param name="contractName">A <see cref="string"/> containing the name of the contract which should be used as the default contract name for the configured type.</param>
+        /// <returns>Returns a reference to the same <see cref="ImportConventionBuilder{TImportConvention}"/> instance as the method was called on.</returns>
+        ITypeDefaultConventionBuilder ContractName(string contractName);
 
-        ITypeDefaultConventionBuilder ContractType<T>() where T : new();
+        /// <summary>
+        /// Defines the contract type that will be added to the imports created by the convention.
+        /// </summary>
+        /// <typeparam name="TContractType">A <see cref="Type"/> that should be used as the contract type of the created imports.</typeparam>
+        /// <returns>Returns a reference to the same <see cref="ImportConventionBuilder{TImportConvention}"/> instance as the method was called on.</returns>
+        ITypeDefaultConventionBuilder ContractType<TContractType>() where TContractType : new();
     }
 
     public class TypedExpressionBuilder<T>
@@ -94,7 +104,7 @@
     }
 
     public class TypeDefaultConventionBuilder
-        : TypedExpressionBuilder<TypeDefaultConvention>, ITypeDefaultConventionBuilder
+        : ConventionBuilder<TypeDefaultConvention>, ITypeDefaultConventionBuilder
     {
         public TypeDefaultConventionBuilder(Type targetType)
         {
@@ -106,26 +116,26 @@
             this.ProvideValueFor(x => x.TargetType, targetType);
         }
 
-        public ITypeDefaultConventionBuilder ContractName(string name)
+        public ITypeDefaultConventionBuilder ContractName(string contractName)
         {
-            if (name == null)
+            if (contractName == null)
             {
-                throw new ArgumentNullException("name", "The contract name cannot be null.");
+                throw new ArgumentNullException("contractName", "The contract name cannot be null.");
             }
 
-            if(name.Length == 0)
+            if (contractName.Length == 0)
             {
-                throw new ArgumentOutOfRangeException("name", "The lenght of the contract name cannot be zero.");
+                throw new ArgumentOutOfRangeException("contractName", "The lenght of the contract name cannot be zero.");
             }
 
-            this.ProvideValueFor(x => x.ContractName, name);
+            this.ProvideValueFor(x => x.ContractName, contractName);
 
             return this;
         }
 
-        public ITypeDefaultConventionBuilder ContractType<T>() where T : new()
+        public ITypeDefaultConventionBuilder ContractType<TContractType>() where TContractType : new()
         {
-            this.ProvideValueFor(x => x.ContractType, typeof(T));
+            this.ProvideValueFor(x => x.ContractType, typeof(TContractType));
 
             return this;
         }
@@ -133,10 +143,22 @@
 
     public class TypeDefaultConvention : ITypeDefaultConvention
     {
+        /// <summary>
+        /// Gets or sets the name of the contract.
+        /// </summary>
+        /// <value>A <see cref="string"/> containing the name of the contract.</value>
         public string ContractName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the <see cref="Type"/> of the contract.
+        /// </summary>
+        /// <value>The <see cref="Type"/> of the contract.</value>
         public Type ContractType { get; set; }
 
+        /// <summary>
+        /// Gets or sets the <see cref="Type"/> that the convention applies to.
+        /// </summary>
+        /// <value>The <see cref="Type"/> that the convention applies to.</value>
         public Type TargetType { get; set; }
     }
 }

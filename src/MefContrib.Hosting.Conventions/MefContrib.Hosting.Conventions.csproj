@@ -103,6 +103,7 @@
     <Compile Include="MetadataItem.cs" />
     <Compile Include="PartConvention.cs" />
     <Compile Include="RequiredMetadataItem.cs" />
+    <Compile Include="IContractService.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="TypeLoader.cs" />
   </ItemGroup>
@@ -123,7 +124,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Spike\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
