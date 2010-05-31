@@ -53,12 +53,7 @@ namespace MefContrib.Hosting.Conventions
 
         public static Type GetActualType(this Type type)
         {
-            if (type.IsGenericType)
-            {
-                return type.GetGenericArguments()[0];
-            }
-
-            return type;
+            return type.IsGenericType ? type.GetGenericArguments()[0] : type;
         }
 
         public static ConstructorInfo GetGreediestConstructor(this Type type)
