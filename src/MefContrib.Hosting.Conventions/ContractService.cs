@@ -124,4 +124,14 @@
                 AttributedModelServices.GetTypeIdentity(importConvention.ContractType.Invoke(member));
         }
     }
+
+    public class DefaultContractService : ContractService
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultContractService"/> class.
+        /// </summary>
+        public DefaultContractService()
+        {
+        }
+    }
 }
