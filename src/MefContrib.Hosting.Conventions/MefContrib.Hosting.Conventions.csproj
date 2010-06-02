@@ -88,8 +88,10 @@
     <Compile Include="Configuration\ITypeLoaderExtensions.cs" />
     <Compile Include="Configuration\PartConventionBuilder.cs" />
     <Compile Include="Configuration\PartRegistry.cs" />
+    <Compile Include="ConventionContractService.cs" />
     <Compile Include="ConventionCatalog.cs" />
     <Compile Include="ConventionPart.cs" />
+    <Compile Include="DefaultConventionContractService.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="ExportConvention.cs" />
     <Compile Include="ExpressionExtensions.cs" />

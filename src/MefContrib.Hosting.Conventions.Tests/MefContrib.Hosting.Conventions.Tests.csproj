@@ -83,6 +83,7 @@
     <Compile Include="ConventionCatalogTests.cs" />
     <Compile Include="CSharpAssemblyFactory.cs" />
     <Compile Include="CSharpAssemblyFactoryTests.cs" />
+    <Compile Include="DefaultContractServiceTests.cs" />
     <Compile Include="ExportConventionBuilderTests.cs" />
     <Compile Include="ExportConventionTests.cs" />
     <Compile Include="FakeConventionRegistry.cs" />
