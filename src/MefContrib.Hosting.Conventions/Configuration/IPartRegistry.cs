@@ -5,6 +5,8 @@
     /// </summary>
     public interface IPartRegistry : IHideObjectMembers
     {
+        //IContractService ContractService { get; set; }
+
         /// <summary>
         /// Creates a convention builde for <see cref="PartConvention"/> conventions.
         /// </summary>

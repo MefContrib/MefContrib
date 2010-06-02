@@ -5,7 +5,7 @@
     using MefContrib.Hosting.Conventions.Configuration;
     using NUnit.Framework;
 
-    public class DefaultContractServiceTests
+    public class DefaultConventionContractServiceTests
     {
         [Test]
         public void DefaultConventions_property_should_not_be_null_on_new_instance()
