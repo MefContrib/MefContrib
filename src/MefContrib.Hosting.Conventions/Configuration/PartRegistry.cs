@@ -18,6 +18,18 @@
         }
 
         /// <summary>
+        /// Gets or sets the contract service used by the registry.
+        /// </summary>
+        /// <value>An <see cref="IContractService"/> instance.</value>
+        public IContractService ContractService { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type loader used to create parts out of the conventions in the registry.
+        /// </summary>
+        /// <value>An <see cref="ITypeLoader"/> instance.</value>
+        public ITypeLoader TypeLoader { get; set; }
+
+        /// <summary>
         /// Gets the conventions registered in the registry.
         /// </summary>
         /// <returns>An <see cref="IEnumerable{T}"/> instance containing <see cref="IPartConvention"/> instances.</returns>

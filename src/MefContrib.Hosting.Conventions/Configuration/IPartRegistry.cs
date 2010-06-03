@@ -8,7 +8,17 @@
     public interface IPartRegistry
         : IConventionRegistry<IPartConvention>, IHideObjectMembers
     {
-        //IContractService ContractService { get; set; }
+        /// <summary>
+        /// Gets or sets the contract service used by the registry.
+        /// </summary>
+        /// <value>An <see cref="IContractService"/> instance.</value>
+        IContractService ContractService { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type loader used to create parts out of the conventions in the registry.
+        /// </summary>
+        /// <value>An <see cref="ITypeLoader"/> instance.</value>
+        ITypeLoader TypeLoader { get; set; }
 
         /// <summary>
         /// Creates a convention builde for <see cref="PartConvention"/> conventions.
