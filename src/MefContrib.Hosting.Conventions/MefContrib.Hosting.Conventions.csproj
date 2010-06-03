@@ -72,7 +72,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Configuration\ConventionBuilder.cs" />
-    <Compile Include="Configuration\ConventionRegistry.cs" />
+    <Compile Include="Configuration\ExpressionBuilderFactory.cs" />
     <Compile Include="Configuration\ExportConventionBuilder.cs" />
     <Compile Include="Configuration\ExportRegistry.cs" />
     <Compile Include="Configuration\ExpressionBuilder.cs" />
@@ -88,6 +88,7 @@
     <Compile Include="Configuration\ITypeLoaderExtensions.cs" />
     <Compile Include="Configuration\PartConventionBuilder.cs" />
     <Compile Include="Configuration\PartRegistry.cs" />
+    <Compile Include="ContractService.cs" />
     <Compile Include="ConventionContractService.cs" />
     <Compile Include="ConventionCatalog.cs" />
     <Compile Include="ConventionPart.cs" />

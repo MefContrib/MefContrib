@@ -1,16 +1,28 @@
 ﻿namespace MefContrib.Hosting.Conventions.Configuration
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// A convention registry for types implementing the <see cref="IPartConvention"/> interface.
     /// </summary>
     public class ExportRegistry :
-        ConventionRegistry<IExportConvention>, IExportRegistry
+        ExpressionBuilderFactory<IExportConvention>, IExportRegistry
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportRegistry"/> class.
         /// </summary>
         public ExportRegistry()
         {
+        }
+
+        /// <summary>
+        /// Gets the conventions registered in the registry.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{T}"/> instance containing <see cref="IExportConvention"/> instances.</returns>
+        public IEnumerable<IExportConvention> GetConventions()
+        {
+            return this.BuildConventions();
         }
 
         /// <summary>

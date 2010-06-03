@@ -166,12 +166,6 @@ namespace MefContrib.Hosting.Conventions
         /// <returns>A <see cref="ComposablePartDefinition"/> instance.</returns>
         private static ComposablePartDefinition CreatePartDefinition(IPartConvention convention, Type type)
         {
-            var typeDefaultConventionProvider = convention as ITypeDefaultConventionProvider;
-            if (typeDefaultConventionProvider != null)
-            {
-                var fsfd = 10;
-            }
-
             return ReflectionModelServices.CreatePartDefinition(
                     new Lazy<Type>(() => type),
                     false,

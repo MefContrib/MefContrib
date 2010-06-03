@@ -14,6 +14,7 @@
         /// <param name="exportConvention">The <see cref="IExportConvention"/> that the contract name should be retreived for.</param>
         /// <param name="member">The <see cref="MemberInfo"/> that is being exported.</param>
         /// <returns>A <see cref="string"/> containing the contract name for the export.</returns>
+        /// <exception cref="ArgumentNullException">The value of the <paramref name="member"/> or <paramref name="exportConvention"/> parameter was <see langword="null"/>.</exception>
         public virtual string GetExportContractName(IExportConvention exportConvention, MemberInfo member)
         {
             if (exportConvention == null)
@@ -38,6 +39,7 @@
         /// <param name="exportConvention">The <see cref="IExportConvention"/> that the type identity should be retreived for.</param>
         /// <param name="member">The <see cref="MemberInfo"/> that is being exported.</param>
         /// <returns>A <see cref="string"/> containing the type identity for the export.</returns>
+        /// <exception cref="ArgumentNullException">The value of the <paramref name="member"/> or <paramref name="exportConvention"/> parameter was <see langword="null"/>.</exception>
         public virtual string GetExportTypeIdentity(IExportConvention exportConvention, MemberInfo member)
         {
             if (exportConvention == null)
@@ -61,6 +63,7 @@
         /// <param name="importConvention">The <see cref="IImportConvention"/> that the contract name should be retreived for.</param>
         /// <param name="member">The <see cref="MemberInfo"/> that is being imported.</param>
         /// <returns>A <see cref="string"/> containing the contract name for the import.</returns>
+        /// <exception cref="ArgumentNullException">The value of the <paramref name="member"/> or <paramref name="importConvention"/> parameter was <see langword="null"/>.</exception>
         public virtual string GetImportContractName(IImportConvention importConvention, MemberInfo member)
         {
             if (importConvention == null)
@@ -85,6 +88,7 @@
         /// <param name="importConvention">The <see cref="IImportConvention"/> that the type identity should be retreived for.</param>
         /// <param name="member">The <see cref="MemberInfo"/> that is being imported.</param>
         /// <returns>A <see cref="string"/> containing the type identity for the imported.</returns>
+        /// <exception cref="ArgumentNullException">The value of the <paramref name="member"/> or <paramref name="importConvention"/> parameter was <see langword="null"/>.</exception>
         public virtual string GetImportTypeIdentity(IImportConvention importConvention, MemberInfo member)
         {
             if (importConvention == null)

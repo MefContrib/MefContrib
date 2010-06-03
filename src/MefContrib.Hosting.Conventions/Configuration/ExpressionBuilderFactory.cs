@@ -7,35 +7,34 @@ namespace MefContrib.Hosting.Conventions.Configuration
     /// Provides the ability to register conventions. The convention instances will not be created until they are
     /// retrieved from the registry.
     /// </summary>
-    /// <typeparam name="TConventionInterface">The type of the convention that the registry can handle.</typeparam>
-    public class ConventionRegistry<TConventionInterface> 
-        : IConventionRegistry<TConventionInterface>
+    /// <typeparam name="TConvention">The type of the convention that the registry can handle.</typeparam>
+    public abstract class ExpressionBuilderFactory<TConvention>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConventionRegistry{TConvention}"/> class.
+        /// Initializes a new instance of the <see cref="ExpressionBuilderFactory{TConvention}"/> class.
         /// </summary>
-        public ConventionRegistry()
+        protected ExpressionBuilderFactory()
         {
-            this.ConventionBuilders = new List<IExpressionBuilder>();
+            this.ExpressionBuilders = new List<IExpressionBuilder>();
         }
 
         /// <summary>
         /// Gets or sets the convention builders.
         /// </summary>
         /// <value>A <see cref="IList{T}"/> instance, containing the convention builders.</value>
-        private List<IExpressionBuilder> ConventionBuilders { get; set; }
+        private List<IExpressionBuilder> ExpressionBuilders { get; set; }
 
         /// <summary>
-        /// Gets the conventions registered in the registry.
+        /// Builds the conventions defines in the expression builders.
         /// </summary>
-        /// <returns>An <see cref="IEnumerable{T}"/> instance containing convention of the type specified by the<typeparamref name="TConventionInterface"/> type parameter.</returns>
-        public IEnumerable<TConventionInterface> GetConventions()
+        /// <returns>An <see cref="IEnumerable{T}"/> instance containing convention of the type specified by the<typeparamref name="TConvention"/> type parameter.</returns>
+        protected IEnumerable<TConvention> BuildConventions()
         {
             var conventions =
-                from builder in this.ConventionBuilders
+                from builder in this.ExpressionBuilders
                 select builder.Build();
 
-            return conventions.Cast<TConventionInterface>();
+            return conventions.Cast<TConvention>();
         }
 
         /// <summary>
@@ -49,7 +48,7 @@ namespace MefContrib.Hosting.Conventions.Configuration
             var builder =
                 new TBuilder();
 
-            this.ConventionBuilders.Add(builder);
+            this.ExpressionBuilders.Add(builder);
 
             return builder;
         }

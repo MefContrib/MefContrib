@@ -2,12 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// A convention registry for types implementing the <see cref="IPartConvention"/> interface.
     /// </summary>
     public class PartRegistry :
-        ConventionRegistry<IPartConvention>, IPartRegistry, ITypeDefaultConventionProvider
+        ExpressionBuilderFactory<IPartConvention>, IPartRegistry
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PartRegistry"/> class.
@@ -16,21 +17,13 @@
         {
         }
 
-        public void Defaults(Action<ITypeDefaultConventionConfigurator> closure)
+        /// <summary>
+        /// Gets the conventions registered in the registry.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{T}"/> instance containing <see cref="IPartConvention"/> instances.</returns>
+        public IEnumerable<IPartConvention> GetConventions()
         {
-            var configurator =
-                new TypeDefaultConventionConfigurator();
-
-            closure.Invoke(configurator);
-
-            this.DefaultConventions = configurator.GetTypeDefaultConventions();
-        }
-
-        private IEnumerable<ITypeDefaultConvention> DefaultConventions { get; set; }
-
-        IEnumerable<ITypeDefaultConvention> ITypeDefaultConventionProvider.GetTypeDefaultConventions()
-        {
-            return this.DefaultConventions;
+            return this.BuildConventions();
         }
 
         /// <summary>
