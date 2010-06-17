@@ -1,5 +1,3 @@
-using MefContrib.Tests;
-
 namespace MefContrib.Hosting.Conventions.Tests
 {
     using System;
@@ -9,61 +7,44 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System.ComponentModel.Composition.Primitives;
     using System.ComponentModel.Composition.ReflectionModel;
     using System.Linq;
-    using System.Reflection;
     using MefContrib.Hosting.Conventions.Configuration;
-    using Moq;
     using NUnit.Framework;
 
     [TestFixture]
-    public class NewConventionCatalogTests
+    public class ConventionPartCreatorTests
     {
         [Test]
-        public void Ctor_should_throw_argumentnullexception_is_called_with_null_params_array_of_registries()
+        public void Ctor_should_throw_argumentnullexception_when_called_with_null_registry()
         {
             var exception =
-                Catch.Exception(() => new ConventionCatalog((IPartRegistry[])null));
+                Catch.Exception(() => new ConventionPartCreator(null));
 
             exception.ShouldBeOfType<ArgumentNullException>();
         }
 
         [Test]
-        public void Ctor_should_throw_argumentnullexception_is_called_with_null_enumerable_of_registries()
+        public void Ctor_should_persist_registry_parameter_to_registry_property()
         {
-            var exception =
-                Catch.Exception(() => new ConventionCatalog((IEnumerable<IPartRegistry>)null));
+            var registry =
+                new NonEmptyRegistry();
 
-            exception.ShouldBeOfType<ArgumentNullException>();
+            var creator =
+                new ConventionPartCreator(registry);
+
+            creator.Registry.ShouldBeSameAs(registry);
         }
 
         [Test]
-        public void Ctor_should_set_registry_property_when_called_with_params_array_of_registries()
+        public void CreateParts_should_return_empty_result_when_registry_has_no_type_loader_defined()
         {
-            var catalog =
-                new ConventionCatalog(new NonEmptyRegistry());
+            var partDefinitions = 
+                GetPartDefinitionsFromEmptyRegistry();
 
-            catalog.Registries.Count().ShouldEqual(1);
+            partDefinitions.Count().ShouldEqual(0);
         }
 
         [Test]
-        public void Ctor_should_set_registry_property_when_called_with_enumerable_of_registries()
-        {
-            var catalog =
-                new ConventionCatalog(new List<IPartRegistry> { new NonEmptyRegistry() });
-
-            catalog.Registries.Count().ShouldEqual(1);
-        }
-
-        [Test]
-        public void Parts_should_return_compsable_part_definitions_that_was_created_based_on_the_part_registries()
-        {
-            var catalog =
-                new ConventionCatalog(new NonEmptyRegistry());
-
-            catalog.Parts.Count().ShouldEqual(1);
-        }
-
-        [Test]
-        public void Parts_should_return_empty_result_when_registry_has_no_type_loader_defined()
+        public void CreateParts_should_return_empty_result_when_registry_has_no_part_definitions_defined()
         {
             var partDefinitions =
                 GetPartDefinitionsFromEmptyRegistry();
@@ -72,16 +53,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_return_empty_result_when_registry_has_no_part_definitions_defined()
-        {
-            var partDefinitions =
-                GetPartDefinitionsFromEmptyRegistry();
-
-            partDefinitions.Count().ShouldEqual(0);
-        }
-
-        [Test]
-        public void Parts_should_return_one_part_definition_per_type_matched_by_convention_conditions()
+        public void CreateParts_should_return_one_part_definition_per_type_matched_by_convention_conditions()
         {
             var partDefinitions =
                 GetPartDefinitionsFromNonEmptyRegistry();
@@ -102,19 +74,19 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_add_metadata_about_creation_policy_from_part_convention_to_part_definition()
+        public void CreateParts_should_add_metadata_about_creation_policy_from_part_convention_to_part_definition()
         {
-            var partDefinitions =
+            var partDefinitions = 
                 GetPartDefinitionsFromNonEmptyRegistry();
 
-            const string expectedMetadataKey =
+            const string expectedMetadataKey = 
                 CompositionConstants.PartCreationPolicyMetadataName;
 
             partDefinitions.First().Metadata.ContainsKey(expectedMetadataKey).ShouldBeTrue();
         }
 
         [Test]
-        public void Parts_should_add_metadata_from_part_convention_to_part_definition()
+        public void CreateParts_should_add_metadata_from_part_convention_to_part_definition()
         {
             var partDefinitions =
                 GetPartDefinitionsFromNonEmptyRegistry();
@@ -133,7 +105,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_create_correct_number_of_export_definitions_from_part_convention_on_part_definition()
+        public void CreateParts_should_create_correct_number_of_export_definitions_from_part_convention_on_part_definition()
         {
             var partDefinitions =
                 GetPartDefinitionsFromNonEmptyRegistry();
@@ -145,7 +117,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_set_contract_name_on_export_definition_to_contract_name_from_export_convention_using_contract_service_that_is_defined_on_registry()
+        public void CreateParts_should_set_contract_name_on_export_definition_to_contract_name_from_export_convention_using_contract_service_that_is_defined_on_registry()
         {
             var registry =
                 new NonEmptyRegistry();
@@ -155,7 +127,7 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             var partDefinitions =
                 GetPartDefinitionsFromNonEmptyRegistry();
-
+             
             var member =
                 ReflectionServices.GetProperty<FakePart>(x => x.Delegate);
 
@@ -169,7 +141,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_set_metadata_on_export_definition_from_metadata_on_export_convention()
+        public void CreateParts_should_set_metadata_on_export_definition_from_metadata_on_export_convention()
         {
             var registry =
                 new NonEmptyRegistry();
@@ -186,13 +158,13 @@ namespace MefContrib.Hosting.Conventions.Tests
             var inspectedExportDefinition =
                 partDefinitions.First().ExportDefinitions.First();
 
-            expectedMetadata.All(x =>
+            expectedMetadata.All(x => 
                 inspectedExportDefinition.Metadata.Contains(
                 new KeyValuePair<string, object>(x.Name, x.Value))).ShouldBeTrue();
         }
 
         [Test]
-        public void Parts_should_set_type_identity_metadata_on_export_definition_to_contract_type_from_export_convention_using_contract_service_that_is_defined_on_registry()
+        public void CreateParts_should_set_type_identity_metadata_on_export_definition_to_contract_type_from_export_convention_using_contract_service_that_is_defined_on_registry()
         {
             var registry =
                 new NonEmptyRegistry();
@@ -217,7 +189,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_create_correct_number_of_import_definitions_from_part_convention_on_part_definition()
+        public void CreateParts_should_create_correct_number_of_import_definitions_from_part_convention_on_part_definition()
         {
             var partDefinitions =
                 GetPartDefinitionsFromNonEmptyRegistry();
@@ -229,7 +201,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_set_cardinality_on_import_definition_to_zeroorone_when_import_convention_is_defined_for_non_collection_and_allow_default_values()
+        public void CreateParts_should_set_cardinality_on_import_definition_to_zeroorone_when_import_convention_is_defined_for_non_collection_and_allow_default_values()
         {
             var partDefinitions =
                 GetPartDefinitionsFromNonEmptyRegistry();
@@ -241,7 +213,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_set_cardinality_on_import_definition_to_exactlyone_when_import_convention_is_defined_for_non_collection_and_not_allow_default_values()
+        public void CreateParts_should_set_cardinality_on_import_definition_to_exactlyone_when_import_convention_is_defined_for_non_collection_and_not_allow_default_values()
         {
             var partDefinitions =
                 GetPartDefinitionsFromNonEmptyRegistry();
@@ -253,7 +225,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_set_cardinality_on_import_definition_to_zeroormore_when_import_convention_is_for_collection()
+        public void CreateParts_should_set_cardinality_on_import_definition_to_zeroormore_when_import_convention_is_for_collection()
         {
             var partDefinitions =
                 GetPartDefinitionsFromNonEmptyRegistry();
@@ -265,7 +237,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_set_contract_name_on_import_definition_to_contract_name_from_import_convention_using_contract_service_that_is_defined_on_registry()
+        public void CreateParts_should_set_contract_name_on_import_definition_to_contract_name_from_import_convention_using_contract_service_that_is_defined_on_registry()
         {
             var registry =
                 new NonEmptyRegistry();
@@ -289,7 +261,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_set_type_identity_on_import_deinition_to_contract_type_from_import_convention()
+        public void CreateParts_should_set_type_identity_on_import_deinition_to_contract_type_from_import_convention()
         {
             var registry =
                 new NonEmptyRegistry();
@@ -313,7 +285,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_set_required_metadata_on_import_definition_to_required_metadata_on_import_convention()
+        public void CreateParts_should_set_required_metadata_on_import_definition_to_required_metadata_on_import_convention()
         {
             var registry =
                 new NonEmptyRegistry();
@@ -326,7 +298,7 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             var expectedRequiredMetadata =
                 conventions.First().Imports.First().RequiredMetadata;
-
+             
             var inspectedImportDefinition =
                 partDefinitions.First().ImportDefinitions.Cast<ContractBasedImportDefinition>().First();
 
@@ -335,7 +307,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_set_isrecomposable_on_import_definition_to_recomposable_on_import_definition()
+        public void CreateParts_should_set_isrecomposable_on_import_definition_to_recomposable_on_import_definition()
         {
             var partDefinitions =
                 GetPartDefinitionsFromNonEmptyRegistry();
@@ -347,7 +319,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_return_same_number_import_definitions_as_parameters_when_called_with_constructor()
+        public void CreateParts_should_return_same_number_import_definitions_as_parameters_when_called_with_constructor()
         {
             var partDefinitions =
                 GetPartDefinitionsFromNonEmptyRegistry();
@@ -359,7 +331,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_set_contract_name_on_import_deinfintion_to_contract_name_of_parameter_when_called_with_constructor()
+        public void CreateParts_should_set_contract_name_on_import_deinfintion_to_contract_name_of_parameter_when_called_with_constructor()
         {
             var registry =
                 new NonEmptyRegistry();
@@ -383,7 +355,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_set_type_identity_on_import_deinfintion_to_contract_type_of_parameter_when_called_with_constructor()
+        public void CreateParts_should_set_type_identity_on_import_deinfintion_to_contract_type_of_parameter_when_called_with_constructor()
         {
             var registry =
                 new NonEmptyRegistry();
@@ -407,7 +379,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_not_set_required_metadata_on_import_convention_when_called_with_constructor_info()
+        public void CreateParts_should_not_set_required_metadata_on_import_convention_when_called_with_constructor_info()
         {
             var partDefinitions =
                 GetPartDefinitionsFromNonEmptyRegistry();
@@ -419,7 +391,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_set_cardinality_on_import_defintion_to_exaclyone_when_import_convention_not_is_for_collection_and_called_with_constructor_info()
+        public void CreateParts_should_set_cardinality_on_import_defintion_to_exaclyone_when_import_convention_not_is_for_collection_and_called_with_constructor_info()
         {
             var partDefinitions =
                 GetPartDefinitionsFromNonEmptyRegistry();
@@ -431,7 +403,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void Parts_should_set_cardinality_on_import_defintion_to_zeroormore_when_import_convention_not_is_for_collection_and_called_with_constructor_info()
+        public void CreateParts_should_set_cardinality_on_import_defintion_to_zeroormore_when_import_convention_not_is_for_collection_and_called_with_constructor_info()
         {
             var partDefinitions =
                 GetPartDefinitionsFromNonEmptyRegistry();
@@ -447,10 +419,10 @@ namespace MefContrib.Hosting.Conventions.Tests
             var registry =
                 new EmptyRegistry();
 
-            var catalog =
-                new ConventionCatalog(registry);
+            var creator =
+                new ConventionPartCreator(registry);
 
-            return catalog.Parts;
+            return creator.CreateParts();
         }
 
         private static IEnumerable<ComposablePartDefinition> GetPartDefinitionsFromNonEmptyRegistry()
@@ -458,10 +430,55 @@ namespace MefContrib.Hosting.Conventions.Tests
             var registry =
                 new NonEmptyRegistry();
 
-            var catalog =
-                new ConventionCatalog(registry);
+            var creator =
+                new ConventionPartCreator(registry);
 
-            return catalog.Parts;
+            return creator.CreateParts();
+        }
+    }
+
+    public class EmptyRegistry : PartRegistry
+    {
+    }
+
+    public class NonEmptyRegistry : PartRegistry
+    {
+        public NonEmptyRegistry()
+        {
+            Part()
+                .ForTypesMatching(x => x.Equals(typeof(FakePart)))
+                .AddMetadata(new { Foo = "Bar" })
+                .MakeShared()
+                .ImportConstructor()
+                .Exports(x =>
+                {
+                    x.Export()
+                        .Members(m => new[] { ReflectionServices.GetProperty<FakePart>(z => z.Delegate) })
+                        .AddMetadata(new { Name = "Delegate" });
+                    x.Export()
+                        .Members(m => new[] { ReflectionServices.GetProperty<FakePart>(z => z.Name) })
+                        .AddMetadata(new { Name = "Name" });
+                })
+                .Imports(x =>
+                {
+                    x.Import()
+                        .Members(m => new[] { ReflectionServices.GetProperty<FakePart>(z => z.Delegate) })
+                        .RequireMetadata<string>("Name")
+                        .AllowDefaultValue()
+                        .Recomposable();
+                    x.Import()
+                        .Members(m => new[] { ReflectionServices.GetProperty<FakePart>(z => z.Name) })
+                        .RequireMetadata<string>("Description");
+                    x.Import()
+                        .Members(m => new[] { ReflectionServices.GetProperty<FakePart>(z => z.Values) });
+                });
+
+            Part()
+                .ForTypesMatching(x => false);
+
+            this.ContractService = new DefaultConventionContractService();
+            this.TypeLoader = new TypeLoader();
+            this.TypeLoader.AddTypes(() => new[] { typeof(FakePart) });
         }
     }
 }

@@ -18,7 +18,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             var conventions =
                 registry.GetConventions();
 
-            conventions.Count().ShouldEqual(1);
+            conventions.Count().ShouldEqual(3);
         }
 
         //[Fact(Skip = "Integration test")]

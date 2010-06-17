@@ -2,7 +2,6 @@ using MefContrib.Tests;
 
 namespace MefContrib.Hosting.Conventions.Tests.Integration
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
@@ -20,10 +19,9 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
         {
             var loader =
                 new TypeLoader();
-            loader.AddTypes(() => Assembly.GetExecutingAssembly().GetExportedTypes());
 
             var catalog =
-                new ConventionCatalog(new[] { new CtorRegistry() }, loader);
+                new ConventionCatalog(new CtorRegistry());
 
             var instance =
                 new ConventionPart<InjectedHost>();
@@ -65,6 +63,9 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
                 .ForTypesMatching(x => x.GetInterfaces().Contains(typeof(IWidget)))
                 .ExportTypeAs<IWidget>()
                 .MakeShared();
+
+            this.TypeLoader = new TypeLoader();
+            this.TypeLoader.AddTypes(() => Assembly.GetExecutingAssembly().GetExportedTypes());
         }
     }
 

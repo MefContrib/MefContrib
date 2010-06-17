@@ -7,6 +7,8 @@
     {
         public FakeConventionRegistry()
         {
+            this.TypeLoader = new TypeLoader();
+
             Part<PartConvention>()
                 .ForTypesMatching(x => true)
                 .MakeNonShared()
@@ -27,6 +29,12 @@
                         ReflectionServices.GetProperty<IExportConvention>(z => z.ContractName),
                         ReflectionServices.GetProperty<IExportConvention>(z => z.ContractType) 
                     }));
+
+            Part<PartConvention>()
+                .ForTypesMatching(x => x.Equals(typeof(FakePart)));
+
+            Part<PartConvention>()
+                .ForTypesMatching(x => false);
         }
     }
 }

@@ -60,10 +60,8 @@ namespace MefContrib.Hosting.Conventions.Configuration
 
         private static void SetCollectionValue(MemberInfo member, object instance, List<object> value)
         {
-            var bindingFlags =
-                BindingFlags.Public |
-                BindingFlags.Instance |
-                BindingFlags.InvokeMethod;
+            const BindingFlags bindingFlags =
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
 
             object collection = null;
 

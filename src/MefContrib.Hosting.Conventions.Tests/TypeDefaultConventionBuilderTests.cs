@@ -85,8 +85,6 @@ namespace MefContrib.Hosting.Conventions.Tests
         [Test]
         public void ContractType_should_return_reference_to_itself()
         {
-            const string contractName = "Contract";
-
             var builder =
                 new TypeDefaultConventionBuilder(typeof(string));
 
@@ -99,8 +97,6 @@ namespace MefContrib.Hosting.Conventions.Tests
         [Test]
         public void ContractType_should_persist_type_in_contract_type_property()
         {
-            const string contractName = "Contract";
-
             var builder =
                 new TypeDefaultConventionBuilder(typeof(string));
 
@@ -117,11 +113,6 @@ namespace MefContrib.Hosting.Conventions.Tests
         {
             public TestRegistry()
             {
-                //Defaults(x => {
-                //    x.ForType<string>().ContractName("Foo").ContractType<int>();
-                //    x.ForType<IConventionPart>().ContractName("Builder");
-                //});
-
                 Part()
                     .ForTypesMatching(x => true)
                     .ImportConstructor()
@@ -129,18 +120,5 @@ namespace MefContrib.Hosting.Conventions.Tests
                     .AddMetadata(new { Name = "Foo", Value = 10 });
             }
         }
-
-        [Test]
-        public void TargetName_should_TestExpectation()
-        {
-            var loader = 
-                new TypeLoader();
-            loader.AddTypes(() => typeof(TypeDefaultConventionBuilderTests).Assembly.GetExportedTypes());
-
-            var catalog =
-                new ConventionCatalog(new[] { new TestRegistry() }, loader);
-
-            var parts = catalog.Parts;
-        }   
     }
 }

@@ -16,12 +16,10 @@ namespace MefContrib.Hosting.Conventions.Tests
 
         public static void ShouldContainType<T>(this IList collection)
         {
-            var selection =
-                from c in collection.Cast<object>()
-                where c.GetType().IsAssignableFrom(typeof(T))
-                select c;
+            var found =
+                collection.Contains(typeof(T));
 
-            Assert.True(selection.Count() > 0);
+            Assert.True(found);
         }
 
         public static void ShouldHaveCount<T>(this IList<T> list, int expected)

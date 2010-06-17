@@ -60,7 +60,7 @@ namespace MefContrib.Hosting.Conventions
         {
             var constructor = type
                 .GetConstructors(BindingFlags.Instance | BindingFlags.Public)
-                .OrderByDescending(x => x.GetParameters())
+                .OrderByDescending(x => x.GetParameters().Count())
                 .FirstOrDefault();
 
             return constructor;

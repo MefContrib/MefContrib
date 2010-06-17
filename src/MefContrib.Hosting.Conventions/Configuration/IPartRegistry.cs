@@ -1,12 +1,10 @@
 ﻿namespace MefContrib.Hosting.Conventions.Configuration
 {
-    using System;
-
     /// <summary>
     /// Defines the functionality of a convention registry for conventions implementing the <see cref="IPartConvention"/> interface.
     /// </summary>
     public interface IPartRegistry
-        : IConventionRegistry<IPartConvention>, IHideObjectMembers
+        : IConventionRegistry<IPartConvention>
     {
         /// <summary>
         /// Gets or sets the contract service used by the registry.

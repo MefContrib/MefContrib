@@ -16,38 +16,30 @@ namespace MefContrib.Hosting.Conventions
     public class ConventionCatalog : ComposablePartCatalog
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConventionCatalog"/> class, using the
-        /// provided part convention registries and type loader.
+        /// Initializes a new instance of the <see cref="ConventionCatalog"/> class, using the provided array part registries.
         /// </summary>
-        /// <param name="registries">An <see cref="IEnumerable{T}"/> instance, containing part convention registries.</param>
-        /// <param name="typeLoader">An <see cref="ITypeLoader"/> instance.</param>
-        public ConventionCatalog(IEnumerable<IConventionRegistry<IPartConvention>> registries, ITypeLoader typeLoader)
-            : this(registries.SelectMany(x => x.GetConventions()), typeLoader)
+        /// <param name="registries">An array of <see cref="IPartRegistry"/> instance.</param>
+        public ConventionCatalog(params IPartRegistry[] registries) 
+            : this(registries.ToList())
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConventionCatalog"/> class, using the
-        /// provided part conventions and type loader.
+        /// Initializes a new instance of the <see cref="ConventionCatalog"/> class, using the providedenumerable of part registries.
         /// </summary>
-        /// <param name="conventions">An <see cref="IEnumerable{T}"/> instance, containing part conventions.</param>
-        /// <param name="typeLoader">An <see cref="ITypeLoader"/> instance.</param>
-        /// <exception cref="ArgumentNullException">The <paramref name="conventions"/> or <paramref name="typeLoader"/> parameter was null.</exception>
-        public ConventionCatalog(IEnumerable<IPartConvention> conventions, ITypeLoader typeLoader)
+        /// <param name="registries">An <see cref="IEnumerable{T}"/> instance, containing <see cref="IPartRegistry"/> instances.</param>
+        /// <exception cref="ArgumentNullException">The <paramref name="registries"/> parameter was <see langword="null" />.</exception>
+        public ConventionCatalog(IEnumerable<IPartRegistry> registries)
         {
-            if (conventions == null)
+            if (registries == null)
             {
-                throw new ArgumentNullException("conventions", "The conventions cannot be null.");
+                throw new ArgumentNullException("registries", "The registries parameter cannot be null.");
             }
 
-            if (typeLoader == null)
-            {
-                throw new ArgumentNullException("typeLoader", "The type loader cannot be null.");
-            }
-
-            this.Conventions = conventions;
-            this.TypeLoader = typeLoader;
+            this.Registries = registries;
         }
+
+        public IEnumerable<IPartRegistry> Registries { get; private set; }
 
         /// <summary>
         /// Gets the part definitions of the catalog.
@@ -57,254 +49,18 @@ namespace MefContrib.Hosting.Conventions
         {
             get { return this.CreateParts().AsQueryable(); }
         }
-
-        /// <summary>
-        /// Gets the <see cref="IPartConvention"/> instancs that has been registered with the catalog.
-        /// </summary>
-        /// <value>An <see cref="IEnumerable{T}"/> instance, containing <see cref="IPartConvention"/> objects.</value>
-        public IEnumerable<IPartConvention> Conventions { get; private set; }
-
-        /// <summary>
-        /// Get the <see cref="ITypeLoader"/> instance that has been registered with the catalog.
-        /// </summary>
-        /// <value>An <see cref="ITypeLoader"/> instance.</value>
-        public ITypeLoader TypeLoader { get; private set; }
-
-        /// <summary>
-        /// Creates <see cref="ExportDefinition"/> instance from the provided <see cref="IExportConvention"/> instances and type.
-        /// </summary>
-        /// <param name="exportConventions">An <see cref="IEnumerable{T}"/> of <see cref="IExportConvention"/> instances that should be used to create the <see cref="ExportDefinition"/> instances.</param>
-        /// <param name="type">The <see cref="Type"/> for which the <see cref="ExportDefinition"/> instances should be created.</param>
-        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ExportDefinition"/> instances.</returns>
-        private static IEnumerable<ExportDefinition> CreateExportDefinitions(IEnumerable<IExportConvention> exportConventions, Type type)
-        {
-            var exportDefinitionsFromConvention =
-                from exportConvention in exportConventions
-                from member in exportConvention.Members.Invoke(type)
-                select ReflectionModelServices.CreateExportDefinition(
-                    member.ToLazyMemberInfo(),
-                    GetExportContractName(exportConvention, member),
-                    new Lazy<IDictionary<string, object>>(() => GetExportDefinitionMetadata(exportConvention, member)),
-                    null);
-
-            return exportDefinitionsFromConvention.ToList();
-        }
-
-        /// <summary>
-        /// Creates <see cref="ImportDefinition"/> instance from the provided <see cref="IImportConvention"/> instances and type.
-        /// </summary>
-        /// <param name="importConventions">An <see cref="IEnumerable{T}"/> of <see cref="IImportConvention"/> instances that should be used to create the <see cref="ImportDefinition"/> instances.</param>
-        /// <param name="type">The <see cref="Type"/> for which the <see cref="ImportDefinition"/> instances should be created.</param>
-        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ImportDefinition"/> instances.</returns>
-        private static IEnumerable<ImportDefinition> CreateImportDefinitions(IEnumerable<IImportConvention> importConventions, Type type)
-        {
-            var importDefinitionsFromConvention = new List<ImportDefinition>();
-
-            foreach (var importConvention in importConventions)
-            {
-                foreach (var member in importConvention.Members.Invoke(type))
-                {
-                    if (member is ConstructorInfo)
-                    {
-                        importDefinitionsFromConvention.AddRange(((ConstructorInfo)member).GetParameters().Select(parameter => GetImportParameterDefinition(importConvention, parameter)));
-                    }
-                    else
-                    {
-                        importDefinitionsFromConvention.Add(GetImportDefinition(importConvention, member));
-                    }
-                }    
-            }
-
-            return importDefinitionsFromConvention.ToList();
-        }
-
-        /// <summary>
-        /// Gets an <see cref="ImportDefinition"/> for a <see cref="ParameterInfo"/> instance using the provided <see cref="IImportConvention"/> instance.
-        /// </summary>
-        /// <param name="importConvention"><see cref="IImportConvention"/> instances that should be used to create the <see cref="ImportDefinition"/> instances.</param>
-        /// <param name="parameter">The <see cref="ParameterInfo"/> for which the <see cref="ImportDefinition"/> instances should be created.</param>
-        /// <returns>An <see cref="ImportDefinition"/> instance.</returns>
-        private static ImportDefinition GetImportParameterDefinition(IImportConvention importConvention, ParameterInfo parameter)
-        {
-            var actualType =
-                parameter.ParameterType.GetActualType();
-
-            return ReflectionModelServices.CreateImportDefinition(
-                new Lazy<ParameterInfo>(() => parameter),
-                AttributedModelServices.GetContractName(actualType),
-                AttributedModelServices.GetTypeIdentity(actualType),
-                null,
-                parameter.ParameterType.GetCardinality(importConvention.AllowDefaultValue),
-                importConvention.CreationPolicy,
-                null);
-        }
-
-        /// <summary>
-        /// Gets an <see cref="ImportDefinition"/> for a <see cref="MemberInfo"/> instance using the provided <see cref="IImportConvention"/> instance.
-        /// </summary>
-        /// <param name="importConvention"><see cref="IImportConvention"/> instances that should be used to create the <see cref="ImportDefinition"/> instances.</param>
-        /// <param name="member">The <see cref="MemberInfo"/> for which the <see cref="ImportDefinition"/> instances should be created.</param>
-        /// <returns>An <see cref="ImportDefinition"/> instance.</returns>
-        private static ImportDefinition GetImportDefinition(IImportConvention importConvention, MemberInfo member)
-        {
-            return ReflectionModelServices.CreateImportDefinition(
-                member.ToLazyMemberInfo(),
-                GetImportContractName(importConvention, member),
-                GetImportTypeIdentity(importConvention, member),
-                importConvention.RequiredMetadata.Select(x => new KeyValuePair<string, Type>(x.Name, x.Type)),
-                member.GetCardinality(importConvention.AllowDefaultValue),
-                importConvention.Recomposable,
-                importConvention.CreationPolicy,
-                null);
-        }
-
-        /// <summary>
-        /// Create a <see cref="ComposablePartDefinition"/> for a specified type using the provided <see cref="IPartConvention"/>.
-        /// </summary>
-        /// <param name="convention">The <see cref="IPartConvention"/> instance which is used to create the <see cref="ComposablePartDefinition"/>.</param>
-        /// <param name="type">The <see cref="Type"/> for which the <see cref="ComposablePartDefinition"/> should be created.</param>
-        /// <returns>A <see cref="ComposablePartDefinition"/> instance.</returns>
-        private static ComposablePartDefinition CreatePartDefinition(IPartConvention convention, Type type)
-        {
-            return ReflectionModelServices.CreatePartDefinition(
-                    new Lazy<Type>(() => type),
-                    false,
-                    new Lazy<IEnumerable<ImportDefinition>>(() => CreateImportDefinitions(convention.Imports, type)),
-                    new Lazy<IEnumerable<ExportDefinition>>(() => CreateExportDefinitions(convention.Exports, type)),
-                    new Lazy<IDictionary<string, object>>(() => GetPartDefinitionMetadata(convention)),
-                    null);
-        }
-
+       
         /// <summary>
         /// Creates <see cref="ComposablePartDefinition"/> instances from the <see cref="IPartConvention"/> and types.
         /// </summary>
         /// <returns>An <see cref="IEnumerable{T}"/>, containing <see cref="ComposablePartDefinition"/> instances.</returns>
         private IEnumerable<ComposablePartDefinition> CreateParts()
         {
-            var definitionsFromConventions =
-                from convention in this.Conventions
-                from type in this.TypeLoader.GetTypes(convention.Condition)
-                select CreatePartDefinition(convention, type);
+            var definitionsFromRegistries = 
+                this.Registries.SelectMany(x =>
+                    (new ConventionPartCreator(x)).CreateParts());
 
-            return definitionsFromConventions.ToList();
-        }
-
-        /// <summary>
-        /// Gets contract name for the provided <see cref="IExportConvention"/>.
-        /// </summary>
-        /// <param name="exportConvention">The <see cref="IExportConvention"/> that the contract name should be retreived for.</param>
-        /// <param name="member">The <see cref="MemberInfo"/> that is being exported.</param>
-        /// <returns>A <see cref="string"/> containing the contract name for the export.</returns>
-        private static string GetExportContractName(IExportConvention exportConvention, MemberInfo member)
-        {
-            if (exportConvention.ContractName != null)
-            {
-                return exportConvention.ContractName.Invoke(member);
-            }
-
-            if (exportConvention.ContractType != null)
-            {
-                return AttributedModelServices.GetContractName(exportConvention.ContractType.Invoke(member));
-            }
-
-            return member.MemberType == MemberTypes.Method ?
-                AttributedModelServices.GetTypeIdentity((MethodInfo)member) :
-                AttributedModelServices.GetContractName(member.GetContractMember());
-        }
-
-        /// <summary>
-        /// Gets the metadata for the provided <see cref="IExportConvention"/>.
-        /// </summary>
-        /// <param name="exportConvention">The <see cref="IExportConvention"/> that the metadata should be retrieved for.</param>
-        /// <param name="member">The <see cref="MemberInfo"/> that is being exported.</param>
-        /// <returns>An <see cref="IDictionary{TKey,TValue}"/> containing the metadata for the export.</returns>
-        private static IDictionary<string, object> GetExportDefinitionMetadata(IExportConvention exportConvention, MemberInfo member)
-        {
-            var exportDefinitionMetadata =
-                exportConvention.Metadata.ToMetadataDictionary();
-
-            exportDefinitionMetadata.Add(
-                CompositionConstants.ExportTypeIdentityMetadataName,
-                GetExportTypeIdentity(exportConvention, member));
-
-            return exportDefinitionMetadata;
-        }
-
-        /// <summary>
-        /// Gets type identity for the provided <see cref="IExportConvention"/>.
-        /// </summary>
-        /// <param name="exportConvention">The <see cref="IExportConvention"/> that the type identity should be retreived for.</param>
-        /// <param name="member">The <see cref="MemberInfo"/> that is being exported.</param>
-        /// <returns>A <see cref="string"/> containing the type identity for the export.</returns>
-        private static string GetExportTypeIdentity(IExportConvention exportConvention, MemberInfo member)
-        {
-            if (exportConvention.ContractType != null)
-            {
-                return AttributedModelServices.GetTypeIdentity(exportConvention.ContractType.Invoke(member));
-            }
-
-            return member.MemberType.Equals(MemberTypes.Method) ? 
-                AttributedModelServices.GetTypeIdentity((MethodInfo)member) : 
-                AttributedModelServices.GetTypeIdentity(member.GetContractMember());
-        }
-
-        /// <summary>
-        /// Gets contract name for the provided <see cref="IImportConvention"/>.
-        /// </summary>
-        /// <param name="importConvention">The <see cref="IImportConvention"/> that the contract name should be retreived for.</param>
-        /// <param name="member">The <see cref="MemberInfo"/> that is being imported.</param>
-        /// <returns>A <see cref="string"/> containing the contract name for the import.</returns>
-        private static string GetImportContractName(IImportConvention importConvention, MemberInfo member)
-        {
-            if (importConvention.ContractName != null)
-            {
-                return importConvention.ContractName.Invoke(member);
-            }
-
-            return importConvention.ContractType != null ?
-                AttributedModelServices.GetTypeIdentity(importConvention.ContractType.Invoke(member)) :
-                AttributedModelServices.GetTypeIdentity(member.GetContractMember());
-        }
-
-        /// <summary>
-        /// Gets type identity for the provided <see cref="IImportConvention"/>.
-        /// </summary>
-        /// <param name="importConvention">The <see cref="IImportConvention"/> that the type identity should be retreived for.</param>
-        /// <param name="member">The <see cref="MemberInfo"/> that is being imported.</param>
-        /// <returns>A <see cref="string"/> containing the type identity for the imported.</returns>
-        private static string GetImportTypeIdentity(IImportConvention importConvention, MemberInfo member)
-        {
-            if (importConvention.ContractType == null)
-            {
-                return AttributedModelServices.GetTypeIdentity(member.GetContractMember());
-            }
-
-            if (importConvention.ContractType.Invoke(member).Equals(typeof(object)))
-            {
-                return null;   
-            }
-
-            var memberType =
-                member.GetContractMember();
-
-            return memberType.IsSubclassOf(typeof(Delegate)) ? 
-                AttributedModelServices.GetTypeIdentity(memberType.GetMethod("Invoke")) :
-                AttributedModelServices.GetTypeIdentity(importConvention.ContractType.Invoke(member));
-        }
-
-        /// <summary>
-        /// Gets the metadata for the provided <see cref="IPartConvention"/>.
-        /// </summary>
-        /// <param name="partConvention">The <see cref="IPartConvention"/> that the metadata should be retrieved for.</param>
-        /// <returns>An <see cref="IDictionary{TKey,TValue}"/> containing the metadata for the part.</returns>
-        private static IDictionary<string, object> GetPartDefinitionMetadata(IPartConvention partConvention)
-        {
-            var partDefinitionMetadata =
-                partConvention.Metadata.ToMetadataDictionary();
-
-            partDefinitionMetadata.Add(CompositionConstants.PartCreationPolicyMetadataName, partConvention.CreationPolicy);
-
-            return partDefinitionMetadata;
+            return definitionsFromRegistries;
         }
     }
 }

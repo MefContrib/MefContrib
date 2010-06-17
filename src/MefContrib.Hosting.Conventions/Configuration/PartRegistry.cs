@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// A convention registry for types implementing the <see cref="IPartConvention"/> interface.
@@ -15,6 +14,7 @@
         /// </summary>
         public PartRegistry()
         {
+            this.ContractService = new DefaultConventionContractService();
         }
 
         /// <summary>
