@@ -108,17 +108,5 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             convention.ContractType.ShouldBeOfType<int>();
         }
-
-        class TestRegistry : PartRegistry
-        {
-            public TestRegistry()
-            {
-                Part()
-                    .ForTypesMatching(x => true)
-                    .ImportConstructor()
-                    .MakeShared()
-                    .AddMetadata(new { Name = "Foo", Value = 10 });
-            }
-        }
     }
 }

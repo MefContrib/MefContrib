@@ -85,7 +85,6 @@
     <Compile Include="Configuration\ITypeDefaultConvention.cs" />
     <Compile Include="Configuration\PartConventionBuilderExtensions.cs" />
     <Compile Include="Configuration\IPartRegistry.cs" />
-    <Compile Include="Configuration\ITypeLoaderExtensions.cs" />
     <Compile Include="Configuration\PartConventionBuilder.cs" />
     <Compile Include="Configuration\PartRegistry.cs" />
     <Compile Include="ContractService.cs" />

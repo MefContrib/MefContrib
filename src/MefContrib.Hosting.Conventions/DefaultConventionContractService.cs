@@ -20,14 +20,32 @@
         /// </summary>
         public DefaultConventionContractService()
         {
-            this.DefaultConventions = new List<TypeDefaultConvention>();
+            this.DefaultConventions = new List<ITypeDefaultConvention>();
         }
 
         /// <summary>
         /// Gets or sets the default conventions.
         /// </summary>
         /// <value>An <see cref="IList{T}"/> instance, containing <see cref="TypeDefaultConvention"/> instances.</value>
-        public IList<TypeDefaultConvention> DefaultConventions { get; private set; }
+        public List<ITypeDefaultConvention> DefaultConventions { get; set; }
+
+        public void Configure(Action<ITypeDefaultConventionConfigurator> closure)
+        {
+            if (closure == null)
+            {
+                throw new ArgumentNullException("closure", "The closure cannot be null.");
+            }
+
+            var configurator =
+                new TypeDefaultConventionConfigurator();
+
+            closure(configurator);
+
+            var conventions =
+                configurator.GetDefaultConventions();
+
+            this.DefaultConventions.AddRange(conventions);
+        }
 
         /// <summary>
         /// Gets contract name for the provided <see cref="IExportConvention"/>.

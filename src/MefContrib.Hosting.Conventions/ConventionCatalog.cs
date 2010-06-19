@@ -2,12 +2,8 @@ namespace MefContrib.Hosting.Conventions
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Composition;
-    using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
-    using System.ComponentModel.Composition.ReflectionModel;
     using System.Linq;
-    using System.Reflection;
     using MefContrib.Hosting.Conventions.Configuration;
 
     /// <summary>
@@ -18,8 +14,8 @@ namespace MefContrib.Hosting.Conventions
         /// <summary>
         /// Initializes a new instance of the <see cref="ConventionCatalog"/> class, using the provided array part registries.
         /// </summary>
-        /// <param name="registries">An array of <see cref="IPartRegistry"/> instance.</param>
-        public ConventionCatalog(params IPartRegistry[] registries) 
+        /// <param name="registries">An array of <see cref="IPartRegistry{T}"/> instance.</param>
+        public ConventionCatalog(params IPartRegistry<IContractService>[] registries) 
             : this(registries.ToList())
         {
         }
@@ -29,7 +25,7 @@ namespace MefContrib.Hosting.Conventions
         /// </summary>
         /// <param name="registries">An <see cref="IEnumerable{T}"/> instance, containing <see cref="IPartRegistry"/> instances.</param>
         /// <exception cref="ArgumentNullException">The <paramref name="registries"/> parameter was <see langword="null" />.</exception>
-        public ConventionCatalog(IEnumerable<IPartRegistry> registries)
+        public ConventionCatalog(IEnumerable<IPartRegistry<IContractService>> registries)
         {
             if (registries == null)
             {
@@ -39,7 +35,7 @@ namespace MefContrib.Hosting.Conventions
             this.Registries = registries;
         }
 
-        public IEnumerable<IPartRegistry> Registries { get; private set; }
+        public IEnumerable<IPartRegistry<IContractService>> Registries { get; private set; }
 
         /// <summary>
         /// Gets the part definitions of the catalog.

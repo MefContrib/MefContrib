@@ -724,6 +724,32 @@
             results.ShouldEqual(expectedTypeIdentity);
         }
 
+        [Test]
+        public void Configure_should_throw_argumentnullexception_when_called_with_null()
+        {
+            var service =
+                new DefaultConventionContractService();
+
+            var exception =
+                Catch.Exception(() => service.Configure(null));
+
+            exception.ShouldBeOfType<ArgumentNullException>();
+        }
+
+        [Test]
+        public void Configure_should_store_default_conventions_to_defaultconventions_property()
+        {
+            var service =
+                new DefaultConventionContractService();
+
+            service.Configure(x => {
+                x.ForType<int>().ContractType<int>().ContractName("Foo");
+                x.ForType<string>().ContractType<string>().ContractName("Bar");
+            });
+
+            service.DefaultConventions.Count.ShouldEqual(2);
+        }
+
         private static DefaultConventionContractService GetServiceWithDefaultConventions()
         {
             var service =

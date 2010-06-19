@@ -476,7 +476,11 @@ namespace MefContrib.Hosting.Conventions.Tests
             Part()
                 .ForTypesMatching(x => false);
 
-            this.ContractService = new DefaultConventionContractService();
+            ContractService.Configure(x => {
+                x.ForType<Func<string, string, object>>().ContractType<FakePart>().ContractName("Test");
+                x.ForType<string>().ContractType<FakePart>().ContractName("Test");
+            });
+
             this.TypeLoader = new TypeLoader();
             this.TypeLoader.AddTypes(() => new[] { typeof(FakePart) });
         }

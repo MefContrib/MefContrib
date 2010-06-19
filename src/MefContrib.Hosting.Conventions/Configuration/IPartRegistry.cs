@@ -3,14 +3,14 @@
     /// <summary>
     /// Defines the functionality of a convention registry for conventions implementing the <see cref="IPartConvention"/> interface.
     /// </summary>
-    public interface IPartRegistry
-        : IConventionRegistry<IPartConvention>
+    public interface IPartRegistry<out TContractService>
+        : IConventionRegistry<IPartConvention> where TContractService : IContractService
     {
         /// <summary>
         /// Gets or sets the contract service used by the registry.
         /// </summary>
         /// <value>An <see cref="IContractService"/> instance.</value>
-        IContractService ContractService { get; set; }
+        TContractService ContractService { get; }
 
         /// <summary>
         /// Gets or sets the type loader used to create parts out of the conventions in the registry.

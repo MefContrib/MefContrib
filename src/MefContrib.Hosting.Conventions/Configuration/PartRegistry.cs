@@ -2,12 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// A convention registry for types implementing the <see cref="IPartConvention"/> interface.
     /// </summary>
     public class PartRegistry :
-        ExpressionBuilderFactory<IPartConvention>, IPartRegistry
+        ExpressionBuilderFactory<IPartConvention>, IPartRegistry<DefaultConventionContractService>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PartRegistry"/> class.
@@ -20,8 +21,8 @@
         /// <summary>
         /// Gets or sets the contract service used by the registry.
         /// </summary>
-        /// <value>An <see cref="IContractService"/> instance.</value>
-        public IContractService ContractService { get; set; }
+        /// <value>An <see cref="DefaultConventionContractService"/> instance.</value>
+        public DefaultConventionContractService ContractService { get; private set; }
 
         /// <summary>
         /// Gets or sets the type loader used to create parts out of the conventions in the registry.
@@ -60,25 +61,36 @@
 
     public interface ITypeDefaultConventionConfigurator : IHideObjectMembers
     {
+        /// <summary>
+        /// Fors the type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         ITypeDefaultConventionBuilder ForType<T>();
-
-        
     }
 
     public class TypeDefaultConventionConfigurator : ITypeDefaultConventionConfigurator
     {
         public TypeDefaultConventionConfigurator()
         {
+            this.ConventionBuilders = new List<TypeDefaultConventionBuilder>();
         }
+
+        public IList<TypeDefaultConventionBuilder> ConventionBuilders { get; set; }
 
         public ITypeDefaultConventionBuilder ForType<T>()
         {
-            throw new NotImplementedException();
+            var builder =
+                new TypeDefaultConventionBuilder(typeof(T));
+
+            this.ConventionBuilders.Add(builder);
+
+            return builder;
         }
 
-        public IEnumerable<ITypeDefaultConvention> GetTypeDefaultConventions()
+        public IEnumerable<ITypeDefaultConvention> GetDefaultConventions()
         {
-            throw new NotImplementedException();
+            return this.ConventionBuilders.Select(x => x.Build()).Cast<ITypeDefaultConvention>();
         }
     }
 
@@ -96,21 +108,16 @@
         /// </summary>
         /// <typeparam name="TContractType">A <see cref="Type"/> that should be used as the contract type of the created imports.</typeparam>
         /// <returns>Returns a reference to the same <see cref="ImportConventionBuilder{TImportConvention}"/> instance as the method was called on.</returns>
-        ITypeDefaultConventionBuilder ContractType<TContractType>() where TContractType : new();
-    }
-
-    public class TypedExpressionBuilder<T>
-        : ExpressionBuilder<T> where T : new()
-    {
-        public new T Build()
-        {
-            return (T)base.Build();
-        }
+        ITypeDefaultConventionBuilder ContractType<TContractType>();
     }
 
     public class TypeDefaultConventionBuilder
         : ConventionBuilder<TypeDefaultConvention>, ITypeDefaultConventionBuilder
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TypeDefaultConventionBuilder"/> class.
+        /// </summary>
+        /// <param name="targetType">Type of the target.</param>
         public TypeDefaultConventionBuilder(Type targetType)
         {
             if (targetType == null)
@@ -138,7 +145,7 @@
             return this;
         }
 
-        public ITypeDefaultConventionBuilder ContractType<TContractType>() where TContractType : new()
+        public ITypeDefaultConventionBuilder ContractType<TContractType>()
         {
             this.ProvideValueFor(x => x.ContractType, typeof(TContractType));
 

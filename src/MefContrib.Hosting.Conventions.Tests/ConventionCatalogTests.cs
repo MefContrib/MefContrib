@@ -21,7 +21,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         public void Ctor_should_throw_argumentnullexception_is_called_with_null_params_array_of_registries()
         {
             var exception =
-                Catch.Exception(() => new ConventionCatalog((IPartRegistry[])null));
+                Catch.Exception(() => new ConventionCatalog((IPartRegistry<IContractService>[])null));
 
             exception.ShouldBeOfType<ArgumentNullException>();
         }
@@ -30,7 +30,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         public void Ctor_should_throw_argumentnullexception_is_called_with_null_enumerable_of_registries()
         {
             var exception =
-                Catch.Exception(() => new ConventionCatalog((IEnumerable<IPartRegistry>)null));
+                Catch.Exception(() => new ConventionCatalog((IEnumerable<IPartRegistry<IContractService>>)null));
 
             exception.ShouldBeOfType<ArgumentNullException>();
         }
@@ -48,7 +48,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         public void Ctor_should_set_registry_property_when_called_with_enumerable_of_registries()
         {
             var catalog =
-                new ConventionCatalog(new List<IPartRegistry> { new NonEmptyRegistry() });
+                new ConventionCatalog(new List<IPartRegistry<IContractService>> { new NonEmptyRegistry() });
 
             catalog.Registries.Count().ShouldEqual(1);
         }

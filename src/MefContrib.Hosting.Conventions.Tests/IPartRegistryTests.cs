@@ -9,7 +9,7 @@
         [Test]
         public void IPartRegistry_should_implement_ihideobjectmemebers_interface()
         {
-            typeof(IPartRegistry).GetInterfaces().ShouldContainType<IHideObjectMembers>();
+            typeof(IPartRegistry<IContractService>).GetInterfaces().ShouldContainType<IHideObjectMembers>();
         }
     }
 }

@@ -9,13 +9,17 @@ namespace MefContrib.Hosting.Conventions
     using System.Reflection;
     using MefContrib.Hosting.Conventions.Configuration;
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class ConventionPartCreator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConventionPartCreator"/> class.
         /// </summary>
-        /// <param name="registry">The registry.</param>
-        public ConventionPartCreator(IPartRegistry registry)
+        /// <param name="registry">The <see cref="IPartRegistry{T}"/> instance that should be used by the part creator.</param>
+        /// <exception cref="ArgumentNullException">The provided <paramref name="registry"/> was <see langword="null"/>.</exception>
+        public ConventionPartCreator(IPartRegistry<IContractService> registry)
         {
             if (registry == null)
             {
@@ -26,24 +30,24 @@ namespace MefContrib.Hosting.Conventions
         }
 
         /// <summary>
-        /// Gets or sets the registry.
+        /// Gets the <see cref="IPartRegistry{T}"/> instance used by the part creator.
         /// </summary>
-        /// <value>The registry.</value>
-        public IPartRegistry Registry { get; private set; }
+        /// <value>An <see cref="IPartRegistry{T}"/> instance.</value>
+        public IPartRegistry<IContractService> Registry { get; private set; }
 
         /// <summary>
-        /// Gets the loader.
+        /// Gets the <see cref="ITypeLoader"/> used by the <see cref="Registry"/>.
         /// </summary>
-        /// <value>The loader.</value>
+        /// <value>An <see cref="ITypeLoader"/> instance.</value>
         private ITypeLoader Loader
         {
             get { return this.Registry.TypeLoader; }
         }
 
         /// <summary>
-        /// Gets the contract service.
+        /// Gets the <see cref="IContractService"/> used by the <see cref="Registry"/>.
         /// </summary>
-        /// <value>The contract service.</value>
+        /// <value>An <see cref="IContractService"/> instance.</value>
         private IContractService ContractService
         {
             get { return this.Registry.ContractService; }
