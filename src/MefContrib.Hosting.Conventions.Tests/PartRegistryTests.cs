@@ -16,12 +16,12 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void TypeLoader_should_be_null_on_new_instance()
+        public void TypeScanner_should_be_null_on_new_instance()
         {
             var registry =
                 new PartRegistry();
 
-            registry.TypeLoader.ShouldBeNull();
+            registry.TypeScanner.ShouldBeNull();
         }
 
         [Test]

@@ -111,7 +111,7 @@
     <Compile Include="TypeDefaultConventionBuilderTests.cs" />
     <Compile Include="TypeDefaultConventionConfiguratorTests.cs" />
     <Compile Include="TypeExtensionsTests.cs" />
-    <Compile Include="TypeLoaderTests.cs" />
+    <Compile Include="TypeScannerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

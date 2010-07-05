@@ -7,24 +7,24 @@
     /// <summary>
     /// Stores the types which will be available to the <see cref="ConventionCatalog"/> when creating parts from conventions.
     /// </summary>
-    public class TypeLoader : ITypeLoader
+    public class TypeScanner : ITypeScanner
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TypeLoader"/> class.
+        /// Initializes a new instance of the <see cref="TypeScanner"/> class.
         /// </summary>
-        public TypeLoader()
+        public TypeScanner()
         {
             this.Types = new List<Type>();
         }
 
         /// <summary>
-        /// Gets or sets the types that have been loaded from assemblies.
+        /// Gets or sets the types that have been found.
         /// </summary>
         /// <value>A <see cref="List{T}"/> instance, containing the loaded types.</value>
         public List<Type> Types { get; set; }
 
         /// <summary>
-        /// Adds the types, returned by the function, to the type loader.
+        /// Adds the types, returned by the function, to the type scanner.
         /// </summary>
         /// <param name="typeValueGetter">The type value getter function.</param>
         public void AddTypes(Func<IEnumerable<Type>> typeValueGetter)

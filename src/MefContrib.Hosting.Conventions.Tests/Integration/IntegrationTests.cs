@@ -17,8 +17,8 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
         [Test]
         public void ConventionCatalog_should_support_constructor_injection()
         {
-            var loader =
-                new TypeLoader();
+            var scanner =
+                new TypeScanner();
 
             var catalog =
                 new ConventionCatalog(new CtorRegistry());
@@ -64,8 +64,8 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
                 .ExportTypeAs<IWidget>()
                 .MakeShared();
 
-            this.TypeLoader = new TypeLoader();
-            this.TypeLoader.AddTypes(() => Assembly.GetExecutingAssembly().GetExportedTypes());
+            this.TypeScanner = new TypeScanner();
+            this.TypeScanner.AddTypes(() => Assembly.GetExecutingAssembly().GetExportedTypes());
         }
     }
 

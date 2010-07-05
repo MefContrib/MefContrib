@@ -35,7 +35,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void CreateParts_should_return_empty_result_when_registry_has_no_type_loader_defined()
+        public void CreateParts_should_return_empty_result_when_registry_has_no_type_scanner_defined()
         {
             var partDefinitions = 
                 GetPartDefinitionsFromEmptyRegistry();
@@ -481,8 +481,8 @@ namespace MefContrib.Hosting.Conventions.Tests
                 x.ForType<string>().ContractType<FakePart>().ContractName("Test");
             });
 
-            this.TypeLoader = new TypeLoader();
-            this.TypeLoader.AddTypes(() => new[] { typeof(FakePart) });
+            this.TypeScanner = new TypeScanner();
+            this.TypeScanner.AddTypes(() => new[] { typeof(FakePart) });
         }
     }
 }

@@ -36,12 +36,12 @@ namespace MefContrib.Hosting.Conventions
         public IPartRegistry<IContractService> Registry { get; private set; }
 
         /// <summary>
-        /// Gets the <see cref="ITypeLoader"/> used by the <see cref="Registry"/>.
+        /// Gets the <see cref="ITypeScanner"/> used by the <see cref="Registry"/>.
         /// </summary>
-        /// <value>An <see cref="ITypeLoader"/> instance.</value>
-        private ITypeLoader Loader
+        /// <value>An <see cref="ITypeScanner"/> instance.</value>
+        private ITypeScanner Scanner
         {
-            get { return this.Registry.TypeLoader; }
+            get { return this.Registry.TypeScanner; }
         }
 
         /// <summary>
@@ -59,14 +59,14 @@ namespace MefContrib.Hosting.Conventions
         /// <returns>An <see cref="IEnumerable{T}"/>, containing <see cref="ComposablePartDefinition"/> instances.</returns>
         public IEnumerable<ComposablePartDefinition> CreateParts()
         {
-            if (this.Loader == null)
+            if (this.Scanner == null)
             {
                 return Enumerable.Empty<ComposablePartDefinition>();
             }
 
             var definitionsFromConventions =
                from convention in this.Registry.GetConventions()
-               from type in this.Loader.GetTypes(convention.Condition)
+               from type in this.Scanner.GetTypes(convention.Condition)
                select CreatePartDefinition(convention, type);
 
             return definitionsFromConventions.ToList();

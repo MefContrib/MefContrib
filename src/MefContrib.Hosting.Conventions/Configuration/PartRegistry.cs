@@ -23,10 +23,10 @@
         public DefaultConventionContractService ContractService { get; private set; }
 
         /// <summary>
-        /// Gets or sets the type loader used to create parts out of the conventions in the registry.
+        /// Gets or sets the type scanner used to create parts out of the conventions in the registry.
         /// </summary>
-        /// <value>An <see cref="ITypeLoader"/> instance.</value>
-        public ITypeLoader TypeLoader { get; set; }
+        /// <value>An <see cref="ITypeScanner"/> instance.</value>
+        public ITypeScanner TypeScanner { get; set; }
 
         /// <summary>
         /// Gets the conventions registered in the registry.

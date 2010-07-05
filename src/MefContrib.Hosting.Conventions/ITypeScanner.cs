@@ -6,7 +6,7 @@ namespace MefContrib.Hosting.Conventions
     /// <summary>
     /// Defines the functionality of a class that stores types retreived from functions.
     /// </summary>
-    public interface ITypeLoader
+    public interface ITypeScanner
     {
         /// <summary>
         /// Adds the types, returned by the function, to the type loader.

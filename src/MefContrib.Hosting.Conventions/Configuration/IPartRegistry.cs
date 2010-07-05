@@ -13,10 +13,10 @@
         TContractService ContractService { get; }
 
         /// <summary>
-        /// Gets or sets the type loader used to create parts out of the conventions in the registry.
+        /// Gets or sets the type scanner used to create parts out of the conventions in the registry.
         /// </summary>
-        /// <value>An <see cref="ITypeLoader"/> instance.</value>
-        ITypeLoader TypeLoader { get; set; }
+        /// <value>An <see cref="ITypeScanner"/> instance.</value>
+        ITypeScanner TypeScanner { get; set; }
 
         /// <summary>
         /// Creates a convention builde for <see cref="PartConvention"/> conventions.

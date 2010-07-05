@@ -7,7 +7,7 @@
     {
         public FakeConventionRegistry()
         {
-            this.TypeLoader = new TypeLoader();
+            this.TypeScanner = new TypeScanner();
 
             Part<PartConvention>()
                 .ForTypesMatching(x => true)

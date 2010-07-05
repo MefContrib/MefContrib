@@ -106,14 +106,14 @@
     <Compile Include="IImportConvention.cs" />
     <Compile Include="ImportConvention.cs" />
     <Compile Include="IPartConvention.cs" />
-    <Compile Include="ITypeLoader.cs" />
+    <Compile Include="ITypeScanner.cs" />
     <Compile Include="MemberInfoExtensions.cs" />
     <Compile Include="MetadataItem.cs" />
     <Compile Include="PartConvention.cs" />
     <Compile Include="RequiredMetadataItem.cs" />
     <Compile Include="IContractService.cs" />
     <Compile Include="TypeExtensions.cs" />
-    <Compile Include="TypeLoader.cs" />
+    <Compile Include="TypeScanner.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
