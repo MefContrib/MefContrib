@@ -7,6 +7,8 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System.ComponentModel.Composition.Primitives;
     using System.ComponentModel.Composition.ReflectionModel;
     using System.Linq;
+    using System.Reflection;
+
     using MefContrib.Hosting.Conventions.Configuration;
     using NUnit.Framework;
 
@@ -481,8 +483,11 @@ namespace MefContrib.Hosting.Conventions.Tests
                 x.ForType<string>().ContractType<FakePart>().ContractName("Test");
             });
 
-            this.TypeScanner = new TypeScanner();
-            this.TypeScanner.AddTypes(() => new[] { typeof(FakePart) });
+            var scanner =
+                 new TypeScanner();
+            scanner.AddTypes(() => Assembly.GetExecutingAssembly().GetExportedTypes());
+
+            this.TypeScanner = scanner;
         }
     }
 }

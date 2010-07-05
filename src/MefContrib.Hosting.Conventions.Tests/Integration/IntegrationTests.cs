@@ -64,8 +64,12 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
                 .ExportTypeAs<IWidget>()
                 .MakeShared();
 
-            this.TypeScanner = new TypeScanner();
-            this.TypeScanner.AddTypes(() => Assembly.GetExecutingAssembly().GetExportedTypes());
+                
+            var scanner =
+                 new TypeScanner();
+            scanner.AddTypes(() => Assembly.GetExecutingAssembly().GetExportedTypes());
+
+            this.TypeScanner = scanner;
         }
     }
 
