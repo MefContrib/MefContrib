@@ -71,6 +71,7 @@
     <Compile Include="..\MefContrib\Properties\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AssemblyTypeScanner.cs" />
     <Compile Include="Configuration\ConventionBuilder.cs" />
     <Compile Include="Configuration\ExpressionBuilderFactory.cs" />
     <Compile Include="Configuration\ExportConventionBuilder.cs" />
