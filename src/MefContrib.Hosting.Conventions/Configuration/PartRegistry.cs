@@ -1,8 +1,6 @@
 ﻿namespace MefContrib.Hosting.Conventions.Configuration
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// A convention registry for types implementing the <see cref="IPartConvention"/> interface.
@@ -57,120 +55,5 @@
         {
             return this.CreateExpressionBuilder<PartConventionBuilder<TConvention>>();
         }
-    }
-
-    public interface ITypeDefaultConventionConfigurator : IHideObjectMembers
-    {
-        /// <summary>
-        /// Fors the type.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        ITypeDefaultConventionBuilder ForType<T>();
-    }
-
-    public class TypeDefaultConventionConfigurator : ITypeDefaultConventionConfigurator
-    {
-        public TypeDefaultConventionConfigurator()
-        {
-            this.ConventionBuilders = new List<TypeDefaultConventionBuilder>();
-        }
-
-        public IList<TypeDefaultConventionBuilder> ConventionBuilders { get; set; }
-
-        public ITypeDefaultConventionBuilder ForType<T>()
-        {
-            var builder =
-                new TypeDefaultConventionBuilder(typeof(T));
-
-            this.ConventionBuilders.Add(builder);
-
-            return builder;
-        }
-
-        public IEnumerable<ITypeDefaultConvention> GetDefaultConventions()
-        {
-            return this.ConventionBuilders.Select(x => x.Build()).Cast<ITypeDefaultConvention>();
-        }
-    }
-
-    public interface ITypeDefaultConventionBuilder : IHideObjectMembers
-    {
-        /// <summary>
-        /// Defines the contract name that will be used as the default contract name for the configured type.
-        /// </summary>
-        /// <param name="contractName">A <see cref="string"/> containing the name of the contract which should be used as the default contract name for the configured type.</param>
-        /// <returns>Returns a reference to the same <see cref="ImportConventionBuilder{TImportConvention}"/> instance as the method was called on.</returns>
-        ITypeDefaultConventionBuilder ContractName(string contractName);
-
-        /// <summary>
-        /// Defines the contract type that will be added to the imports created by the convention.
-        /// </summary>
-        /// <typeparam name="TContractType">A <see cref="Type"/> that should be used as the contract type of the created imports.</typeparam>
-        /// <returns>Returns a reference to the same <see cref="ImportConventionBuilder{TImportConvention}"/> instance as the method was called on.</returns>
-        ITypeDefaultConventionBuilder ContractType<TContractType>();
-    }
-
-    public class TypeDefaultConventionBuilder
-        : ConventionBuilder<TypeDefaultConvention>, ITypeDefaultConventionBuilder
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TypeDefaultConventionBuilder"/> class.
-        /// </summary>
-        /// <param name="targetType">Type of the target.</param>
-        public TypeDefaultConventionBuilder(Type targetType)
-        {
-            if (targetType == null)
-            {
-                throw new ArgumentNullException("targetType", "The target type cannot be null.");
-            }
-
-            this.ProvideValueFor(x => x.TargetType, targetType);
-        }
-
-        public ITypeDefaultConventionBuilder ContractName(string contractName)
-        {
-            if (contractName == null)
-            {
-                throw new ArgumentNullException("contractName", "The contract name cannot be null.");
-            }
-
-            if (contractName.Length == 0)
-            {
-                throw new ArgumentOutOfRangeException("contractName", "The lenght of the contract name cannot be zero.");
-            }
-
-            this.ProvideValueFor(x => x.ContractName, contractName);
-
-            return this;
-        }
-
-        public ITypeDefaultConventionBuilder ContractType<TContractType>()
-        {
-            this.ProvideValueFor(x => x.ContractType, typeof(TContractType));
-
-            return this;
-        }
-    }
-
-    public class TypeDefaultConvention : ITypeDefaultConvention
-    {
-        /// <summary>
-        /// Gets or sets the name of the contract.
-        /// </summary>
-        /// <value>A <see cref="string"/> containing the name of the contract.</value>
-        public string ContractName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="Type"/> of the contract.
-        /// </summary>
-        /// <value>The <see cref="Type"/> of the contract.</value>
-        public Type ContractType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="Type"/> that the convention applies to.
-        /// </summary>
-        /// <value>The <see cref="Type"/> that the convention applies to.</value>
-        public Type TargetType { get; set; }
     }
 }
