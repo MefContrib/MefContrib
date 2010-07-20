@@ -71,6 +71,7 @@
     <Compile Include="..\MefContrib\Properties\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AggregatedTypeScanner.cs" />
     <Compile Include="AssemblyTypeScanner.cs" />
     <Compile Include="Configuration\ConventionBuilder.cs" />
     <Compile Include="Configuration\ExpressionBuilderFactory.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="ConventionPart.cs" />
     <Compile Include="ConventionPartCreator.cs" />
     <Compile Include="DefaultConventionContractService.cs" />
+    <Compile Include="DirectoryTypeScanner.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="ExportConvention.cs" />
     <Compile Include="ExpressionExtensions.cs" />

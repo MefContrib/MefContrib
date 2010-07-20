@@ -13,7 +13,7 @@ namespace MefContrib.Hosting.Conventions
         /// <summary>
         /// Initializes a new instance of the <see cref="AssemblyTypeScanner"/> class.
         /// </summary>
-        /// <param name="assembly">The assembly.</param>
+        /// <param name="assembly">The <see cref="Assembly"/> instance that the scanner should use when looking for types that matches a predicate.</param>
         public AssemblyTypeScanner(Assembly assembly)
         {
             if (assembly == null)

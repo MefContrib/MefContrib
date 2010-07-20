@@ -19,7 +19,7 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
         {
             var scanner =
                 new TypeScanner();
-
+            
             var catalog =
                 new ConventionCatalog(new CtorRegistry());
 

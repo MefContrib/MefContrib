@@ -483,6 +483,11 @@ namespace MefContrib.Hosting.Conventions.Tests
                 x.ForType<string>().ContractType<FakePart>().ContractName("Test");
             });
 
+            //Scan(x => {
+            //    x.ExecutingAssembly();
+            //    x.Assembly
+            //})
+
             var scanner =
                  new TypeScanner();
             scanner.AddTypes(() => Assembly.GetExecutingAssembly().GetExportedTypes());

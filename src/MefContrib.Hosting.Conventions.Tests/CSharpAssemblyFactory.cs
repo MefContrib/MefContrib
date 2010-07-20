@@ -41,5 +41,32 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             return results.CompiledAssembly;
         }
+
+        public static Assembly Compile(string code, string path, params string[] references)
+        {
+            var parameters =
+                new CompilerParameters
+                {
+                    GenerateExecutable = false,
+                    GenerateInMemory = string.IsNullOrEmpty(path),
+                    OutputAssembly = path ?? "fake.dll"
+                };
+
+            if (references != null)
+            {
+                foreach (var reference in references)
+                {
+                    parameters.ReferencedAssemblies.Add(reference);
+                }
+            }
+
+            var provider =
+                new CSharpCodeProvider(new Dictionary<string, string> { { "CompilerVersion", "v4.0" } });
+
+            var results =
+                provider.CompileAssemblyFromSource(parameters, code);
+            
+            return results.CompiledAssembly;
+        }
     }
 }
