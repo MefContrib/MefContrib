@@ -3,6 +3,7 @@ using MefContrib.Tests;
 namespace MefContrib.Hosting.Conventions.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using NUnit.Framework;
 
@@ -12,6 +13,24 @@ namespace MefContrib.Hosting.Conventions.Tests
         private static TypeScanner CreateDefaultTypeScanner()
         {
             return new TypeScanner();
+        }
+
+        [Test]
+        public void Ctor_should_throw_argumentnullexception_when_called_with_null_enumerable()
+        {
+            var exception =
+                Catch.Exception(() => new TypeScanner((IEnumerable<Type>)null));
+
+            exception.ShouldBeOfType<ArgumentNullException>();
+        }
+
+        [Test]
+        public void Ctor_should_throw_argumentnullexception_when_called_with_null_expression()
+        {
+            var exception =
+                Catch.Exception(() => new TypeScanner((Func<IEnumerable<Type>>)null));
+
+            exception.ShouldBeOfType<ArgumentNullException>();
         }
 
         [Test]

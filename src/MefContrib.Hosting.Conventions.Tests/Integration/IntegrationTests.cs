@@ -53,6 +53,12 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
     {
         public CtorRegistry()
         {
+            Scan(x =>
+            {
+                x.Assembly(Assembly.GetExecutingAssembly());
+                x.Assembly("Foo.dll");
+            });
+
             Part()
                 .ForTypesMatching(x => x.Equals(typeof(InjectedHost)))
                 .ExportTypeAs<InjectedHost>()
@@ -63,7 +69,6 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
                 .ForTypesMatching(x => x.GetInterfaces().Contains(typeof(IWidget)))
                 .ExportTypeAs<IWidget>()
                 .MakeShared();
-
                 
             var scanner =
                  new TypeScanner();

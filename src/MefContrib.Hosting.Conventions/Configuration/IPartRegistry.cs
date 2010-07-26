@@ -1,5 +1,7 @@
 ﻿namespace MefContrib.Hosting.Conventions.Configuration
 {
+    using System;
+
     /// <summary>
     /// Defines the functionality of a convention registry for conventions implementing the <see cref="IPartConvention"/> interface.
     /// </summary>

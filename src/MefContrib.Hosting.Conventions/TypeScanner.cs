@@ -13,15 +13,37 @@
         /// Initializes a new instance of the <see cref="TypeScanner"/> class.
         /// </summary>
         public TypeScanner()
+            : this(Enumerable.Empty<Type>())
         {
-            this.Types = new List<Type>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TypeScanner"/> class.
+        /// </summary>
+        /// <param name="values">The types.</param>
+        public TypeScanner(IEnumerable<Type> values)
+            : this(() => values)
+        {
+        }
+
+        public TypeScanner(Func<IEnumerable<Type>> values)
+        {
+            if (values == null)
+            {
+                throw new ArgumentNullException("values", "The types argument cannot be null.");
+            }
+
+            var types =
+                values.Invoke().ToList();
+
+            this.Types = types;
         }
 
         /// <summary>
         /// Gets or sets the types that have been found.
         /// </summary>
         /// <value>A <see cref="List{T}"/> instance, containing the loaded types.</value>
-        public List<Type> Types { get; set; }
+        public List<Type> Types { get; private set; }
 
         /// <summary>
         /// Adds the types, returned by the function, to the type scanner.

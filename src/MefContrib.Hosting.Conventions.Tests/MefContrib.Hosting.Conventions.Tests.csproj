@@ -114,6 +114,7 @@
     <Compile Include="TypeDefaultConventionBuilderTests.cs" />
     <Compile Include="TypeDefaultConventionConfiguratorTests.cs" />
     <Compile Include="TypeExtensionsTests.cs" />
+    <Compile Include="TypeScannerConfiguratorTests.cs" />
     <Compile Include="TypeScannerTests.cs" />
   </ItemGroup>
   <ItemGroup>
