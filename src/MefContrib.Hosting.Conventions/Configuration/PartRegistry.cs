@@ -38,6 +38,14 @@
             {
                 throw new ArgumentNullException("closure", "The closure cannot be null.");
             }
+
+            var configurator =
+                new TypeScannerConfigurator();
+
+            closure.Invoke(configurator);
+
+            this.TypeScanner =
+                configurator.GetTypeScanner();
         }
 
         /// <summary>

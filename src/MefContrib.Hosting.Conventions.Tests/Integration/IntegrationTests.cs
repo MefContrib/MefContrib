@@ -56,7 +56,6 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
             Scan(x =>
             {
                 x.Assembly(Assembly.GetExecutingAssembly());
-                x.Assembly("Foo.dll");
             });
 
             Part()
@@ -69,12 +68,12 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
                 .ForTypesMatching(x => x.GetInterfaces().Contains(typeof(IWidget)))
                 .ExportTypeAs<IWidget>()
                 .MakeShared();
-                
-            var scanner =
-                 new TypeScanner();
-            scanner.AddTypes(() => Assembly.GetExecutingAssembly().GetExportedTypes());
 
-            this.TypeScanner = scanner;
+            //var scanner =
+            //     new TypeScanner();
+            //scanner.AddTypes(() => Assembly.GetExecutingAssembly().GetExportedTypes());
+
+            //this.TypeScanner = scanner;
         }
     }
 

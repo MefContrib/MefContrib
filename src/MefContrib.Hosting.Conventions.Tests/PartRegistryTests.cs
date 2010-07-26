@@ -65,6 +65,23 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             exception.ShouldBeOfType<ArgumentNullException>();
         }
+
+        [Test]
+        public void Scan_should_set_typescanner_to_scanner_created_by_closure()
+        {
+            var registry =
+                new PartRegistry();
+
+            registry.Scan(x => {
+                x.Types(new[] { typeof(object) });
+                x.Types(new[] { typeof(string) });
+            });
+
+            var results =
+                registry.TypeScanner.GetTypes(x => true);
+
+            results.Count().ShouldEqual(2);
+        }
     }
 
     public class AssemblyFactory : IDisposable
