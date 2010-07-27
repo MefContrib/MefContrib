@@ -10,11 +10,6 @@ namespace MefContrib.Hosting.Conventions.Tests
     [TestFixture]
     public class TypeScannerTests
     {
-        private static TypeScanner CreateDefaultTypeScanner()
-        {
-            return new TypeScanner();
-        }
-
         [Test]
         public void Ctor_should_throw_argumentnullexception_when_called_with_null_enumerable()
         {
@@ -111,6 +106,11 @@ namespace MefContrib.Hosting.Conventions.Tests
                 Catch.Exception(() => scanner.GetTypes(null));
 
             exception.ShouldBeOfType<ArgumentNullException>();
+        }
+
+        private static TypeScanner CreateDefaultTypeScanner()
+        {
+            return new TypeScanner();
         }
     }
 }

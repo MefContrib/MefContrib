@@ -78,6 +78,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AggregatedTypeScannerTests.cs" />
+    <Compile Include="AssemblyFactory.cs" />
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="AssemblyTypeScannerTests.cs" />
     <Compile Include="Catch.cs" />
     <Compile Include="ContextSpecificationAssertions.cs" />

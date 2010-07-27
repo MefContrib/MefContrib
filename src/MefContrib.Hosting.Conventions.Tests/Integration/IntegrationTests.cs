@@ -7,7 +7,6 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
     using System.Reflection;
-
     using MefContrib.Hosting.Conventions.Configuration;
     using NUnit.Framework;
 
@@ -68,12 +67,6 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
                 .ForTypesMatching(x => x.GetInterfaces().Contains(typeof(IWidget)))
                 .ExportTypeAs<IWidget>()
                 .MakeShared();
-
-            //var scanner =
-            //     new TypeScanner();
-            //scanner.AddTypes(() => Assembly.GetExecutingAssembly().GetExportedTypes());
-
-            //this.TypeScanner = scanner;
         }
     }
 

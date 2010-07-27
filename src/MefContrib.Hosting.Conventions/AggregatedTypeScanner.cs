@@ -3,7 +3,6 @@ namespace MefContrib.Hosting.Conventions
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading;
 
     /// <summary>
     /// A type scanner that contains a collection of <see cref="ITypeScanner"/> instances that are

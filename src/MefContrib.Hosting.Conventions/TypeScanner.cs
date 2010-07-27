@@ -20,12 +20,16 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeScanner"/> class.
         /// </summary>
-        /// <param name="values">The types.</param>
+        /// <param name="values">An <see cref="IEnumerable{T}"/> instance of <see cref="Type"/> objects that should be used by the type scanner.</param>
         public TypeScanner(IEnumerable<Type> values)
             : this(() => values)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TypeScanner"/> class.
+        /// </summary>
+        /// <param name="values">A function that returns an <see cref="IEnumerable{T}"/> instance of <see cref="Type"/> objects that should be used by the type scanner.</param>
         public TypeScanner(Func<IEnumerable<Type>> values)
         {
             if (values == null)

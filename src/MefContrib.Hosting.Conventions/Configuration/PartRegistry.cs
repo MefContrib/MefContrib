@@ -2,9 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
 
     /// <summary>
     /// A convention registry for types implementing the <see cref="IPartConvention"/> interface.
@@ -32,6 +29,10 @@
         /// <value>An <see cref="ITypeScanner"/> instance.</value>
         public ITypeScanner TypeScanner { get; set; }
 
+        /// <summary>
+        /// Scans the specified closure.
+        /// </summary>
+        /// <param name="closure">The closure.</param>
         public void Scan(Action<ITypeScannerConfigurator> closure)
         {
             if (closure == null)
@@ -74,143 +75,6 @@
         public PartConventionBuilder<TConvention> Part<TConvention>() where TConvention : IPartConvention, new()
         {
             return this.CreateExpressionBuilder<PartConventionBuilder<TConvention>>();
-        }
-    }
-
-    public interface ITypeScannerConfigurator
-    {
-        ITypeScannerConfigurator Assembly(Assembly assembly);
-
-        ITypeScannerConfigurator Assembly(string path);
-
-        ITypeScannerConfigurator Assembly(Func<Assembly, bool> condition);
-
-        ITypeScannerConfigurator Directory(string path);
-
-        ITypeScannerConfigurator Types(IEnumerable<Type> types);
-
-        ITypeScannerConfigurator Types(Func<IEnumerable<Type>> values);
-    }
-
-    public class TypeScannerConfigurator : ITypeScannerConfigurator
-    {
-        public TypeScannerConfigurator()
-        {
-            this.Scanner = new AggregatedTypeScanner();
-        }
-
-        private AggregatedTypeScanner Scanner { get; set; }
-
-        public ITypeScannerConfigurator Assembly(Assembly assembly)
-        {
-            if (assembly == null)
-            {
-                throw new ArgumentNullException("assembly", "The assembly cannot be null.");
-            }
-
-            this.Scanner.Add(
-                new AssemblyTypeScanner(assembly));
-
-            return this;
-        }
-
-        public ITypeScannerConfigurator Assembly(string path)
-        {
-            if (path == null)
-            {
-                throw new ArgumentNullException("path", "The path cannot be null.");
-            }
-
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException("The file specified by the path argument could not be found");
-            }
-
-            var loadedAssembly =
-                System.Reflection.Assembly.LoadFrom(path);
-
-            this.Scanner.Add(
-                new AssemblyTypeScanner(loadedAssembly));
-
-            return this;
-        }
-
-        public ITypeScannerConfigurator Assembly(Func<Assembly, bool> condition)
-        {
-            if (condition == null)
-            {
-                throw new ArgumentNullException("condition", "The condition cannot be null.");
-            }
-
-            var matchingAssemblies =
-                AppDomain.CurrentDomain.GetAssemblies().Where(condition);
-
-            foreach (var matchingAssembly in matchingAssemblies)
-            {
-                this.Scanner.Add(new AssemblyTypeScanner(matchingAssembly));
-            }
-
-            return this;
-        }
-
-        public ITypeScannerConfigurator Directory(string path)
-        {
-            if (path == null)
-            {
-                throw new ArgumentNullException("path", "The path cannot be null.");
-            }
-
-            if (path.Length == 0)
-            {
-                throw new ArgumentOutOfRangeException("path", "The path argument cannot be empty.");
-            }
-
-            if (!System.IO.Directory.Exists(path))
-            {
-                throw new DirectoryNotFoundException("The directory specified by the path argument could not be found.");
-            }
-
-            var assemblies =
-                System.IO.Directory.GetFiles(path, "*.dll");
-
-            foreach (var assembly in assemblies)
-            {
-                this.Scanner.Add(
-                    new AssemblyTypeScanner(System.Reflection.Assembly.LoadFrom(assembly)));
-            }
-
-            return this;
-        }
-
-        public ITypeScannerConfigurator Types(IEnumerable<Type> types)
-        {
-            if (types == null)
-            {
-                throw new ArgumentNullException("types", "The types argument cannot be null.");
-            }
-
-            this.Scanner.Add(
-                new TypeScanner(types));
-
-            return this;
-        }
-
-        public ITypeScannerConfigurator Types(Func<IEnumerable<Type>> values)
-        {
-            if (values == null)
-            {
-                throw new ArgumentNullException("values", "The values argument cannot be null.");
-            }
-
-            this.Scanner.Add(
-                new TypeScanner(values));
-
-            return this;
-        }
-
-        public AggregatedTypeScanner GetTypeScanner()
-        {
-            return this.Scanner;
         }
     }
 }

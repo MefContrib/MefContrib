@@ -3,7 +3,6 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System;
     using System.IO;
     using System.Linq;
-
     using NUnit.Framework;
 
     public class DirectoryTypeScannerTests
@@ -65,9 +64,6 @@ namespace MefContrib.Hosting.Conventions.Tests
             var tempDirectoryPath =
                 Path.Combine(Path.GetTempPath(),
                 Path.GetFileNameWithoutExtension(Path.GetRandomFileName()));
-
-            var directory =
-                Directory.CreateDirectory(tempDirectoryPath);
 
             var scanner =
                 new DirectoryTypeScanner(tempDirectoryPath);

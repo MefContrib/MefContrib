@@ -5,16 +5,51 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
-
     using MefContrib.Hosting.Conventions.Configuration;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class TypeScannerConfiguratorTests
     {
-        public TypeScannerConfiguratorTests()
+        [Test]
+        public void Add_should_throw_argumentnullexception_when_called_with_null()
         {
+            var configurator =
+                new TypeScannerConfigurator();
+
+            var exception =
+                Catch.Exception(() => configurator.Add(null));
+
+            exception.ShouldBeOfType<ArgumentNullException>();
+        }
+
+        [Test]
+        public void Add_should_return_reference_to_same_configurator()
+        {
+            var configurator =
+                new TypeScannerConfigurator();
+
+            var reference =
+                configurator.Add(new TypeScanner());
+
+            reference.ShouldBeSameAs(configurator);
+        }
+
+        [Test]
+        public void Add_should_add_scanner_to_configurator()
+        {
+            var configurator =
+                new TypeScannerConfigurator();
+
+            configurator.Add(new TypeScanner(new[] { typeof(object) }));
+
+            var scanner =
+                configurator.GetTypeScanner();
+
+            var results =
+                scanner.GetTypes(x => true);
+
+            results.Count().ShouldEqual(1);
         }
 
         [Test]

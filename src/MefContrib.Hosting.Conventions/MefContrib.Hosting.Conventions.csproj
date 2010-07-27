@@ -87,6 +87,7 @@
     <Compile Include="Configuration\ITypeDefaultConvention.cs" />
     <Compile Include="Configuration\ITypeDefaultConventionBuilder.cs" />
     <Compile Include="Configuration\ITypeDefaultConventionConfigurator.cs" />
+    <Compile Include="Configuration\ITypeScannerConfigurator.cs" />
     <Compile Include="Configuration\PartConventionBuilderExtensions.cs" />
     <Compile Include="Configuration\IPartRegistry.cs" />
     <Compile Include="Configuration\PartConventionBuilder.cs" />
