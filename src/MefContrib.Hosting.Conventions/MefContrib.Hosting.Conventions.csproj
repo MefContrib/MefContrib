@@ -95,6 +95,7 @@
     <Compile Include="Configuration\TypeDefaultConvention.cs" />
     <Compile Include="Configuration\TypeDefaultConventionBuilder.cs" />
     <Compile Include="Configuration\TypeDefaultConventionConfigurator.cs" />
+    <Compile Include="Configuration\TypeScannerConfigurator.cs" />
     <Compile Include="ContractService.cs" />
     <Compile Include="ConventionContractService.cs" />
     <Compile Include="ConventionCatalog.cs" />

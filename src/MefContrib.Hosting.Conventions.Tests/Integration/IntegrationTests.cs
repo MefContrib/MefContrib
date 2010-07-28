@@ -16,9 +16,6 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
         [Test]
         public void ConventionCatalog_should_support_constructor_injection()
         {
-            var scanner =
-                new TypeScanner();
-            
             var catalog =
                 new ConventionCatalog(new CtorRegistry());
 
@@ -52,8 +49,7 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
     {
         public CtorRegistry()
         {
-            Scan(x =>
-            {
+            Scan(x => {
                 x.Assembly(Assembly.GetExecutingAssembly());
             });
 
