@@ -69,6 +69,21 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
+        public void GetTypes_should_return_distinct_types()
+        {
+            var scanner =
+                new AggregatedTypeScanner();
+
+            scanner.Add(new TypeScanner(new[] { typeof(string) }));
+            scanner.Add(new TypeScanner(new[] { typeof(string) }));
+
+            var results =
+                scanner.GetTypes(x => true);
+
+            results.Count().ShouldEqual(1);
+        }
+
+        [Test]
         public void Add_should_throw_argumentnullexception_when_called_with_null()
         {
             var scanner =

@@ -54,13 +54,13 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
             });
 
             Part()
-                .ForTypesMatching(x => x.Equals(typeof(InjectedHost)))
+                .ForTypesAssignableFrom<InjectedHost>()
                 .ExportTypeAs<InjectedHost>()
                 .ImportConstructor()
                 .MakeShared();
 
             Part()
-                .ForTypesMatching(x => x.GetInterfaces().Contains(typeof(IWidget)))
+                .ForTypesAssignableFrom<IWidget>()
                 .ExportTypeAs<IWidget>()
                 .MakeShared();
         }

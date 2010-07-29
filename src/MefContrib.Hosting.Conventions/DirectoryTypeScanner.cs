@@ -56,7 +56,11 @@ namespace MefContrib.Hosting.Conventions
         /// </summary>
         private IEnumerable<AssemblyTypeScanner> GetAssemblyScanners()
         {
-            return from file in Directory.GetFiles(this.Path, "*.dll")
+            var acceptedExtensions =
+                new List<string> { ".dll", ".exe" };
+
+            return from file in Directory.GetFiles(this.Path)
+                where acceptedExtensions.Contains(System.IO.Path.GetExtension(file))
                 select new AssemblyTypeScanner(Assembly.LoadFrom(file));
         }
 

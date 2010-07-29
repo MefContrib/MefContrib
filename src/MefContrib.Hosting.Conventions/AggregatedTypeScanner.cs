@@ -77,7 +77,7 @@ namespace MefContrib.Hosting.Conventions
                     results.AddRange(types);
                 }
 
-                return results;    
+                return results.Distinct();
             }
         }
     }

@@ -65,6 +65,8 @@ namespace MefContrib.Hosting.Conventions.Tests
                 Path.Combine(Path.GetTempPath(),
                 Path.GetFileNameWithoutExtension(Path.GetRandomFileName()));
 
+            Directory.CreateDirectory(tempDirectoryPath);
+
             var scanner =
                 new DirectoryTypeScanner(tempDirectoryPath);
 
@@ -75,7 +77,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void GetTypes_should_only_return_types_defined_in_dll_files()
+        public void GetTypes_should_return_types_from_files_with_accepted_extensions()
         {
             var scanner =
                 CreateDefaultDirectoryTypeScanner();
@@ -86,6 +88,25 @@ namespace MefContrib.Hosting.Conventions.Tests
             File.Move(
                 files[0],
                 files[0].Replace(".dll", ".exe"));
+
+            var results =
+                scanner.GetTypes(x => true);
+
+            results.Count().ShouldEqual(2);
+        }
+
+        [Test]
+        public void GetTypes_should_not_return_types_from_files_without_accepted_extension()
+        {
+            var scanner =
+                CreateDefaultDirectoryTypeScanner();
+
+            var files =
+                Directory.GetFiles(scanner.Path);
+
+            File.Move(
+                files[0],
+                files[0].Replace(".dll", ".jpg"));
 
             var results =
                 scanner.GetTypes(x => true);
@@ -120,33 +141,6 @@ namespace MefContrib.Hosting.Conventions.Tests
             }
 
             return new DirectoryTypeScanner(tempDirectoryPath);
-        }
-
-        [Test, Ignore]
-        public void TargetName_should_TestExpectation()
-        {
-            var tempDirectoryPath =
-                Path.Combine(Path.GetTempPath(),
-                Path.GetFileNameWithoutExtension(Path.GetRandomFileName()));
-
-            var directory =
-                Directory.CreateDirectory(tempDirectoryPath);
-
-            var assemblyName =
-                Path.Combine(directory.FullName, "Foo.dll");
-
-            var results =
-                CSharpAssemblyFactory.Compile(
-                    @"
-                        public class Foo
-                        {
-                        }
-                    ", assemblyName);
-
-            var exists =
-                File.Exists(results.Location);
-
-            exists.ShouldBeTrue();
         }
     }
 }
