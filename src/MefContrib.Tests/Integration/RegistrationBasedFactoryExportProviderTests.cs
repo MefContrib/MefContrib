@@ -41,7 +41,7 @@ namespace MefContrib.Tests.Integration
 
             IExternalComponent Component1 { get; }
 
-            IExternalComponent Component1A { get; set; }
+            IExternalComponent Component2 { get; }
         }
 
         [Export(typeof(IMefComponent))]
@@ -66,7 +66,7 @@ namespace MefContrib.Tests.Integration
             }
 
             [Import]
-            public IExternalComponent Component1A { get; set; }
+            public IExternalComponent Component2 { get; set; }
         }
 
         [Export("component2", typeof(IMefComponent))]
@@ -91,7 +91,42 @@ namespace MefContrib.Tests.Integration
             }
 
             [Import("external2")]
-            public IExternalComponent Component1A { get; set; }
+            public IExternalComponent Component2 { get; set; }
+        }
+
+        [Export("component3", typeof(IMefComponent))]
+        [PartCreationPolicy(CreationPolicy.Shared)]
+        public class MefComponent3 : IMefComponent
+        {
+            public void Foo()
+            {
+            }
+
+            [Import]
+            public IExternalComponent Component1 { get; set; }
+
+            [Import("external2")]
+            public IExternalComponent Component2 { get; set; }
+        }
+
+        [Export("component4", typeof(IMefComponent))]
+        [PartCreationPolicy(CreationPolicy.Shared)]
+        public class MefComponent4 : IMefComponent
+        {
+            [ImportingConstructor]
+            public MefComponent4(IExternalComponent component1, [Import("external2")] IExternalComponent component2)
+            {
+                Component1 = component1;
+                Component2 = component2;
+            }
+
+            public void Foo()
+            {
+            }
+
+            public IExternalComponent Component1 { get; set; }
+            
+            public IExternalComponent Component2 { get; set; }
         }
 
         #endregion
@@ -114,7 +149,7 @@ namespace MefContrib.Tests.Integration
             var mefComponent = container.GetExportedValue<IMefComponent>();
             Assert.That(mefComponent, Is.Not.Null);
             Assert.That(mefComponent.Component1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
-            Assert.That(mefComponent.Component1A.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.That(mefComponent.Component2.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
         }
 
         [Test]
@@ -135,7 +170,49 @@ namespace MefContrib.Tests.Integration
             var mefComponent = container.GetExportedValue<IMefComponent>("component2");
             Assert.That(mefComponent, Is.Not.Null);
             Assert.That(mefComponent.Component1.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
-            Assert.That(mefComponent.Component1A.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.That(mefComponent.Component2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+        }
+
+        [Test]
+        public void ExportProviderResolvesServiceRegisteredByTypeAndOrRegistrationNameTest()
+        {
+            // Setup
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var provider = new RegistrationBasedFactoryExportProvider(FactoryMethod1);
+            var container = new CompositionContainer(assemblyCatalog, provider);
+
+            // Registration
+            provider.Register(typeof(IExternalComponent));
+            provider.Register(typeof(IExternalComponent), "external2");
+            
+            var mefComponent = container.GetExportedValue<IMefComponent>("component3");
+            Assert.That(mefComponent, Is.Not.Null);
+            Assert.That(mefComponent.Component1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.That(mefComponent.Component2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+        }
+
+        [Test]
+        public void ExportProviderProperlyResolvesServicesFromManyExportProvidersTest()
+        {
+            // Setup
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var provider1 = new RegistrationBasedFactoryExportProvider(FactoryMethod2_1);
+            var provider2 = new RegistrationBasedFactoryExportProvider(FactoryMethod2_2);
+            var container = new CompositionContainer(assemblyCatalog, provider1, provider2);
+
+            // Registration
+            provider1.Register(typeof(IExternalComponent));
+            provider2.Register(typeof(IExternalComponent), "external2");
+
+            var mefComponent = container.GetExportedValue<IMefComponent>("component3");
+            Assert.That(mefComponent, Is.Not.Null);
+            Assert.That(mefComponent.Component1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.That(mefComponent.Component2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+
+            mefComponent = container.GetExportedValue<IMefComponent>("component4");
+            Assert.That(mefComponent, Is.Not.Null);
+            Assert.That(mefComponent.Component1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.That(mefComponent.Component2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
         }
 
         private static object FactoryMethod1(Type type, string registrationName)
@@ -143,6 +220,22 @@ namespace MefContrib.Tests.Integration
             if (type == typeof(IExternalComponent) && registrationName == null)
                 return new ExternalComponent1();
 
+            if (type == typeof(IExternalComponent) && registrationName == "external2")
+                return new ExternalComponent2();
+
+            return null;
+        }
+
+        private static object FactoryMethod2_1(Type type, string registrationName)
+        {
+            if (type == typeof(IExternalComponent) && registrationName == null)
+                return new ExternalComponent1();
+            
+            return null;
+        }
+
+        private static object FactoryMethod2_2(Type type, string registrationName)
+        {
             if (type == typeof(IExternalComponent) && registrationName == "external2")
                 return new ExternalComponent2();
 

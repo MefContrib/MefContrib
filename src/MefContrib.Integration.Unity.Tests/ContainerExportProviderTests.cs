@@ -172,5 +172,50 @@ namespace MefContrib.Integration.Unity.Tests
                 new UnityContainerAdapter(null);
             }, Throws.TypeOf<ArgumentNullException>());
         }
+
+        #region Composing with two providers
+
+        class A { }
+
+        class B { }
+
+        [Export]
+        class C
+        {
+            [ImportingConstructor]
+            public C(A a, B b)
+            {
+                ThingA = a;
+                ThingB = b;
+            }
+            public A ThingA { get; private set; }
+
+            public B ThingB { get; private set; }
+        }
+
+        [Test]
+        public void ComposeWithTwoContainerExportProvidersTest()
+        {
+            var unityContainer1 = new UnityContainer();
+            var exportProvider1 = new ContainerExportProvider(new UnityContainerAdapter(unityContainer1));
+
+            var a = new A();
+            unityContainer1.RegisterInstance<A>(a);
+
+            var unityContainer2 = new UnityContainer();
+            var exportProvider2 = new ContainerExportProvider(new UnityContainerAdapter(unityContainer2));
+
+            var b = new B();
+            unityContainer2.RegisterInstance<B>(b);
+
+            var catalog = new TypeCatalog(typeof(C));
+            var compositionContainer = new CompositionContainer(catalog, exportProvider1, exportProvider2);
+            var instance = compositionContainer.GetExport<C>();
+            Assert.IsNotNull(instance.Value);
+            Assert.AreEqual(a, instance.Value.ThingA, "Instance of A is the same as that registered with the DI container.");
+            Assert.AreEqual(b, instance.Value.ThingB, "Instance of B is the same as that registered with the DI container.");
+        }
+
+        #endregion
     }
 }

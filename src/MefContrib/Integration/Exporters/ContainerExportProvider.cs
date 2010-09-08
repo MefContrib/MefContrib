@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
+using System.Linq;
 
 namespace MefContrib.Integration.Exporters
 {
@@ -43,7 +45,23 @@ namespace MefContrib.Integration.Exporters
 
         protected override IEnumerable<Export> GetExportsCore(ImportDefinition definition, AtomicComposition atomicComposition)
         {
-            return m_FactoryProvider.GetExports(definition);
+            if (definition.Cardinality == ImportCardinality.ZeroOrMore)
+            {
+                return m_FactoryProvider.GetExports(definition, atomicComposition);
+            }
+
+            // If asked for "one or less", use the TryGetExports instead of GetExports to avoid
+            // cardinality exceptions
+            IEnumerable<Export> exports;
+            var cardinalityCheckResult = m_FactoryProvider.TryGetExports(definition, atomicComposition, out exports);
+
+            if (cardinalityCheckResult)
+            {
+                return exports;
+            }
+
+            // TryGetExports didn't find any valid exports, return empty
+            return Enumerable.Empty<Export>();
         }
 
         /// <summary>
