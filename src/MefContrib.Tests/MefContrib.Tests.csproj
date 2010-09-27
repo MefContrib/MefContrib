@@ -57,6 +57,7 @@
     <Compile Include="Integration\ContractBasedExportDefinitionTests.cs" />
     <Compile Include="Hosting\FilteredCatalogTests.cs" />
     <Compile Include="Integration\RegistrationBasedFactoryExportProviderTests.cs" />
+    <Compile Include="ShouldExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MefContrib\MefContrib.csproj">

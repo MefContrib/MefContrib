@@ -1,3 +1,5 @@
+using MefContrib.Tests;
+
 namespace MefContrib.Hosting.Conventions.Tests.Integration
 {
     using System;

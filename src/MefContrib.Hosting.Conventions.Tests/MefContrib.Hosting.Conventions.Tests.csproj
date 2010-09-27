@@ -125,6 +125,10 @@
       <Project>{E76F737F-0B5F-48E4-85AF-0D4B2B498646}</Project>
       <Name>MefContrib.Hosting.Conventions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MefContrib.Tests\MefContrib.Tests.csproj">
+      <Project>{AB89B800-89A4-40A5-84BC-9DD0623D18B7}</Project>
+      <Name>MefContrib.Tests</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

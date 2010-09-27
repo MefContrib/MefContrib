@@ -1,4 +1,6 @@
-﻿namespace MefContrib.Hosting.Conventions.Tests
+﻿using MefContrib.Tests;
+
+namespace MefContrib.Hosting.Conventions.Tests
 {
     using System;
     using System.Collections.Generic;

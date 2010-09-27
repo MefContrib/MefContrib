@@ -6,6 +6,7 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System.Linq;
     using NUnit.Framework;
 
+    /*
     public static class ContextSpecificationAssertions
     {
         public static void ShouldMatch<T>(this T actual, Func<T, bool> condition)
@@ -106,4 +107,5 @@ namespace MefContrib.Hosting.Conventions.Tests
             }
         }
     }
+     * */
 }

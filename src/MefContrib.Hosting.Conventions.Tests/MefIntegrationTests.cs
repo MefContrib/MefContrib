@@ -1,3 +1,5 @@
+using MefContrib.Tests;
+
 namespace MefContrib.Hosting.Conventions.Tests
 {
     using System.ComponentModel.Composition;
