@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Castle.DynamicProxy;
-using MefContrib.Interception;
 
-namespace Composition.Interception.DynamicProxy
+namespace MefContrib.Interception.Castle
 {
     public class DynamicProxyInterceptor : IExportedValueInterceptor
     {
+        private static readonly ProxyGenerator Generator = new ProxyGenerator();
+
         private readonly IInterceptor[] _interceptors;
-        private static readonly ProxyGenerator _generator = new ProxyGenerator();
 
         public DynamicProxyInterceptor(params IInterceptor[] interceptors)
         {
@@ -19,12 +17,10 @@ namespace Composition.Interception.DynamicProxy
 
         public object Intercept(object value)
         {
-            ProxyGenerationOptions options = new ProxyGenerationOptions();
-
             var interfaces = value.GetType().GetInterfaces();
             Type proxyInterface = interfaces.FirstOrDefault();
             Type[] additionalInterfaces = interfaces.Skip(1).ToArray();
-            var proxy = _generator.CreateInterfaceProxyWithTargetInterface(proxyInterface, additionalInterfaces, value, _interceptors);            
+            var proxy = Generator.CreateInterfaceProxyWithTargetInterface(proxyInterface, additionalInterfaces, value, _interceptors);            
             return proxy;
         }
     }

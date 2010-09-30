@@ -48,7 +48,6 @@
     <Compile Include="Generics\GenericContractTypeMapping.cs" />
     <Compile Include="Generics\GenericExportHandler.cs" />
     <Compile Include="Generics\TypeHelper.cs" />
-    <Compile Include="Helpers.cs" />
     <Compile Include="IExportedValueInterceptor.cs" />
     <Compile Include="IExportHandler.cs" />
     <Compile Include="InterceptingCatalog.cs" />

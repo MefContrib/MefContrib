@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-
-namespace MefContrib.Interception.Generics
+﻿namespace MefContrib.Interception.Generics
 {
+    using System;
+    using System.ComponentModel.Composition;
+
     [InheritedExport]
     public abstract class GenericContractTypeMapping
     {
-        private Type _genericContractTypeDefinitionDefinition = null;
-        private Type _genericImplementationType = null;
+        private readonly Type _genericContractTypeDefinitionDefinition;
+        private readonly Type _genericImplementationType;
 
         public GenericContractTypeMapping(Type genericContractTypeDefinition, Type genericImplementationTypeDefinition)
         {
             if (!genericImplementationTypeDefinition.IsGenericTypeDefinition)
-                throw new ArgumentException("Implementation Type must be a generic definition", "genericImplementationType");
+                throw new ArgumentException("Implementation Type must be a generic definition", "genericImplementationTypeDefinition");
 
             if (!genericContractTypeDefinition.IsGenericTypeDefinition)
-                throw new ArgumentException("Contract Type must be a generic definition", "genericContractType");
+                throw new ArgumentException("Contract Type must be a generic definition", "genericImplementationTypeDefinition");
 
             _genericContractTypeDefinitionDefinition = genericContractTypeDefinition;
             _genericImplementationType = genericImplementationTypeDefinition;

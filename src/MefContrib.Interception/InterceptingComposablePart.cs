@@ -1,32 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
-using System.ComponentModel.Composition.ReflectionModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-
-namespace MefContrib.Interception
+﻿namespace MefContrib.Interception
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition.Primitives;
+
     public class InterceptingComposablePart : ComposablePart
     {
-        public ComposablePart InterceptedPart { get; private set; }
         private readonly IExportedValueInterceptor _valueInterceptor;
-        private IDictionary<ExportDefinition, object> _values;
+        private readonly IDictionary<ExportDefinition, object> _values;
 
         public InterceptingComposablePart(ComposablePart interceptedPart, IExportedValueInterceptor valueInterceptor)
         {
-            interceptedPart.ShouldNotBeNull("interceptedPart");
-            valueInterceptor.ShouldNotBeNull("valueInterceptor");
+            if (interceptedPart == null) throw new ArgumentNullException("interceptedPart");
+            if (valueInterceptor == null) throw new ArgumentNullException("valueInterceptor");
 
             InterceptedPart = interceptedPart;
             _valueInterceptor = valueInterceptor;
             _values = new Dictionary<ExportDefinition, object>();
         }
 
+        public ComposablePart InterceptedPart { get; private set; }
+
         public override object GetExportedValue(ExportDefinition exportDefinition)
         {
-            exportDefinition.ShouldNotBeNull("exportDefinition");
+            if (exportDefinition == null) throw new ArgumentNullException("exportDefinition");
 
             if (_values.ContainsKey(exportDefinition))
                 return _values[exportDefinition];
@@ -34,13 +31,15 @@ namespace MefContrib.Interception
             var value = InterceptedPart.GetExportedValue(exportDefinition);
             var interceptingValue = _valueInterceptor.Intercept(value);
             _values.Add(exportDefinition, interceptingValue);
+            
             return interceptingValue;
         }
 
         public override void SetImport(ImportDefinition definition, IEnumerable<Export> exports)
         {
-            definition.ShouldNotBeNull("definition");
-            exports.ShouldNotBeNull("exports");
+            if (definition == null) throw new ArgumentNullException("definition");
+            if (exports == null) throw new ArgumentNullException("exports");
+
             InterceptedPart.SetImport(definition, exports);
         }
 

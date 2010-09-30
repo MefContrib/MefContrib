@@ -2,8 +2,6 @@
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using System.ComponentModel.Composition.Hosting;
-using Composition.Interception;
-using MefContrib.Interception.Tests;
 using MefContrib.Tests;
 using Moq;
 using NUnit.Framework;

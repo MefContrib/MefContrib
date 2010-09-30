@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using System.Linq;
-using System.Text;
-
-namespace MefContrib.Interception.Generics
+﻿namespace MefContrib.Interception.Generics
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
+    using System.Linq;
+
     public class GenericExportHandler : IExportHandler
     {
         private ComposablePartCatalog _decoratedCatalog;
-        private AggregateCatalog _catalog = new AggregateCatalog();
-        private IDictionary<Type, Type> _genericTypes = new Dictionary<Type, Type>();
-        private List<Type> _manufacturedParts = new List<Type>();
+        private readonly AggregateCatalog _catalog = new AggregateCatalog();
+        private readonly IDictionary<Type, Type> _genericTypes = new Dictionary<Type, Type>();
+        private readonly List<Type> _manufacturedParts = new List<Type>();
 
         #region IExportHandler Members
 
@@ -29,30 +28,31 @@ namespace MefContrib.Interception.Generics
                 ep.SourceProvider = ep;
                 var locators = ep.GetExportedValues<GenericContractTypeMapping>();
                 foreach (var locator in locators)
-                    genericTypes.Add(locator.GenericContractTypeDefinition, locator.GenericImplementationTypeDefinition);
+                {
+                    genericTypes.Add(
+                        locator.GenericContractTypeDefinition,
+                        locator.GenericImplementationTypeDefinition);
+                }
             }
         }
 
         private void CreateGenericPart(Type importDefinitionType)
         {
             var type = TypeHelper.BuildGenericType(importDefinitionType, _genericTypes);
+            
             _manufacturedParts.Add(type);
-            var typeCatalog = new TypeCatalog(type);
-            _catalog.Catalogs.Add(typeCatalog);
+            _catalog.Catalogs.Add(new TypeCatalog(type));
         }
 
         public IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition, IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> exports)
         {
             var contractDef = (ContractBasedImportDefinition)definition;
-            List<Tuple<ComposablePartDefinition, ExportDefinition>> returnedExports = new List<Tuple<ComposablePartDefinition, ExportDefinition>>();
-            Type importDefinitionType = TypeHelper.GetImportDefinitionType(definition);
-
-            ComposablePartDefinition partDefinition = null;
-
+            var returnedExports = new List<Tuple<ComposablePartDefinition, ExportDefinition>>();
+            var importDefinitionType = TypeHelper.GetImportDefinitionType(definition);
+            
             if (exports.Any())
                 return exports;
 
-            var genericExports = _catalog.GetExports(definition);
             returnedExports.Concat(exports);
             
             if (_manufacturedParts.Contains(importDefinitionType))
@@ -62,6 +62,7 @@ namespace MefContrib.Interception.Generics
                 CreateGenericPart(importDefinitionType);
                 returnedExports.AddRange(_catalog.GetExports(definition));
             }
+            
             return returnedExports;
         }
 

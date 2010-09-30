@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using System.Linq;
-using System.Text;
-using System.Threading;
-
-namespace MefContrib.Interception
+﻿namespace MefContrib.Interception
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
+    using System.Linq;
+    using System.Threading;
+
     public class InterceptingCatalog : ComposablePartCatalog, INotifyComposablePartCatalogChanged
     {
+        private readonly object _lock = new object();
         private readonly ComposablePartCatalog _interceptedCatalog;
         private readonly IExportedValueInterceptor _valueInterceptor;
         private readonly IList<IExportHandler> _handlers;
@@ -18,33 +18,39 @@ namespace MefContrib.Interception
         public InterceptingCatalog(ComposablePartCatalog interceptedCatalog, IExportedValueInterceptor valueInterceptor)
             : this(interceptedCatalog, valueInterceptor, new List<IExportHandler>())
         {
-            
         }
 
         public InterceptingCatalog(ComposablePartCatalog interceptedCatalog, IExportedValueInterceptor valueInterceptor, IList<IExportHandler> handlers)
         {
-            interceptedCatalog.ShouldNotBeNull("interceptedCatalog");
-            valueInterceptor.ShouldNotBeNull("valueInterceptor)");
+            if (interceptedCatalog == null) throw new ArgumentNullException("interceptedCatalog");
+            if (valueInterceptor == null) throw new ArgumentNullException("valueInterceptor");
+            if (handlers == null) throw new ArgumentNullException("handlers");
+            
             _interceptedCatalog = interceptedCatalog;
             _valueInterceptor = valueInterceptor;
             _handlers = handlers;
+            
             InitializeHandlers();
         }
 
         private void InitializeHandlers()
         {
             foreach(var handler in _handlers)
+            {
                 handler.Initialize(this);
-
+            }
         }
 
         public override IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition)
         {
-            definition.ShouldNotBeNull("definition");
-            IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> exports;
-            exports = base.GetExports(definition);
+            if (definition == null) throw new ArgumentNullException("definition");
+
+            var exports = base.GetExports(definition);
             foreach (var handler in _handlers)
+            {
                 exports = handler.GetExports(definition, exports);
+            }
+
             return exports;
         }
 
@@ -56,8 +62,6 @@ namespace MefContrib.Interception
             }
         }
 
-        private object _lock = new object();
-
         private IQueryable<ComposablePartDefinition> GetParts()
         {
             if (_innerPartsQueryable == null)
@@ -66,20 +70,20 @@ namespace MefContrib.Interception
                 {
                     if (_innerPartsQueryable == null)
                     {
-                        var parts = _interceptedCatalog.Parts.Select(
-                                p =>
-                                (ComposablePartDefinition)
-                                new InterceptingComposablePartDefinition(p, _valueInterceptor)).
-                                AsQueryable();
+                        var parts = _interceptedCatalog.Parts
+                            .Select(p => new InterceptingComposablePartDefinition(p, _valueInterceptor))
+                            .AsQueryable();
                         Thread.MemoryBarrier();
                         _innerPartsQueryable = parts;
                     }
                 }
             }
+
             return _innerPartsQueryable;
         }
 
         public event EventHandler<ComposablePartCatalogChangeEventArgs> Changed;
+
         public event EventHandler<ComposablePartCatalogChangeEventArgs> Changing;
     }
 }

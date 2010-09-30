@@ -6,7 +6,6 @@ using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using System.Text;
 using Castle.DynamicProxy;
-using Composition.Interception.DynamicProxy;
 using MefContrib.Interception;
 using MefContrib.Tests;
 using NUnit.Framework;

@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
-using System.ComponentModel.Composition.ReflectionModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-
-namespace MefContrib.Interception.Generics
+﻿namespace MefContrib.Interception.Generics
 {
-    public class TypeHelper
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition.Primitives;
+    using System.ComponentModel.Composition.ReflectionModel;
+    using System.Reflection;
+
+    public static class TypeHelper
     {
         public static Type GetImportDefinitionType(ImportDefinition definition)
         {
             Type importDefinitionType = null;
-            if (ReflectionModelServices.IsImportingParameter(definition))
-                importDefinitionType = GetParameterType(definition);
-            else
-                importDefinitionType = GetMethodType(definition, importDefinitionType);
+            importDefinitionType = ReflectionModelServices.IsImportingParameter(definition)
+                                       ? GetParameterType(definition)
+                                       : GetMethodType(definition, importDefinitionType);
+            
             return importDefinitionType;
         }
 
@@ -40,10 +38,10 @@ namespace MefContrib.Interception.Generics
 
         public static Type GetParameterType(ImportDefinition definition)
         {
-            Type importDefinitionType;
             var importingParameter = ReflectionModelServices.GetImportingParameter(definition);
             var parameterInfo = importingParameter.Value;
-            importDefinitionType = parameterInfo.ParameterType;
+            var importDefinitionType = parameterInfo.ParameterType;
+            
             return importDefinitionType;
         }
 
@@ -52,6 +50,7 @@ namespace MefContrib.Interception.Generics
             var genericImportTypeDefinition = importDefinitionType.GetGenericTypeDefinition();
             var genericTypeLocator = genericTypes[genericImportTypeDefinition];
             var genericType = genericTypeLocator.MakeGenericType(importDefinitionType.GetGenericArguments());
+            
             return genericType;
         }
 

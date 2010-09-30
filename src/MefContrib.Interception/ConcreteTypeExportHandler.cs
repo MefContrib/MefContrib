@@ -1,28 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using System.Linq;
-using System.Text;
-using MefContrib.Interception.Generics;
-
-namespace MefContrib.Interception
+﻿namespace MefContrib.Interception
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
+    using System.Linq;
+    using MefContrib.Interception.Generics;
+
     public class ConcreteTypeExportHandler : IExportHandler
     {
-        private AggregateCatalog _catalog;
+        private readonly AggregateCatalog _catalog;
 
         public ConcreteTypeExportHandler()
         {
             _catalog = new AggregateCatalog();
         }
 
-        public void Initialize(System.ComponentModel.Composition.Primitives.ComposablePartCatalog catalog)
+        public void Initialize(ComposablePartCatalog catalog)
         {
-            
         }
 
-        public IEnumerable<Tuple<System.ComponentModel.Composition.Primitives.ComposablePartDefinition, System.ComponentModel.Composition.Primitives.ExportDefinition>> GetExports(System.ComponentModel.Composition.Primitives.ImportDefinition definition, IEnumerable<Tuple<System.ComponentModel.Composition.Primitives.ComposablePartDefinition, System.ComponentModel.Composition.Primitives.ExportDefinition>> exports)
+        public IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition, IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> exports)
         {
             if (!exports.Any())
                 exports = _catalog.GetExports(definition);
@@ -30,10 +28,8 @@ namespace MefContrib.Interception
             if (exports.Any())
                 return exports;
             
-            var contractDef = (ContractBasedImportDefinition)definition;
-            List<Tuple<ComposablePartDefinition, ExportDefinition>> returnedExports = new List<Tuple<ComposablePartDefinition, ExportDefinition>>();
-            
-            Type importDefinitionType = TypeHelper.GetImportDefinitionType(definition);
+            var returnedExports = new List<Tuple<ComposablePartDefinition, ExportDefinition>>();
+            var importDefinitionType = TypeHelper.GetImportDefinitionType(definition);
             
             if (!importDefinitionType.IsAbstract && !importDefinitionType.IsInterface)
             {

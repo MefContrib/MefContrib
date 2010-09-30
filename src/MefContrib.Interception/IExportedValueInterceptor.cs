@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MefContrib.Interception
+﻿namespace MefContrib.Interception
 {
     public interface IExportedValueInterceptor
     {
