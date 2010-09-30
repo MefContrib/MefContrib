@@ -23,7 +23,7 @@ namespace MefContrib.Integration.Exporters
         /// <summary>
         /// Initializes a new instance of <see cref="RegistrationBasedFactoryExportProvider"/> class.
         /// </summary>
-        /// <param name="factoryMethod">Method that is called when an instance os specific type
+        /// <param name="factoryMethod">Method that is called when an instance of specific type
         /// is requested, optionally with given registration name.</param>
         public RegistrationBasedFactoryExportProvider(Func<Type, string, object> factoryMethod)
         {
@@ -81,7 +81,7 @@ namespace MefContrib.Integration.Exporters
 
         private object GetExportedObject(Type type, string contractName)
         {
-            return factoryMethod.Invoke(type, contractName);
+            return this.factoryMethod.Invoke(type, contractName);
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace MefContrib.Integration.Exporters
         /// </summary>
         public IEnumerable<ContractBasedExportDefinition> ReadOnlyDefinitions
         {
-            get { return definitions.AsReadOnly(); }
+            get { return this.definitions.AsReadOnly(); }
         }
     }
 }

@@ -1,27 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using MefContrib.Integration.Unity.Extensions;
-using MefContrib.Integration.Unity.Strategies;
-using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.ObjectBuilder;
-
 namespace MefContrib.Integration.Unity
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
+    using MefContrib.Integration.Unity.Extensions;
+    using MefContrib.Integration.Unity.Strategies;
+    using Microsoft.Practices.ObjectBuilder2;
+    using Microsoft.Practices.Unity;
+    using Microsoft.Practices.Unity.ObjectBuilder;
+
     /// <summary>
     /// Represents a Unity extension that adds integration with
     /// Managed Extensibility Framework.
     /// </summary>
     public sealed class CompositionIntegration : UnityContainerExtension, IDisposable
     {
-        private readonly bool m_Register;
+        private readonly bool register;
 
-        private AggregateCatalog m_AggregateCatalog;
-        private ExportProvider[] m_Providers;
-        private CompositionContainer m_CompositionContainer;
+        private AggregateCatalog aggregateCatalog;
+        private ExportProvider[] providers;
+        private CompositionContainer compositionContainer;
 
         /// <summary>
         /// Initializes a new instance of <see cref="CompositionIntegration"/> class.
@@ -49,16 +49,16 @@ namespace MefContrib.Integration.Unity
         /// <param name="providers">An array of export providers.</param>
         public CompositionIntegration(bool register, params ExportProvider[] providers)
         {
-            m_AggregateCatalog = new AggregateCatalog();
-            m_Register = register;
-            m_Providers = providers;
+            this.aggregateCatalog = new AggregateCatalog();
+            this.register = register;
+            this.providers = providers;
         }
 
         protected override void Initialize()
         {
             TypeRegistrationTrackerExtension.RegisterIfMissing(Container);
 
-            m_CompositionContainer = PrepareCompositionContainer();
+            this.compositionContainer = PrepareCompositionContainer();
 
             // Main strategies
             Context.Strategies.AddNew<EnumerableResolutionStrategy>(UnityBuildStage.TypeMapping);
@@ -70,13 +70,13 @@ namespace MefContrib.Integration.Unity
                 new LazyResolveBuildPlanPolicy(), typeof(Lazy<>));
 
             Context.Policies.SetDefault<ICompositionContainerPolicy>(
-                new CompositionContainerPolicy(m_CompositionContainer));
+                new CompositionContainerPolicy(compositionContainer));
         }
 
         private CompositionContainer PrepareCompositionContainer()
         {
             // Create the MEF container based on the catalog
-            var compositionContainer = new CompositionContainer(m_AggregateCatalog, m_Providers);
+            var container = new CompositionContainer(this.aggregateCatalog, this.providers);
 
             // If desired, register an instance of CompositionContainer and Unity container in MEF,
             // this will also make CompositionContainer available to the Unity
@@ -85,14 +85,14 @@ namespace MefContrib.Integration.Unity
                 // Create composition batch and add the MEF container and the Unity
                 // container to the MEF
                 var batch = new CompositionBatch();
-                batch.AddExportedValue(compositionContainer);
+                batch.AddExportedValue(container);
                 batch.AddExportedValue(Container);
 
                 // Prepare container
-                compositionContainer.Compose(batch);
+                container.Compose(batch);
             }
 
-            return compositionContainer;
+            return container;
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace MefContrib.Integration.Unity
         /// </summary>
         public bool Register
         {
-            get { return m_Register; }
+            get { return register; }
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace MefContrib.Integration.Unity
         /// </summary>
         public ICollection<ComposablePartCatalog> Catalogs
         {
-            get { return m_AggregateCatalog.Catalogs; }
+            get { return aggregateCatalog.Catalogs; }
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace MefContrib.Integration.Unity
         /// </summary>
         public IEnumerable<ExportProvider> Providers
         {
-            get { return new List<ExportProvider>(m_Providers); }
+            get { return new List<ExportProvider>(providers); }
         }
 
         /// <summary>
@@ -125,22 +125,22 @@ namespace MefContrib.Integration.Unity
         /// </summary>
         public CompositionContainer CompositionContainer
         {
-            get { return m_CompositionContainer; }
+            get { return compositionContainer; }
         }
 
         #region IDisposable
 
         public void Dispose()
         {
-            if (m_CompositionContainer != null)
-                m_CompositionContainer.Dispose();
+            if (compositionContainer != null)
+                compositionContainer.Dispose();
 
-            if (m_AggregateCatalog != null)
-                m_AggregateCatalog.Dispose();
+            if (aggregateCatalog != null)
+                aggregateCatalog.Dispose();
             
-            m_CompositionContainer = null;
-            m_AggregateCatalog = null;
-            m_Providers = null;
+            compositionContainer = null;
+            aggregateCatalog = null;
+            providers = null;
         }
 
         #endregion

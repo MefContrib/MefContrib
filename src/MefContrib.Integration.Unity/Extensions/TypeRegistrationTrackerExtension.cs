@@ -1,17 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Microsoft.Practices.Unity;
-
 namespace MefContrib.Integration.Unity.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using Microsoft.Practices.Unity;
+
     /// <summary>
     /// Unity extension that exposes events which can be used
     /// to track types registered within <see cref="IUnityContainer"/> container.
     /// </summary>
     public sealed class TypeRegistrationTrackerExtension : UnityContainerExtension
     {
-        private readonly List<TypeRegistrationEntry> m_Entries;
+        private readonly List<TypeRegistrationEntry> entries;
 
         /// <summary>
         /// Event raised whenever an instance is being registered.
@@ -28,7 +28,7 @@ namespace MefContrib.Integration.Unity.Extensions
         /// </summary>
         public TypeRegistrationTrackerExtension()
         {
-            m_Entries = new List<TypeRegistrationEntry>();
+            this.entries = new List<TypeRegistrationEntry>();
         }
 
         protected override void Initialize()
@@ -45,7 +45,7 @@ namespace MefContrib.Integration.Unity.Extensions
 
         private void OnRegisteringInstance(object sender, RegisterInstanceEventArgs e)
         {
-            m_Entries.Add(new TypeRegistrationEntry(e.RegisteredType, e.Name));
+            this.entries.Add(new TypeRegistrationEntry(e.RegisteredType, e.Name));
 
             if (RegisteringInstance != null)
                 RegisteringInstance(sender, e);
@@ -53,7 +53,7 @@ namespace MefContrib.Integration.Unity.Extensions
 
         private void OnRegistering(object sender, RegisterEventArgs e)
         {
-            m_Entries.Add(new TypeRegistrationEntry(e.TypeFrom ?? e.TypeTo, e.Name));
+            this.entries.Add(new TypeRegistrationEntry(e.TypeFrom ?? e.TypeTo, e.Name));
 
             if (Registering != null)
                 Registering(sender, e);
@@ -65,7 +65,7 @@ namespace MefContrib.Integration.Unity.Extensions
         /// </summary>
         public ReadOnlyCollection<TypeRegistrationEntry> Entries
         {
-            get { return m_Entries.AsReadOnly(); }
+            get { return this.entries.AsReadOnly(); }
         }
 
         /// <summary>

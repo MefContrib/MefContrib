@@ -1,8 +1,8 @@
-using System.ComponentModel.Composition.Hosting;
-using Microsoft.Practices.ObjectBuilder2;
-
 namespace MefContrib.Integration.Unity.Strategies
 {
+    using System.ComponentModel.Composition.Hosting;
+    using Microsoft.Practices.ObjectBuilder2;
+
     /// <summary>
     /// Represents a builder strategy which holds a <see cref="CompositionContainer"/> instance.
     /// </summary>

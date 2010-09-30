@@ -1,16 +1,16 @@
-using System;
-using MefContrib.Integration.Exporters;
-using MefContrib.Integration.Unity.Extensions;
-using Microsoft.Practices.Unity;
-
 namespace MefContrib.Integration.Unity
 {
+    using System;
+    using MefContrib.Integration.Exporters;
+    using MefContrib.Integration.Unity.Extensions;
+    using Microsoft.Practices.Unity;
+
     /// <summary>
     /// Represents an adapter for the <see cref="IUnityContainer"/> container.
     /// </summary>
     public class UnityContainerAdapter : ContainerAdapterBase
     {
-        private readonly IUnityContainer m_Container;
+        private readonly IUnityContainer container;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UnityContainerAdapter"/> class.
@@ -21,7 +21,7 @@ namespace MefContrib.Integration.Unity
             if (container == null)
                 throw new ArgumentNullException("container");
 
-            m_Container = container;
+            this.container = container;
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace MefContrib.Integration.Unity
         /// <returns>An instance of a given type.</returns>
         public override object Resolve(Type type, string name)
         {
-            return m_Container.Resolve(type, name);
+            return this.container.Resolve(type, name);
         }
 
         /// <summary>
@@ -42,9 +42,9 @@ namespace MefContrib.Integration.Unity
         /// </summary>
         public override void Initialize()
         {
-            TypeRegistrationTrackerExtension.RegisterIfMissing(m_Container);
+            TypeRegistrationTrackerExtension.RegisterIfMissing(container);
 
-            var tracker = m_Container.Configure<TypeRegistrationTrackerExtension>();
+            var tracker = this.container.Configure<TypeRegistrationTrackerExtension>();
 
             foreach (var entry in tracker.Entries)
             {

@@ -1,7 +1,7 @@
-using System;
-
 namespace MefContrib.Integration.Unity.Extensions
 {
+    using System;
+
     /// <summary>
     /// Represents an entry for <see cref="TypeRegistrationTrackerExtension.Entries"/> collection.
     /// </summary>
@@ -17,8 +17,8 @@ namespace MefContrib.Integration.Unity.Extensions
             if (type == null)
                 throw new ArgumentNullException("type");
 
-            Type = type;
-            Name = name;
+            this.Type = type;
+            this.Name = name;
         }
 
         /// <summary>

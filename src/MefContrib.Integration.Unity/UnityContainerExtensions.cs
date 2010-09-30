@@ -1,13 +1,13 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using MefContrib.Integration.Exporters;
-using Microsoft.Practices.Unity;
-
 namespace MefContrib.Integration.Unity
 {
+    using System;
+    using System.Linq;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
+    using MefContrib.Integration.Exporters;
+    using Microsoft.Practices.Unity;
+
     /// <summary>
     /// Contains extensions for the <see cref="IUnityContainer"/> interface.
     /// </summary>
