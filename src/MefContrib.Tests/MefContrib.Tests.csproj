@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Integration\ContractBasedExportDefinitionTests.cs" />
-    <Compile Include="Hosting\FilteredCatalogTests.cs" />
+    <Compile Include="Hosting\FilteringCatalogTests.cs" />
     <Compile Include="Integration\RegistrationBasedFactoryExportProviderTests.cs" />
     <Compile Include="ShouldExtensions.cs" />
   </ItemGroup>

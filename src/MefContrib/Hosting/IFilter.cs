@@ -1,9 +1,9 @@
-using System.ComponentModel.Composition.Primitives;
-
 namespace MefContrib.Hosting
 {
+    using System.ComponentModel.Composition.Primitives;
+
     /// <summary>
-    /// A base interface for a filter used with <see cref="FilteredCatalog"/> class.
+    /// A base interface for a filter used with <see cref="FilteringCatalog"/> class.
     /// </summary>
     public interface IFilter
     {
