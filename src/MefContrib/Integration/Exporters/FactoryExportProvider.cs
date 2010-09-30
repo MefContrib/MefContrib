@@ -9,23 +9,23 @@ namespace MefContrib.Integration.Exporters
     using System.Linq;
 
     /// <summary>
-    /// Represents a registration-based factory export provider.
+    /// Represents a factory export provider.
     /// </summary>
     /// <remarks>
     /// This class can be used to build custom <see cref="ExportProvider"/> which
     /// provides exports from various data sources.
     /// </remarks>
-    public class RegistrationBasedFactoryExportProvider : ExportProvider
+    public class FactoryExportProvider : ExportProvider
     {
         private readonly Func<Type, string, object> factoryMethod;
         private readonly List<ContractBasedExportDefinition> definitions;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="RegistrationBasedFactoryExportProvider"/> class.
+        /// Initializes a new instance of <see cref="FactoryExportProvider"/> class.
         /// </summary>
         /// <param name="factoryMethod">Method that is called when an instance of specific type
         /// is requested, optionally with given registration name.</param>
-        public RegistrationBasedFactoryExportProvider(Func<Type, string, object> factoryMethod)
+        public FactoryExportProvider(Func<Type, string, object> factoryMethod)
         {
             if (factoryMethod == null)
                 throw new ArgumentNullException("factoryMethod");

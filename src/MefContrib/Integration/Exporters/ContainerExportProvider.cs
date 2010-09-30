@@ -13,7 +13,7 @@ namespace MefContrib.Integration.Exporters
     public class ContainerExportProvider : ExportProvider
     {
         private readonly IContainerAdapter containerAdapter;
-        private readonly RegistrationBasedFactoryExportProvider factoryProvider;
+        private readonly FactoryExportProvider factoryProvider;
 
         /// <summary>
         /// Initializes a new instance of <see cref="ContainerExportProvider"/> class.
@@ -24,7 +24,7 @@ namespace MefContrib.Integration.Exporters
             if (containerAdapter == null)
                 throw new ArgumentNullException("containerAdapter");
 
-            this.factoryProvider = new RegistrationBasedFactoryExportProvider(FactoryMethod);
+            this.factoryProvider = new FactoryExportProvider(FactoryMethod);
             this.containerAdapter = containerAdapter;
             this.containerAdapter.RegisteringComponent += OnRegisteringComponentHandler;
             
@@ -64,9 +64,9 @@ namespace MefContrib.Integration.Exporters
         }
 
         /// <summary>
-        /// Gets the underlying <see cref="RegistrationBasedFactoryExportProvider"/> instance.
+        /// Gets the underlying <see cref="FactoryExportProvider"/> instance.
         /// </summary>
-        public RegistrationBasedFactoryExportProvider RegistrationBasedFactoryExportProvider
+        public FactoryExportProvider FactoryExportProvider
         {
             get { return factoryProvider; }
         }

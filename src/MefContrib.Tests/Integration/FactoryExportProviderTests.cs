@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace MefContrib.Tests.Integration
 {
     [TestFixture]
-    public class RegistrationBasedFactoryExportProviderTests
+    public class FactoryExportProviderTests
     {
         #region Fake External Components
 
@@ -136,7 +136,7 @@ namespace MefContrib.Tests.Integration
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var provider = new RegistrationBasedFactoryExportProvider(FactoryMethod1);
+            var provider = new FactoryExportProvider(FactoryMethod1);
             var container = new CompositionContainer(assemblyCatalog, provider);
 
             // Registration
@@ -157,7 +157,7 @@ namespace MefContrib.Tests.Integration
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var provider = new RegistrationBasedFactoryExportProvider(FactoryMethod1);
+            var provider = new FactoryExportProvider(FactoryMethod1);
             var container = new CompositionContainer(assemblyCatalog, provider);
 
             // Registration
@@ -178,7 +178,7 @@ namespace MefContrib.Tests.Integration
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var provider = new RegistrationBasedFactoryExportProvider(FactoryMethod1);
+            var provider = new FactoryExportProvider(FactoryMethod1);
             var container = new CompositionContainer(assemblyCatalog, provider);
 
             // Registration
@@ -196,8 +196,8 @@ namespace MefContrib.Tests.Integration
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var provider1 = new RegistrationBasedFactoryExportProvider(FactoryMethod2_1);
-            var provider2 = new RegistrationBasedFactoryExportProvider(FactoryMethod2_2);
+            var provider1 = new FactoryExportProvider(FactoryMethod2_1);
+            var provider2 = new FactoryExportProvider(FactoryMethod2_2);
             var container = new CompositionContainer(assemblyCatalog, provider1, provider2);
 
             // Registration

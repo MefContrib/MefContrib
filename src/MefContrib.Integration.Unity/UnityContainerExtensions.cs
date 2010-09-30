@@ -59,9 +59,9 @@ namespace MefContrib.Integration.Unity
 
                         // Collect all the exports provided by the parent container and add
                         // them to the child export provider
-                        foreach (var definition in parentContainerExportProvider.RegistrationBasedFactoryExportProvider.ReadOnlyDefinitions)
+                        foreach (var definition in parentContainerExportProvider.FactoryExportProvider.ReadOnlyDefinitions)
                         {
-                            containerExportProvider.RegistrationBasedFactoryExportProvider.Register(
+                            containerExportProvider.FactoryExportProvider.Register(
                                 definition.ContractType,
                                 definition.RegistrationName);
                         }
