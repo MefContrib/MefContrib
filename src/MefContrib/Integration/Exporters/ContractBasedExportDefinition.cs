@@ -1,19 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-
 namespace MefContrib.Integration.Exporters
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
+
     /// <summary>
     /// Represents a contract-based export definition that has a type and
     /// an option registration name.
     /// </summary>
     public class ContractBasedExportDefinition : ExportDefinition
     {
-        private readonly string m_ContractName;
-        private readonly IDictionary<string, object> m_Metadata;
+        private readonly string contractName;
+        private readonly IDictionary<string, object> metadata;
 
         /// <summary>
         /// Initializes a new instance of <see cref="ContractBasedExportDefinition"/> class.
@@ -35,17 +35,17 @@ namespace MefContrib.Integration.Exporters
             if (type == null)
                 throw new ArgumentNullException("type");
 
-            m_Metadata = new Dictionary<string, object>();
-            m_ContractName = registrationName ?? AttributedModelServices.GetContractName(type);
+            this.metadata = new Dictionary<string, object>();
+            this.contractName = registrationName ?? AttributedModelServices.GetContractName(type);
 
             ContractType = type;
             RegistrationName = registrationName;
 
-            m_Metadata.Add(
+            this.metadata.Add(
                 CompositionConstants.ExportTypeIdentityMetadataName,
                 AttributedModelServices.GetTypeIdentity(type));
 
-            m_Metadata.Add(
+            this.metadata.Add(
                 ExporterConstants.IsContractBasedExportMetadataName, true);
         }
 
@@ -63,12 +63,12 @@ namespace MefContrib.Integration.Exporters
 
         public override string ContractName
         {
-            get { return m_ContractName; }
+            get { return contractName; }
         }
 
         public override IDictionary<string, object> Metadata
         {
-            get { return m_Metadata; }
+            get { return metadata; }
         }
 
         #endregion

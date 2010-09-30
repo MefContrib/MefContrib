@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-using MefContrib.Integration.Exporters;
-using MefContrib.Properties;
-
 namespace MefContrib.Integration
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.Linq;
+    using MefContrib.Integration.Exporters;
+    using MefContrib.Properties;
+
     /// <summary>
     /// Provides common services.
     /// </summary>

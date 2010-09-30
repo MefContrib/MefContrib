@@ -1,8 +1,8 @@
-using System;
-using MefContrib.Integration.Exporters;
-
 namespace MefContrib.Integration
 {
+    using System;
+    using MefContrib.Integration.Exporters;
+
     /// <summary>
     /// Represents an abstraction over a dependency injection container.
     /// </summary>

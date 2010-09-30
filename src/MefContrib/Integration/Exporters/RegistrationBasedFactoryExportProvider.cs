@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using System.Diagnostics;
-using System.Linq;
-
 namespace MefContrib.Integration.Exporters
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
+    using System.Diagnostics;
+    using System.Linq;
+
     /// <summary>
     /// Represents a registration-based factory export provider.
     /// </summary>
@@ -17,8 +17,8 @@ namespace MefContrib.Integration.Exporters
     /// </remarks>
     public class RegistrationBasedFactoryExportProvider : ExportProvider
     {
-        private readonly Func<Type, string, object> m_FactoryMethod;
-        private readonly List<ContractBasedExportDefinition> m_Definitions;
+        private readonly Func<Type, string, object> factoryMethod;
+        private readonly List<ContractBasedExportDefinition> definitions;
 
         /// <summary>
         /// Initializes a new instance of <see cref="RegistrationBasedFactoryExportProvider"/> class.
@@ -30,8 +30,8 @@ namespace MefContrib.Integration.Exporters
             if (factoryMethod == null)
                 throw new ArgumentNullException("factoryMethod");
 
-            m_Definitions = new List<ContractBasedExportDefinition>();
-            m_FactoryMethod = factoryMethod;
+            this.definitions = new List<ContractBasedExportDefinition>();
+            this.factoryMethod = factoryMethod;
         }
 
         protected override IEnumerable<Export> GetExportsCore(ImportDefinition definition, AtomicComposition atomicComposition)
@@ -81,7 +81,7 @@ namespace MefContrib.Integration.Exporters
 
         private object GetExportedObject(Type type, string contractName)
         {
-            return m_FactoryMethod.Invoke(type, contractName);
+            return factoryMethod.Invoke(type, contractName);
         }
 
         /// <summary>
@@ -107,14 +107,14 @@ namespace MefContrib.Integration.Exporters
             if (type == null)
                 throw new ArgumentNullException("type");
 
-            var definitions = ReadOnlyDefinitions.Where(t => t.ContractType == type &&
-                                                             t.RegistrationName == registrationName);
+            var exportDefinitions = ReadOnlyDefinitions.Where(t => t.ContractType == type &&
+                                                                   t.RegistrationName == registrationName);
 
             // We cannot add an export definition with the same type and registration name
             // since we will introduce cardinality problems
-            if (definitions.Count() == 0)
+            if (exportDefinitions.Count() == 0)
             {
-                m_Definitions.Add(new ContractBasedExportDefinition(type, registrationName));
+                this.definitions.Add(new ContractBasedExportDefinition(type, registrationName));
             }
         }
 
@@ -123,7 +123,7 @@ namespace MefContrib.Integration.Exporters
         /// </summary>
         public IEnumerable<ContractBasedExportDefinition> ReadOnlyDefinitions
         {
-            get { return m_Definitions.AsReadOnly(); }
+            get { return definitions.AsReadOnly(); }
         }
     }
 }
