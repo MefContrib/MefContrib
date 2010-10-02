@@ -12,15 +12,25 @@
         private readonly object _lock = new object();
         private readonly ComposablePartCatalog _interceptedCatalog;
         private readonly IExportedValueInterceptor _valueInterceptor;
-        private readonly IList<IExportHandler> _handlers;
+        private readonly IEnumerable<IExportHandler> _handlers;
         private IQueryable<ComposablePartDefinition> _innerPartsQueryable;
 
         public InterceptingCatalog(ComposablePartCatalog interceptedCatalog, IExportedValueInterceptor valueInterceptor)
-            : this(interceptedCatalog, valueInterceptor, new List<IExportHandler>())
+            : this(interceptedCatalog, valueInterceptor, Enumerable.Empty<IExportHandler>())
         {
         }
 
-        public InterceptingCatalog(ComposablePartCatalog interceptedCatalog, IExportedValueInterceptor valueInterceptor, IList<IExportHandler> handlers)
+        public InterceptingCatalog(ComposablePartCatalog interceptedCatalog, IExportedValueInterceptor valueInterceptor, params IExportHandler[] handlers)
+            : this(interceptedCatalog, valueInterceptor, handlers.ToList())
+        {
+        }
+
+        public InterceptingCatalog(ComposablePartCatalog interceptedCatalog, params IExportHandler[] handlers)
+            : this(interceptedCatalog, new EmptyInterceptor(), handlers.ToList())
+        {
+        }
+
+        public InterceptingCatalog(ComposablePartCatalog interceptedCatalog, IExportedValueInterceptor valueInterceptor, IEnumerable<IExportHandler> handlers)
         {
             if (interceptedCatalog == null) throw new ArgumentNullException("interceptedCatalog");
             if (valueInterceptor == null) throw new ArgumentNullException("valueInterceptor");
@@ -37,7 +47,7 @@
         {
             foreach(var handler in _handlers)
             {
-                handler.Initialize(this);
+                handler.Initialize(_interceptedCatalog);
             }
         }
 
@@ -85,5 +95,13 @@
         public event EventHandler<ComposablePartCatalogChangeEventArgs> Changed;
 
         public event EventHandler<ComposablePartCatalogChangeEventArgs> Changing;
+
+        private class EmptyInterceptor : IExportedValueInterceptor
+        {
+            public object Intercept(object value)
+            {
+                return value;
+            }
+        }
     }
 }

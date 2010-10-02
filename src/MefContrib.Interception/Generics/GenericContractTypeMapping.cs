@@ -9,7 +9,7 @@
         private readonly Type _genericContractTypeDefinitionDefinition;
         private readonly Type _genericImplementationType;
 
-        public GenericContractTypeMapping(Type genericContractTypeDefinition, Type genericImplementationTypeDefinition)
+        protected GenericContractTypeMapping(Type genericContractTypeDefinition, Type genericImplementationTypeDefinition)
         {
             if (!genericImplementationTypeDefinition.IsGenericTypeDefinition)
                 throw new ArgumentException("Implementation Type must be a generic definition", "genericImplementationTypeDefinition");
@@ -22,6 +22,7 @@
         }
 
         public Type GenericContractTypeDefinition { get { return _genericContractTypeDefinitionDefinition; } }
+        
         public Type GenericImplementationTypeDefinition { get { return _genericImplementationType; } }
     }
 }
