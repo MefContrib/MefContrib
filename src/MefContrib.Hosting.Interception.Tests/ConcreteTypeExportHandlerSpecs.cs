@@ -5,12 +5,10 @@ using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.ComponentModel.Composition.ReflectionModel;
 using System.Linq;
-using System.Text;
-using MefContrib.Interception.Generics;
 using MefContrib.Tests;
 using NUnit.Framework;
 
-namespace MefContrib.Interception.Tests.Generics
+namespace MefContrib.Hosting.Interception.Tests
 {
     namespace Given_a_ConcreteTypeExportHandler
     {

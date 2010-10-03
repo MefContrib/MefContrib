@@ -6,7 +6,7 @@ using MefContrib.Tests;
 using Moq;
 using NUnit.Framework;
 
-namespace MefContrib.Interception.Tests
+namespace MefContrib.Hosting.Interception.Tests
 {
     namespace Given_an_InterceptingCatalog
     {

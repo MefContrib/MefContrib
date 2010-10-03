@@ -5,13 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{842EAC3A-8601-48B0-9023-3B23A3EE7759}</ProjectGuid>
+    <ProjectGuid>{11F6AAB8-BF84-4F7B-A03A-7A5972A15F38}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MefContrib.Interception.Castle</RootNamespace>
-    <AssemblyName>MefContrib.Interception.Castle</AssemblyName>
+    <RootNamespace>MefContrib.Hosting.Interception</RootNamespace>
+    <AssemblyName>MefContrib.Hosting.Interception</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\..\dependencies\desktop\castle\Castle.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -42,15 +40,16 @@
     <Compile Include="..\MefContrib\Properties\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DynamicProxyInterceptor.cs" />
+    <Compile Include="ConcreteTypeExportHandler.cs" />
+    <Compile Include="Generics\GenericContractTypeMapping.cs" />
+    <Compile Include="Generics\GenericExportHandler.cs" />
+    <Compile Include="Generics\TypeHelper.cs" />
+    <Compile Include="IExportedValueInterceptor.cs" />
+    <Compile Include="IExportHandler.cs" />
+    <Compile Include="InterceptingCatalog.cs" />
+    <Compile Include="InterceptingComposablePart.cs" />
+    <Compile Include="InterceptingComposablePartDefinition.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MefContrib.Interception\MefContrib.Interception.csproj">
-      <Project>{11F6AAB8-BF84-4F7B-A03A-7A5972A15F38}</Project>
-      <Name>MefContrib.Interception</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -2,7 +2,7 @@
 using System.Linq;
 using Castle.DynamicProxy;
 
-namespace MefContrib.Interception.Castle
+namespace MefContrib.Hosting.Interception.Castle
 {
     public class DynamicProxyInterceptor : IExportedValueInterceptor
     {

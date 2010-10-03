@@ -23,11 +23,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Hosting.Conventi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Tests", "MefContrib.Tests\MefContrib.Tests.csproj", "{AB89B800-89A4-40A5-84BC-9DD0623D18B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Interception", "MefContrib.Interception\MefContrib.Interception.csproj", "{11F6AAB8-BF84-4F7B-A03A-7A5972A15F38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Hosting.Interception", "MefContrib.Hosting.Interception\MefContrib.Hosting.Interception.csproj", "{11F6AAB8-BF84-4F7B-A03A-7A5972A15F38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Interception.Castle", "MefContrib.Interception.Castle\MefContrib.Interception.Castle.csproj", "{842EAC3A-8601-48B0-9023-3B23A3EE7759}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Hosting.Interception.Castle", "MefContrib.Hosting.Interception.Castle\MefContrib.Hosting.Interception.Castle.csproj", "{842EAC3A-8601-48B0-9023-3B23A3EE7759}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Interception.Tests", "MefContrib.Interception.Tests\MefContrib.Interception.Tests.csproj", "{DF074D3B-DA4A-42CA-8E9C-513B729572E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Hosting.Interception.Tests", "MefContrib.Hosting.Interception.Tests\MefContrib.Hosting.Interception.Tests.csproj", "{DF074D3B-DA4A-42CA-8E9C-513B729572E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
-using System.Text;
-using MefContrib.Interception.Tests;
 using MefContrib.Tests;
 using Moq;
 using NUnit.Framework;
 
-namespace MefContrib.Interception.Tests
+namespace MefContrib.Hosting.Interception.Tests
 {
     namespace Given_an_InterceptingComposablePart
     {

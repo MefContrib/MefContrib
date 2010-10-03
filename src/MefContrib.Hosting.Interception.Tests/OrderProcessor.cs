@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 
-namespace MefContrib.Interception.Tests
+namespace MefContrib.Hosting.Interception.Tests
 {
     [Export]
     public class OrderProcessor

@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
-using System.Linq;
-using System.Text;
 using Castle.DynamicProxy;
-using MefContrib.Interception;
 using MefContrib.Tests;
 using NUnit.Framework;
 
-namespace MefContrib.Interception.Castle.Tests
+namespace MefContrib.Hosting.Interception.Castle.Tests
 {
     namespace Given_a_customer_is_intercepted_with_a_freezable_interceptor
     {

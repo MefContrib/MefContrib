@@ -1,4 +1,4 @@
-﻿namespace MefContrib.Interception
+﻿namespace MefContrib.Hosting.Interception
 {
     using System;
     using System.Collections.Generic;

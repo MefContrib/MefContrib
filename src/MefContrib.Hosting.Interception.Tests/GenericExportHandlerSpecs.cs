@@ -4,13 +4,12 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
-using System.Text;
-using MefContrib.Interception.Generics;
-using MefContrib.Interception.Tests.Generics;
+using MefContrib.Hosting.Interception.Generics;
+using MefContrib.Hosting.Interception.Tests.Generics;
 using MefContrib.Tests;
 using NUnit.Framework;
 
-namespace MefContrib.Interception.Tests
+namespace MefContrib.Hosting.Interception.Tests
 {
     namespace Given_a_GenericExportHandler
     {

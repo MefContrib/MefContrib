@@ -8,8 +8,8 @@
     <ProjectGuid>{DF074D3B-DA4A-42CA-8E9C-513B729572E9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MefContrib.Interception.Tests</RootNamespace>
-    <AssemblyName>MefContrib.Interception.Tests</AssemblyName>
+    <RootNamespace>MefContrib.Hosting.Interception.Tests</RootNamespace>
+    <AssemblyName>MefContrib.Hosting.Interception.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,11 +41,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
@@ -65,13 +60,13 @@
     <Compile Include="Generics\TypeHelperSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MefContrib.Interception.Castle\MefContrib.Interception.Castle.csproj">
+    <ProjectReference Include="..\MefContrib.Hosting.Interception.Castle\MefContrib.Hosting.Interception.Castle.csproj">
       <Project>{842EAC3A-8601-48B0-9023-3B23A3EE7759}</Project>
-      <Name>MefContrib.Interception.Castle</Name>
+      <Name>MefContrib.Hosting.Interception.Castle</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MefContrib.Interception\MefContrib.Interception.csproj">
+    <ProjectReference Include="..\MefContrib.Hosting.Interception\MefContrib.Hosting.Interception.csproj">
       <Project>{11F6AAB8-BF84-4F7B-A03A-7A5972A15F38}</Project>
-      <Name>MefContrib.Interception</Name>
+      <Name>MefContrib.Hosting.Interception</Name>
     </ProjectReference>
     <ProjectReference Include="..\MefContrib.Tests\MefContrib.Tests.csproj">
       <Project>{AB89B800-89A4-40A5-84BC-9DD0623D18B7}</Project>
