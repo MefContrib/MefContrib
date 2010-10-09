@@ -63,14 +63,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Hosting\CommonFilters.cs" />
-    <Compile Include="Hosting\FilteredCatalog.cs" />
+    <Compile Include="Hosting\FilteringCatalog.cs" />
     <Compile Include="Hosting\IFilter.cs" />
     <Compile Include="Integration\ContainerAdapterBase.cs" />
     <Compile Include="Integration\ContainerServices.cs" />
-    <Compile Include="Integration\Exporters\ContainerExportProvider.cs" />
-    <Compile Include="Integration\Exporters\ExporterConstants.cs" />
-    <Compile Include="Integration\Exporters\ContractBasedExportDefinition.cs" />
-    <Compile Include="Integration\Exporters\RegistrationBasedFactoryExportProvider.cs" />
+    <Compile Include="Integration\ContainerExportProvider.cs" />
+    <Compile Include="Hosting\ContractBasedExportDefinition.cs" />
+    <Compile Include="Hosting\FactoryExportProvider.cs" />
     <Compile Include="Integration\IContainerAdapter.cs" />
     <Compile Include="Integration\PartNotComposableAttribute.cs" />
     <Compile Include="Integration\RegisterComponentEventArgs.cs" />

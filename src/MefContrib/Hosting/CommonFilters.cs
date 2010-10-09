@@ -1,17 +1,17 @@
-using System;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-
 namespace MefContrib.Hosting
 {
+    using System;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
+
     /// <summary>
     /// Represent a filter which inspects metadata.
     /// </summary>
     public class ContainsMetadata : IFilter
     {
-        private readonly string m_Metadata;
-        private readonly object m_Value;
+        private readonly string metadata;
+        private readonly object value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContainsMetadata"/> class.
@@ -23,8 +23,8 @@ namespace MefContrib.Hosting
             if (metadata == null)
                 throw new ArgumentNullException("metadata");
 
-            m_Metadata = metadata;
-            m_Value = value;
+            this.metadata = metadata;
+            this.value = value;
         }
 
         /// <summary>
@@ -35,8 +35,8 @@ namespace MefContrib.Hosting
         /// False otherwise.</returns>
         public bool Filter(ComposablePartDefinition part)
         {
-            return part.Metadata.ContainsKey(m_Metadata) &&
-                   part.Metadata[m_Metadata].Equals(m_Value);
+            return part.Metadata.ContainsKey(metadata) &&
+                   part.Metadata[metadata].Equals(value);
         }
     }
 
@@ -46,7 +46,7 @@ namespace MefContrib.Hosting
     /// </summary>
     public class HasCreationPolicy : IFilter
     {
-        private readonly CreationPolicy m_CreationPolicy;
+        private readonly CreationPolicy creationPolicy;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HasCreationPolicy"/> class.
@@ -54,7 +54,7 @@ namespace MefContrib.Hosting
         /// <param name="creationPolicy">Creation policy.</param>
         public HasCreationPolicy(CreationPolicy creationPolicy)
         {
-            m_CreationPolicy = creationPolicy;
+            this.creationPolicy = creationPolicy;
         }
 
         /// <summary>
@@ -65,11 +65,11 @@ namespace MefContrib.Hosting
         /// False otherwise.</returns>
         public bool Filter(ComposablePartDefinition part)
         {
-            if (m_CreationPolicy == CreationPolicy.Any && !part.Metadata.ContainsKey(CompositionConstants.PartCreationPolicyMetadataName))
+            if (creationPolicy == CreationPolicy.Any && !part.Metadata.ContainsKey(CompositionConstants.PartCreationPolicyMetadataName))
                 return true;
 
             return part.Metadata.ContainsKey(CompositionConstants.PartCreationPolicyMetadataName) &&
-                   ((CreationPolicy)part.Metadata[CompositionConstants.PartCreationPolicyMetadataName]) == m_CreationPolicy;
+                   ((CreationPolicy)part.Metadata[CompositionConstants.PartCreationPolicyMetadataName]) == creationPolicy;
         }
     }
 }

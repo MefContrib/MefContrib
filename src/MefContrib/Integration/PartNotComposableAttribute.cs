@@ -1,7 +1,7 @@
-using System;
-
 namespace MefContrib.Integration
 {
+    using System;
+
     /// <summary>
     /// Suppresses MEF composition for a class created by the IoC container.
     /// </summary>

@@ -2,13 +2,13 @@ using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
-using MefContrib.Integration.Exporters;
+using MefContrib.Hosting;
 using NUnit.Framework;
 
-namespace MefContrib.Tests.Integration
+namespace MefContrib.Tests.Hosting
 {
     [TestFixture]
-    public class RegistrationBasedFactoryExportProviderTests
+    public class FactoryExportProviderTests
     {
         #region Fake External Components
 
@@ -136,7 +136,7 @@ namespace MefContrib.Tests.Integration
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var provider = new RegistrationBasedFactoryExportProvider(FactoryMethod1);
+            var provider = new FactoryExportProvider(FactoryMethod1);
             var container = new CompositionContainer(assemblyCatalog, provider);
 
             // Registration
@@ -157,7 +157,7 @@ namespace MefContrib.Tests.Integration
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var provider = new RegistrationBasedFactoryExportProvider(FactoryMethod1);
+            var provider = new FactoryExportProvider(FactoryMethod1);
             var container = new CompositionContainer(assemblyCatalog, provider);
 
             // Registration
@@ -178,7 +178,7 @@ namespace MefContrib.Tests.Integration
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var provider = new RegistrationBasedFactoryExportProvider(FactoryMethod1);
+            var provider = new FactoryExportProvider(FactoryMethod1);
             var container = new CompositionContainer(assemblyCatalog, provider);
 
             // Registration
@@ -196,8 +196,8 @@ namespace MefContrib.Tests.Integration
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var provider1 = new RegistrationBasedFactoryExportProvider(FactoryMethod2_1);
-            var provider2 = new RegistrationBasedFactoryExportProvider(FactoryMethod2_2);
+            var provider1 = new FactoryExportProvider(FactoryMethod2_1);
+            var provider2 = new FactoryExportProvider(FactoryMethod2_2);
             var container = new CompositionContainer(assemblyCatalog, provider1, provider2);
 
             // Registration
@@ -240,6 +240,55 @@ namespace MefContrib.Tests.Integration
                 return new ExternalComponent2();
 
             return null;
+        }
+
+        [Test]
+        public void FactoryExportProviderResolvesServiceRegisteredUsingGivenFactoryMethodTest()
+        {
+            // Setup
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var provider = new FactoryExportProvider()
+                .Register(typeof (IExternalComponent), () => new ExternalComponent1())
+                .Register(typeof (ExternalComponent2), () => new ExternalComponent2());
+            var container = new CompositionContainer(assemblyCatalog, provider);
+            
+            var externalComponent = container.GetExportedValue<IExternalComponent>();
+            Assert.That(externalComponent, Is.Not.Null);
+            Assert.That(externalComponent.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+
+            var externalComponent2 = container.GetExportedValue<ExternalComponent2>();
+            Assert.That(externalComponent2, Is.Not.Null);
+            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+
+            var mefComponent = container.GetExportedValue<IMefComponent>();
+            Assert.That(mefComponent, Is.Not.Null);
+            Assert.That(mefComponent.Component1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.That(mefComponent.Component2.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+        }
+
+        [Test]
+        public void FactoryExportProviderExecutesTheFactoryEachTimeTheInstanceIsNeadedTest()
+        {
+            var count = 0;
+
+            // Setup
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var provider = new FactoryExportProvider(typeof (ExternalComponent2), () =>
+            {
+                count++;
+                return new ExternalComponent2();
+            });
+            var container = new CompositionContainer(assemblyCatalog, provider);
+
+            var externalComponent1 = container.GetExportedValue<ExternalComponent2>();
+            Assert.That(externalComponent1, Is.Not.Null);
+            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+
+            var externalComponent2 = container.GetExportedValue<ExternalComponent2>();
+            Assert.That(externalComponent2, Is.Not.Null);
+            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+
+            Assert.That(count, Is.EqualTo(2));
         }
     }
 }

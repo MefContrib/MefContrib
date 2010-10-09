@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-using MefContrib.Integration.Exporters;
-using MefContrib.Properties;
-
 namespace MefContrib.Integration
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.Linq;
+    using MefContrib.Hosting;
+    using MefContrib.Properties;
+
     /// <summary>
     /// Provides common services.
     /// </summary>
@@ -22,7 +22,7 @@ namespace MefContrib.Integration
         /// <returns>Resolved instance or null, if no instance has been found.</returns>
         /// <remarks>
         /// Does not resolve instances which are provided by means of
-        /// <see cref="RegistrationBasedFactoryExportProvider"/>.
+        /// <see cref="FactoryExportProvider"/>.
         /// </remarks>
         public static Lazy<object> Resolve(ExportProvider exportProvider, Type type, string name)
         {
@@ -37,8 +37,8 @@ namespace MefContrib.Integration
             var lazyExport = exports.First();
             var lazyExportMetadata = lazyExport.Metadata as IDictionary<string, object>;
             if (lazyExportMetadata != null &&
-                lazyExportMetadata.ContainsKey(ExporterConstants.IsContractBasedExportMetadataName) &&
-                true.Equals(lazyExportMetadata[ExporterConstants.IsContractBasedExportMetadataName]))
+                lazyExportMetadata.ContainsKey(ContractBasedExportDefinition.IsContractBasedExportMetadataName) &&
+                true.Equals(lazyExportMetadata[ContractBasedExportDefinition.IsContractBasedExportMetadataName]))
             {
                 return null;
             }
@@ -56,7 +56,7 @@ namespace MefContrib.Integration
         /// <returns>Resolved collection of lazy instances or null, if no instance has been found.</returns>
         /// <remarks>
         /// Does not resolve instances which are provided by means of
-        /// <see cref="RegistrationBasedFactoryExportProvider"/>.
+        /// <see cref="FactoryExportProvider"/>.
         /// </remarks>
         public static IEnumerable<Lazy<object>> ResolveAll(ExportProvider exportProvider, Type type, string name)
         {
@@ -71,8 +71,8 @@ namespace MefContrib.Integration
             {
                 var lazyExportMetadata = export.Metadata as IDictionary<string, object>;
                 if (lazyExportMetadata != null &&
-                    lazyExportMetadata.ContainsKey(ExporterConstants.IsContractBasedExportMetadataName) &&
-                    true.Equals(lazyExportMetadata[ExporterConstants.IsContractBasedExportMetadataName]))
+                    lazyExportMetadata.ContainsKey(ContractBasedExportDefinition.IsContractBasedExportMetadataName) &&
+                    true.Equals(lazyExportMetadata[ContractBasedExportDefinition.IsContractBasedExportMetadataName]))
                 {
                     continue;
                 }

@@ -1,27 +1,27 @@
-using System;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using System.Linq;
-using System.Linq.Expressions;
-
 namespace MefContrib.Hosting
 {
+    using System;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
+    using System.Linq;
+    using System.Linq.Expressions;
+
     /// <summary>
     /// Represents a catalog which wraps any <see cref="ComposablePartCatalog"/> and
     /// filters out <see cref="ComposablePartDefinition"/>s based on a given criteria.
     /// </summary>
-    public class FilteredCatalog : ComposablePartCatalog, INotifyComposablePartCatalogChanged
+    public class FilteringCatalog : ComposablePartCatalog, INotifyComposablePartCatalogChanged
     {
-        private readonly INotifyComposablePartCatalogChanged m_InnerNotifyChange;
-        private readonly IQueryable<ComposablePartDefinition> m_PartsQuery;
+        private readonly INotifyComposablePartCatalogChanged innerNotifyChange;
+        private readonly IQueryable<ComposablePartDefinition> partsQuery;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FilteredCatalog"/> class.
+        /// Initializes a new instance of the <see cref="FilteringCatalog"/> class.
         /// </summary>
         /// <param name="inner">A <see cref="ComposablePartCatalog"/> whose parts
         /// are to be filtered based on a given criteria.</param>
         /// <param name="expression">An <see cref="Expression"/> which defines the filter query.</param>
-        public FilteredCatalog(ComposablePartCatalog inner,
+        public FilteringCatalog(ComposablePartCatalog inner,
                                Expression<Func<ComposablePartDefinition, bool>> expression)
         {
             if (inner == null)
@@ -30,18 +30,18 @@ namespace MefContrib.Hosting
             if (expression == null)
                 throw new ArgumentNullException("expression");
 
-            m_InnerNotifyChange = inner as INotifyComposablePartCatalogChanged;
-            m_PartsQuery = inner.Parts.Where(expression);
+            this.innerNotifyChange = inner as INotifyComposablePartCatalogChanged;
+            this.partsQuery = inner.Parts.Where(expression);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FilteredCatalog"/> class.
+        /// Initializes a new instance of the <see cref="FilteringCatalog"/> class.
         /// </summary>
         /// <param name="inner">A <see cref="ComposablePartCatalog"/> whose parts
         /// are to be filtered based on a given criteria.</param>
         /// <param name="filter">An instance of the <see cref="IFilter"/> interface
         /// to be used as a filter query.</param>
-        public FilteredCatalog(ComposablePartCatalog inner, IFilter filter)
+        public FilteringCatalog(ComposablePartCatalog inner, IFilter filter)
             : this(inner, p => filter.Filter(p))
         {
         }
@@ -50,7 +50,7 @@ namespace MefContrib.Hosting
         {
             get
             {
-                return m_PartsQuery;
+                return this.partsQuery;
             }
         }
 
@@ -58,13 +58,13 @@ namespace MefContrib.Hosting
         {
             add
             {
-                if (m_InnerNotifyChange != null)
-                    m_InnerNotifyChange.Changed += value;
+                if (this.innerNotifyChange != null)
+                    this.innerNotifyChange.Changed += value;
             }
             remove
             {
-                if (m_InnerNotifyChange != null)
-                    m_InnerNotifyChange.Changed -= value;
+                if (this.innerNotifyChange != null)
+                    this.innerNotifyChange.Changed -= value;
             }
         }
 
@@ -72,13 +72,13 @@ namespace MefContrib.Hosting
         {
             add
             {
-                if (m_InnerNotifyChange != null)
-                    m_InnerNotifyChange.Changing += value;
+                if (this.innerNotifyChange != null)
+                    this.innerNotifyChange.Changing += value;
             }
             remove
             {
-                if (m_InnerNotifyChange != null)
-                    m_InnerNotifyChange.Changing -= value;
+                if (this.innerNotifyChange != null)
+                    this.innerNotifyChange.Changing -= value;
             }
         }
     }

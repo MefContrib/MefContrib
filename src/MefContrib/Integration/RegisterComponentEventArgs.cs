@@ -1,7 +1,7 @@
-using System;
-
 namespace MefContrib.Integration
 {
+    using System;
+
     /// <summary>
     /// Represents arguments for <see cref="IContainerAdapter.RegisteringComponent"/> event.
     /// </summary>

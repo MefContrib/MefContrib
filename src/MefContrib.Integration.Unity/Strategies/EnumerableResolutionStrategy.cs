@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Utility;
-
 namespace MefContrib.Integration.Unity.Strategies
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using Microsoft.Practices.ObjectBuilder2;
+    using Microsoft.Practices.Unity;
+    using Microsoft.Practices.Unity.Utility;
+
     /// <summary>
     /// This strategy implements the logic that will return all instances
     /// when an <see cref="IEnumerable{T}"/> parameter is detected.

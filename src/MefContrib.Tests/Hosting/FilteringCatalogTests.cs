@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace MefContrib.Tests.Hosting
 {
     [TestFixture]
-    public class FilteredCatalogTests
+    public class FilteringCatalogTests
     {
         public interface IMetadataComponent {}
 
@@ -26,8 +26,8 @@ namespace MefContrib.Tests.Hosting
         [Test]
         public void FilterBasedOnMetadataUsingContainsMetadataTest()
         {
-            var catalog = new AssemblyCatalog(typeof(FilteredCatalogTests).Assembly);
-            var filteredCatalog = new FilteredCatalog(catalog, new ContainsMetadata("key", "value"));
+            var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
+            var filteredCatalog = new FilteringCatalog(catalog, new ContainsMetadata("key", "value"));
             var container = new CompositionContainer(filteredCatalog);
             var components = container.GetExports<IMetadataComponent>();
 
@@ -38,8 +38,8 @@ namespace MefContrib.Tests.Hosting
         [Test]
         public void FilterBasedOnMetadataUsingLambdaExpressionTest()
         {
-            var catalog = new AssemblyCatalog(typeof(FilteredCatalogTests).Assembly);
-            var filteredCatalog = new FilteredCatalog(catalog,
+            var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
+            var filteredCatalog = new FilteringCatalog(catalog,
                                                       partDefinition => partDefinition.Metadata.ContainsKey("key") &&
                                                                         partDefinition.Metadata["key"].Equals("value"));
             var container = new CompositionContainer(filteredCatalog);
@@ -79,8 +79,8 @@ namespace MefContrib.Tests.Hosting
         [Test]
         public void FilterBasedOnSharedLifetimeUsingHasCreationPolicyTest()
         {
-            var catalog = new AssemblyCatalog(typeof(FilteredCatalogTests).Assembly);
-            var filteredCatalog = new FilteredCatalog(catalog, new HasCreationPolicy(CreationPolicy.Shared));
+            var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
+            var filteredCatalog = new FilteringCatalog(catalog, new HasCreationPolicy(CreationPolicy.Shared));
             var container = new CompositionContainer(filteredCatalog);
             var components = container.GetExports<ILifetimeComponent>();
 
@@ -92,8 +92,8 @@ namespace MefContrib.Tests.Hosting
         [Test]
         public void FilterBasedOnNonSharedLifetimeUsingHasCreationPolicyTest()
         {
-            var catalog = new AssemblyCatalog(typeof(FilteredCatalogTests).Assembly);
-            var filteredCatalog = new FilteredCatalog(catalog, new HasCreationPolicy(CreationPolicy.NonShared));
+            var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
+            var filteredCatalog = new FilteringCatalog(catalog, new HasCreationPolicy(CreationPolicy.NonShared));
             var container = new CompositionContainer(filteredCatalog);
             var components = container.GetExports<ILifetimeComponent>();
 
@@ -105,8 +105,8 @@ namespace MefContrib.Tests.Hosting
         [Test]
         public void FilterBasedOnAnyLifetimeUsingHasCreationPolicyTest()
         {
-            var catalog = new AssemblyCatalog(typeof(FilteredCatalogTests).Assembly);
-            var filteredCatalog = new FilteredCatalog(catalog, new HasCreationPolicy(CreationPolicy.Any));
+            var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
+            var filteredCatalog = new FilteringCatalog(catalog, new HasCreationPolicy(CreationPolicy.Any));
             var container = new CompositionContainer(filteredCatalog);
             var components = container.GetExports<ILifetimeComponent>();
 
@@ -176,10 +176,10 @@ namespace MefContrib.Tests.Hosting
         [Test]
         public void ParentChildContainerTest()
         {
-            var catalog = new AssemblyCatalog(typeof(FilteredCatalogTests).Assembly);
+            var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
             var parent = new CompositionContainer(catalog);
 
-            var filteredCat = new FilteredCatalog(catalog, new HasCreationPolicy(CreationPolicy.NonShared));
+            var filteredCat = new FilteringCatalog(catalog, new HasCreationPolicy(CreationPolicy.NonShared));
             var child = new CompositionContainer(filteredCat, parent);
 
             var root = child.GetExportedValue<Root>();

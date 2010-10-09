@@ -1,8 +1,8 @@
-using System;
-using Microsoft.Practices.ObjectBuilder2;
-
 namespace MefContrib.Integration.Unity.Strategies
 {
+    using System;
+    using Microsoft.Practices.ObjectBuilder2;
+
     /// <summary>
     /// Represents a MEF composition strategy which tries to resolve desired
     /// component via MEF. If succeeded, build process is completed.

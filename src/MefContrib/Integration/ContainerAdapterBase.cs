@@ -1,8 +1,7 @@
-using System;
-using MefContrib.Integration.Exporters;
-
 namespace MefContrib.Integration
 {
+    using System;
+
     /// <summary>
     /// Represents an abstract base class which all <see cref="IContainerAdapter"/>
     /// implementators can inherit from.

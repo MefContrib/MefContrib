@@ -1,13 +1,12 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using MefContrib.Integration.Exporters;
-using Microsoft.Practices.Unity;
-
 namespace MefContrib.Integration.Unity
 {
+    using System;
+    using System.Linq;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
+    using Microsoft.Practices.Unity;
+
     /// <summary>
     /// Contains extensions for the <see cref="IUnityContainer"/> interface.
     /// </summary>
@@ -59,9 +58,9 @@ namespace MefContrib.Integration.Unity
 
                         // Collect all the exports provided by the parent container and add
                         // them to the child export provider
-                        foreach (var definition in parentContainerExportProvider.RegistrationBasedFactoryExportProvider.ReadOnlyDefinitions)
+                        foreach (var definition in parentContainerExportProvider.FactoryExportProvider.ReadOnlyDefinitions)
                         {
-                            containerExportProvider.RegistrationBasedFactoryExportProvider.Register(
+                            containerExportProvider.FactoryExportProvider.Register(
                                 definition.ContractType,
                                 definition.RegistrationName);
                         }

@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Unity;
-
 namespace MefContrib.Integration.Unity.Strategies
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using Microsoft.Practices.ObjectBuilder2;
+    using Microsoft.Practices.Unity;
+
     /// <summary>
     /// Build plan which enables true support for <see cref="Lazy{T}"/>.
     /// </summary>
@@ -68,33 +68,33 @@ namespace MefContrib.Integration.Unity.Strategies
 
         private class ResolveTrampoline<T>
         {
-            private readonly IUnityContainer m_Container;
-            private readonly string m_Name;
+            private readonly IUnityContainer container;
+            private readonly string name;
 
             public ResolveTrampoline(IUnityContainer container, string name)
             {
-                m_Container = container;
-                m_Name = name;
+                this.container = container;
+                this.name = name;
             }
 
             public T Resolve()
             {
-                return m_Container.Resolve<T>(m_Name);
+                return this.container.Resolve<T>(name);
             }
         }
 
         private class ResolveAllTrampoline<T>
         {
-            private readonly IUnityContainer m_Container;
+            private readonly IUnityContainer container;
 
             public ResolveAllTrampoline(IUnityContainer container)
             {
-                m_Container = container;
+                this.container = container;
             }
 
             public IEnumerable<T> ResolveAll()
             {
-                return m_Container.ResolveAll<T>();
+                return this.container.ResolveAll<T>();
             }
         }
     }
