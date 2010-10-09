@@ -5,7 +5,7 @@ namespace MefContrib.Integration
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
-    using MefContrib.Integration.Exporters;
+    using MefContrib.Hosting;
     using MefContrib.Properties;
 
     /// <summary>
@@ -37,8 +37,8 @@ namespace MefContrib.Integration
             var lazyExport = exports.First();
             var lazyExportMetadata = lazyExport.Metadata as IDictionary<string, object>;
             if (lazyExportMetadata != null &&
-                lazyExportMetadata.ContainsKey(ExporterConstants.IsContractBasedExportMetadataName) &&
-                true.Equals(lazyExportMetadata[ExporterConstants.IsContractBasedExportMetadataName]))
+                lazyExportMetadata.ContainsKey(ContractBasedExportDefinition.IsContractBasedExportMetadataName) &&
+                true.Equals(lazyExportMetadata[ContractBasedExportDefinition.IsContractBasedExportMetadataName]))
             {
                 return null;
             }
@@ -71,8 +71,8 @@ namespace MefContrib.Integration
             {
                 var lazyExportMetadata = export.Metadata as IDictionary<string, object>;
                 if (lazyExportMetadata != null &&
-                    lazyExportMetadata.ContainsKey(ExporterConstants.IsContractBasedExportMetadataName) &&
-                    true.Equals(lazyExportMetadata[ExporterConstants.IsContractBasedExportMetadataName]))
+                    lazyExportMetadata.ContainsKey(ContractBasedExportDefinition.IsContractBasedExportMetadataName) &&
+                    true.Equals(lazyExportMetadata[ContractBasedExportDefinition.IsContractBasedExportMetadataName]))
                 {
                     continue;
                 }

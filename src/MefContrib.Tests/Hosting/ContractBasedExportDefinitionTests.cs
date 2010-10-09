@@ -1,8 +1,8 @@
 using System;
-using MefContrib.Integration.Exporters;
+using MefContrib.Hosting;
 using NUnit.Framework;
 
-namespace MefContrib.Tests.Integration
+namespace MefContrib.Tests.Hosting
 {
     [TestFixture]
     public class ContractBasedExportDefinitionTests
@@ -33,7 +33,7 @@ namespace MefContrib.Tests.Integration
             var exportDefinition = new ContractBasedExportDefinition(typeof(IComponent));
             Assert.That(exportDefinition.ContractType, Is.EqualTo(typeof(IComponent)));
             Assert.That(exportDefinition.RegistrationName, Is.Null);
-            Assert.That(exportDefinition.ContractName, Is.EqualTo("MefContrib.Tests.Integration.ContractBasedExportDefinitionTests+IComponent"));
+            Assert.That(exportDefinition.ContractName, Is.EqualTo("MefContrib.Tests.Hosting.ContractBasedExportDefinitionTests+IComponent"));
         }
     }
 }

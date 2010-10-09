@@ -1,4 +1,4 @@
-namespace MefContrib.Integration.Exporters
+namespace MefContrib.Hosting
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +12,11 @@ namespace MefContrib.Integration.Exporters
     /// </summary>
     public class ContractBasedExportDefinition : ExportDefinition
     {
+        /// <summary>
+        /// Represents a metadata which identifies a contract based export.
+        /// </summary>
+        public const string IsContractBasedExportMetadataName = "IsContractBasedExport";
+
         /// <summary>
         /// Initializes a new instance of <see cref="ContractBasedExportDefinition"/> class.
         /// </summary>
@@ -38,6 +43,8 @@ namespace MefContrib.Integration.Exporters
         /// </summary>
         public string RegistrationName { get; private set; }
 
+        #region Private Implementation
+
         private static IDictionary<string,object> GetMetadata(Type type)
         {
             return new Dictionary<string, object>
@@ -45,11 +52,11 @@ namespace MefContrib.Integration.Exporters
                            {
                                CompositionConstants.ExportTypeIdentityMetadataName,
                                AttributedModelServices.GetTypeIdentity(type)
-                           },
+                               },
                            {
-                               ExporterConstants.IsContractBasedExportMetadataName,
+                               IsContractBasedExportMetadataName,
                                true
-                           }
+                               }
                        };
         }
 
@@ -57,5 +64,7 @@ namespace MefContrib.Integration.Exporters
         {
             return registrationName ?? AttributedModelServices.GetContractName(type);
         }
+
+        #endregion
     }
 }

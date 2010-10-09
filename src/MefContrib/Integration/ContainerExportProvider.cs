@@ -1,10 +1,11 @@
-namespace MefContrib.Integration.Exporters
+namespace MefContrib.Integration
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
     using System.Linq;
+    using MefContrib.Hosting;
 
     /// <summary>
     /// Represents an <see cref="ExportProvider"/> which can provide

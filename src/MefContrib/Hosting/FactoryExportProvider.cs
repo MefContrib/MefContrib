@@ -1,4 +1,4 @@
-namespace MefContrib.Integration.Exporters
+namespace MefContrib.Hosting
 {
     using System;
     using System.Collections.Generic;
