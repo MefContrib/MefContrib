@@ -52,7 +52,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             var firstScanner =
                 new Mock<ITypeScanner>();
             firstScanner.Setup(x => x.GetTypes(It.IsAny<Predicate<Type>>()))
-                .Returns(new List<Type> { typeof(int) });
+                .Returns(new List<Type> { typeof(object) });
 
             var secondScanner =
                 new Mock<ITypeScanner>();

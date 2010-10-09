@@ -9,14 +9,18 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System.ComponentModel.Composition.Primitives;
     using System.ComponentModel.Composition.ReflectionModel;
     using System.Linq;
-    using System.Reflection;
     using MefContrib.Hosting.Conventions.Configuration;
-    using Moq;
     using NUnit.Framework;
 
     [TestFixture]
     public class NewConventionCatalogTests
     {
+        [Test]
+        public void Ctor_should_detect_registries_from_application_domain_when_called_with_no_arguments()
+        {
+            throw new NotImplementedException();
+        }
+
         [Test]
         public void Ctor_should_throw_argumentnullexception_is_called_with_null_params_array_of_registries()
         {

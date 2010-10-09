@@ -56,6 +56,11 @@ namespace MefContrib.Hosting.Conventions
             return type.IsGenericType ? type.GetGenericArguments()[0] : type;
         }
 
+        public static bool HasDefaultConstructor(this Type self)
+        {
+            return self.GetConstructor(Type.EmptyTypes) != null;
+        }
+
         public static ConstructorInfo GetGreediestConstructor(this Type type)
         {
             var constructor = type

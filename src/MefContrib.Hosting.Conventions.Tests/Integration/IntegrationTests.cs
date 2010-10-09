@@ -16,8 +16,11 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
         [Test]
         public void ConventionCatalog_should_support_constructor_injection()
         {
+            //var catalog =
+            //    new ConventionCatalog(new CtorRegistry());
+
             var catalog =
-                new ConventionCatalog(new CtorRegistry());
+                new ConventionCatalog();
 
             var instance =
                 new ConventionPart<InjectedHost>();
