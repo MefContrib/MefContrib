@@ -12,41 +12,20 @@ namespace MefContrib.Integration.Exporters
     /// </summary>
     public class ContractBasedExportDefinition : ExportDefinition
     {
-        private readonly string contractName;
-        private readonly IDictionary<string, object> metadata;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="ContractBasedExportDefinition"/> class.
-        /// </summary>
-        /// <param name="type">Type this export defines.</param>
-        public ContractBasedExportDefinition(Type type)
-            : this(type, null)
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of <see cref="ContractBasedExportDefinition"/> class.
         /// </summary>
         /// <param name="type">Type this export defines.</param>
         /// <param name="registrationName">Registration name under which <paramref name="type"/>
         /// has been registered.</param>
-        public ContractBasedExportDefinition(Type type, string registrationName)
+        public ContractBasedExportDefinition(Type type, string registrationName = null)
+            : base(GetContractName(type, registrationName), GetMetadata(type))
         {
             if (type == null)
                 throw new ArgumentNullException("type");
-
-            this.metadata = new Dictionary<string, object>();
-            this.contractName = registrationName ?? AttributedModelServices.GetContractName(type);
-
+            
             ContractType = type;
             RegistrationName = registrationName;
-
-            this.metadata.Add(
-                CompositionConstants.ExportTypeIdentityMetadataName,
-                AttributedModelServices.GetTypeIdentity(type));
-
-            this.metadata.Add(
-                ExporterConstants.IsContractBasedExportMetadataName, true);
         }
 
         /// <summary>
@@ -59,18 +38,24 @@ namespace MefContrib.Integration.Exporters
         /// </summary>
         public string RegistrationName { get; private set; }
 
-        #region Overrides
-
-        public override string ContractName
+        private static IDictionary<string,object> GetMetadata(Type type)
         {
-            get { return contractName; }
+            return new Dictionary<string, object>
+                       {
+                           {
+                               CompositionConstants.ExportTypeIdentityMetadataName,
+                               AttributedModelServices.GetTypeIdentity(type)
+                           },
+                           {
+                               ExporterConstants.IsContractBasedExportMetadataName,
+                               true
+                           }
+                       };
         }
 
-        public override IDictionary<string, object> Metadata
+        private static string GetContractName(Type type, string registrationName)
         {
-            get { return metadata; }
+            return registrationName ?? AttributedModelServices.GetContractName(type);
         }
-
-        #endregion
     }
 }
