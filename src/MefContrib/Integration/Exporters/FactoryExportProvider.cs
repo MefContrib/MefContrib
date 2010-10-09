@@ -5,7 +5,6 @@ namespace MefContrib.Integration.Exporters
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
-    using System.Diagnostics;
     using System.Linq;
 
     /// <summary>
@@ -18,7 +17,46 @@ namespace MefContrib.Integration.Exporters
     public class FactoryExportProvider : ExportProvider
     {
         private readonly Func<Type, string, object> factoryMethod;
-        private readonly List<ContractBasedExportDefinition> definitions;
+        private readonly Dictionary<ContractBasedExportDefinition, Func<object>> definitions;
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="FactoryExportProvider"/> class.
+        /// </summary>
+        public FactoryExportProvider()
+        {
+            this.definitions = new Dictionary<ContractBasedExportDefinition, Func<object>>();
+            this.factoryMethod = (t, s) => { throw new NotSupportedException(); };
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="FactoryExportProvider"/> class.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> to be registered.</param>
+        /// <param name="factory">Factory method.</param>
+        public FactoryExportProvider(Type type, Func<object> factory)
+            : this()
+        {
+            if (type == null) throw new ArgumentNullException("type");
+            if (factory == null) throw new ArgumentNullException("factory");
+
+            Register(type, factory);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="FactoryExportProvider"/> class.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> to be registered.</param>
+        /// <param name="registrationName">Registration name.</param>
+        /// <param name="factory">Factory method.</param>
+        public FactoryExportProvider(Type type, string registrationName, Func<object> factory)
+            : this()
+        {
+            if (type == null) throw new ArgumentNullException("type");
+            if (registrationName == null) throw new ArgumentNullException("registrationName");
+            if (factory == null) throw new ArgumentNullException("factory");
+
+            Register(type, registrationName, factory);
+        }
 
         /// <summary>
         /// Initializes a new instance of <see cref="FactoryExportProvider"/> class.
@@ -30,7 +68,7 @@ namespace MefContrib.Integration.Exporters
             if (factoryMethod == null)
                 throw new ArgumentNullException("factoryMethod");
 
-            this.definitions = new List<ContractBasedExportDefinition>();
+            this.definitions = new Dictionary<ContractBasedExportDefinition, Func<object>>();
             this.factoryMethod = factoryMethod;
         }
 
@@ -38,62 +76,35 @@ namespace MefContrib.Integration.Exporters
         {
             if (definition.Cardinality == ImportCardinality.ExactlyOne || definition.Cardinality == ImportCardinality.ZeroOrOne)
             {
-                return GetExportsCore(ReadOnlyDefinitions, definition.Constraint.Compile());
+                var constraint = definition.Constraint.Compile();
+                return from exportDefinition in this.definitions
+                       where constraint(exportDefinition.Key)
+                       select new Export(exportDefinition.Key, exportDefinition.Value);
             }
 
             if (definition.ContractName != null)
             {
-                var list = new List<Export>();
-                foreach (var exportDefinition in ReadOnlyDefinitions)
-                {
-                    if (AttributedModelServices.GetContractName(exportDefinition.ContractType) == definition.ContractName)
-                    {
-                        var def = exportDefinition;
-                        var export = new Export(exportDefinition, () => GetExportedObject(def.ContractType, def.RegistrationName));
-
-                        list.Add(export);
-                    }
-                }
-
-                return list;
+                return from exportDefinition in this.definitions
+                       where AttributedModelServices.GetContractName(
+                           exportDefinition.Key.ContractType) == definition.ContractName
+                       select new Export(exportDefinition.Key, exportDefinition.Value);
             }
 
             return Enumerable.Empty<Export>();
-        }
-
-        private IEnumerable<Export> GetExportsCore(
-            IEnumerable<ContractBasedExportDefinition> exportDefinitions,
-            Func<ExportDefinition, bool> constraint)
-        {
-            Debug.Assert(exportDefinitions != null);
-            Debug.Assert(constraint != null);
-
-            return (from exportDefinition in exportDefinitions
-                    where constraint(exportDefinition)
-                    select CreateExport(exportDefinition)).ToList();
-        }
-
-        private Export CreateExport(ContractBasedExportDefinition export)
-        {
-            return new Export(export, () => GetExportedObject(
-                export.ContractType, export.RegistrationName));
-        }
-
-        private object GetExportedObject(Type type, string contractName)
-        {
-            return this.factoryMethod.Invoke(type, contractName);
         }
 
         /// <summary>
         /// Registers a new type.
         /// </summary>
         /// <param name="type">Type that is being exported.</param>
-        public void Register(Type type)
+        /// <param name="factory">Optional factory method. If not supplied, the general
+        /// factory method will be used.</param>
+        public FactoryExportProvider Register(Type type, Func<object> factory = null)
         {
             if (type == null)
                 throw new ArgumentNullException("type");
 
-            Register(type, null);
+            return Register(type, null, factory);
         }
 
         /// <summary>
@@ -102,10 +113,17 @@ namespace MefContrib.Integration.Exporters
         /// <param name="type">Type that is being registered.</param>
         /// <param name="registrationName">Registration name under which <paramref name="type"/>
         /// is being registered.</param>
-        public void Register(Type type, string registrationName)
+        /// <param name="factory">Optional factory method. If not supplied, the general
+        /// factory method will be used.</param>
+        public FactoryExportProvider Register(Type type, string registrationName, Func<object> factory = null)
         {
             if (type == null)
                 throw new ArgumentNullException("type");
+
+            if (factory == null)
+            {
+                factory = () => this.factoryMethod(type, registrationName);
+            }
 
             var exportDefinitions = ReadOnlyDefinitions.Where(t => t.ContractType == type &&
                                                                    t.RegistrationName == registrationName);
@@ -114,8 +132,10 @@ namespace MefContrib.Integration.Exporters
             // since we will introduce cardinality problems
             if (exportDefinitions.Count() == 0)
             {
-                this.definitions.Add(new ContractBasedExportDefinition(type, registrationName));
+                this.definitions.Add(new ContractBasedExportDefinition(type, registrationName), factory);
             }
+
+            return this;
         }
 
         /// <summary>
@@ -123,7 +143,7 @@ namespace MefContrib.Integration.Exporters
         /// </summary>
         public IEnumerable<ContractBasedExportDefinition> ReadOnlyDefinitions
         {
-            get { return this.definitions.AsReadOnly(); }
+            get { return new List<ContractBasedExportDefinition>(this.definitions.Keys); }
         }
     }
 }

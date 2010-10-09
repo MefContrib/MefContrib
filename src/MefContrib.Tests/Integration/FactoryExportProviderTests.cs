@@ -241,5 +241,54 @@ namespace MefContrib.Tests.Integration
 
             return null;
         }
+
+        [Test]
+        public void FactoryExportProviderResolvesServiceRegisteredUsingGivenFactoryMethodTest()
+        {
+            // Setup
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var provider = new FactoryExportProvider()
+                .Register(typeof (IExternalComponent), () => new ExternalComponent1())
+                .Register(typeof (ExternalComponent2), () => new ExternalComponent2());
+            var container = new CompositionContainer(assemblyCatalog, provider);
+            
+            var externalComponent = container.GetExportedValue<IExternalComponent>();
+            Assert.That(externalComponent, Is.Not.Null);
+            Assert.That(externalComponent.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+
+            var externalComponent2 = container.GetExportedValue<ExternalComponent2>();
+            Assert.That(externalComponent2, Is.Not.Null);
+            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+
+            var mefComponent = container.GetExportedValue<IMefComponent>();
+            Assert.That(mefComponent, Is.Not.Null);
+            Assert.That(mefComponent.Component1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+            Assert.That(mefComponent.Component2.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+        }
+
+        [Test]
+        public void FactoryExportProviderExecutesTheFactoryEachTimeTheInstanceIsNeadedTest()
+        {
+            var count = 0;
+
+            // Setup
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var provider = new FactoryExportProvider(typeof (ExternalComponent2), () =>
+            {
+                count++;
+                return new ExternalComponent2();
+            });
+            var container = new CompositionContainer(assemblyCatalog, provider);
+
+            var externalComponent1 = container.GetExportedValue<ExternalComponent2>();
+            Assert.That(externalComponent1, Is.Not.Null);
+            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+
+            var externalComponent2 = container.GetExportedValue<ExternalComponent2>();
+            Assert.That(externalComponent2, Is.Not.Null);
+            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+
+            Assert.That(count, Is.EqualTo(2));
+        }
     }
 }
