@@ -1,4 +1,4 @@
-namespace MefContrib.Hosting
+namespace MefContrib.Hosting.Filter
 {
     using System;
     using System.ComponentModel.Composition.Hosting;
@@ -54,6 +54,8 @@ namespace MefContrib.Hosting
             }
         }
 
+        #region INotifyComposablePartCatalogChanged Implementation
+
         public event EventHandler<ComposablePartCatalogChangeEventArgs> Changed
         {
             add
@@ -81,5 +83,7 @@ namespace MefContrib.Hosting
                     this.innerNotifyChange.Changing -= value;
             }
         }
+
+        #endregion
     }
 }

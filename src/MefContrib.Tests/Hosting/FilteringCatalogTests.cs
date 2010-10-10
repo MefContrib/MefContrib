@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
-using MefContrib.Hosting;
+using MefContrib.Hosting.Filter;
 using NUnit.Framework;
 
 namespace MefContrib.Tests.Hosting

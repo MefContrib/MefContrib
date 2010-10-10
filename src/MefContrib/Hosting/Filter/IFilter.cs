@@ -1,4 +1,4 @@
-namespace MefContrib.Hosting
+namespace MefContrib.Hosting.Filter
 {
     using System.ComponentModel.Composition.Primitives;
 

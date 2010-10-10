@@ -62,9 +62,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Hosting\CommonFilters.cs" />
-    <Compile Include="Hosting\FilteringCatalog.cs" />
-    <Compile Include="Hosting\IFilter.cs" />
+    <Compile Include="Hosting\Filter\CommonFilters.cs" />
+    <Compile Include="Hosting\Filter\FilteringCatalog.cs" />
+    <Compile Include="Hosting\Filter\IFilter.cs" />
     <Compile Include="Integration\ContainerAdapterBase.cs" />
     <Compile Include="Integration\ContainerServices.cs" />
     <Compile Include="Integration\ContainerExportProvider.cs" />
