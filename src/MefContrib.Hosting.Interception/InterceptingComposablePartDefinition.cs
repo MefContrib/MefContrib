@@ -34,5 +34,10 @@
         {
             get { return InterceptedPartDefinition.ImportDefinitions; }
         }
+
+        public override string ToString()
+        {
+            return InterceptedPartDefinition.ToString();
+        }
     }
 }

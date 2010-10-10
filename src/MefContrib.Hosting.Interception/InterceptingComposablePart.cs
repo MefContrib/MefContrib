@@ -52,5 +52,10 @@
         {
             get { return InterceptedPart.ImportDefinitions; }
         }
+
+        public override string ToString()
+        {
+            return InterceptedPart.ToString();
+        }
     }
 }
