@@ -11,6 +11,7 @@
     {
         private readonly object _lock = new object();
         private readonly ComposablePartCatalog _interceptedCatalog;
+        private readonly INotifyComposablePartCatalogChanged _interceptedCatalogNotifyChange;
         private readonly IExportedValueInterceptor _valueInterceptor;
         private readonly IEnumerable<IExportHandler> _handlers;
         private IQueryable<ComposablePartDefinition> _innerPartsQueryable;
@@ -37,6 +38,7 @@
             if (handlers == null) throw new ArgumentNullException("handlers");
             
             _interceptedCatalog = interceptedCatalog;
+            _interceptedCatalogNotifyChange = interceptedCatalog as INotifyComposablePartCatalogChanged;
             _valueInterceptor = valueInterceptor;
             _handlers = handlers;
             
@@ -66,10 +68,7 @@
 
         public override IQueryable<ComposablePartDefinition> Parts
         {
-            get
-            {
-                return GetParts();
-            }
+            get { return GetParts(); }
         }
 
         private IQueryable<ComposablePartDefinition> GetParts()
@@ -92,9 +91,37 @@
             return _innerPartsQueryable;
         }
 
-        public event EventHandler<ComposablePartCatalogChangeEventArgs> Changed;
+        #region INotifyComposablePartCatalogChanged Implementation
 
-        public event EventHandler<ComposablePartCatalogChangeEventArgs> Changing;
+        public event EventHandler<ComposablePartCatalogChangeEventArgs> Changed
+        {
+            add
+            {
+                if (this._interceptedCatalogNotifyChange != null)
+                    this._interceptedCatalogNotifyChange.Changed += value;
+            }
+            remove
+            {
+                if (this._interceptedCatalogNotifyChange != null)
+                    this._interceptedCatalogNotifyChange.Changed -= value;
+            }
+        }
+
+        public event EventHandler<ComposablePartCatalogChangeEventArgs> Changing
+        {
+            add
+            {
+                if (this._interceptedCatalogNotifyChange != null)
+                    this._interceptedCatalogNotifyChange.Changing += value;
+            }
+            remove
+            {
+                if (this._interceptedCatalogNotifyChange != null)
+                    this._interceptedCatalogNotifyChange.Changing -= value;
+            }
+        }
+
+        #endregion
 
         private class EmptyInterceptor : IExportedValueInterceptor
         {
