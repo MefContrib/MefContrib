@@ -17,6 +17,9 @@
             _valueInterceptor = valueInterceptor;
         }
 
+        /// <summary>
+        /// Gets the intercepted <see cref="ComposablePartDefinition"/>.
+        /// </summary>
         public ComposablePartDefinition InterceptedPartDefinition { get; private set; }
 
         public override ComposablePart CreatePart()
@@ -33,6 +36,11 @@
         public override IEnumerable<ImportDefinition> ImportDefinitions
         {
             get { return InterceptedPartDefinition.ImportDefinitions; }
+        }
+
+        public override IDictionary<string, object> Metadata
+        {
+            get { return InterceptedPartDefinition.Metadata; }
         }
 
         public override string ToString()

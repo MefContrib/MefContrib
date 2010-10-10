@@ -53,6 +53,11 @@
             get { return InterceptedPart.ImportDefinitions; }
         }
 
+        public override IDictionary<string, object> Metadata
+        {
+            get { return InterceptedPart.Metadata; }
+        }
+
         public override string ToString()
         {
             return InterceptedPart.ToString();
