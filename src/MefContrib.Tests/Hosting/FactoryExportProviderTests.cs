@@ -290,5 +290,117 @@ namespace MefContrib.Tests.Hosting
 
             Assert.That(count, Is.EqualTo(2));
         }
+
+        [Test]
+        public void FactoryExportProviderResolvesSingleInstanceTest()
+        {
+            var count = 0;
+
+            // Setup
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var provider = new FactoryExportProvider();
+            var container = new CompositionContainer(assemblyCatalog, provider);
+
+            provider.RegisterInstance(typeof(IExternalComponent), () =>
+            {
+                count++;
+                return new ExternalComponent1();
+            });
+
+            var externalComponent1 = container.GetExportedValue<IExternalComponent>();
+            Assert.That(externalComponent1, Is.Not.Null);
+            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+
+            var externalComponent2 = container.GetExportedValue<IExternalComponent>();
+            Assert.That(externalComponent2, Is.Not.Null);
+            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+
+            Assert.That(count, Is.EqualTo(1));
+            Assert.That(externalComponent1, Is.EqualTo(externalComponent2));
+        }
+
+        [Test]
+        public void FactoryExportProviderResolvesSingleInstanceGenericTest()
+        {
+            var count = 0;
+
+            // Setup
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var provider = new FactoryExportProvider();
+            var container = new CompositionContainer(assemblyCatalog, provider);
+
+            provider.RegisterInstance<IExternalComponent>(() =>
+            {
+                count++;
+                return new ExternalComponent1();
+            });
+
+            var externalComponent1 = container.GetExportedValue<IExternalComponent>();
+            Assert.That(externalComponent1, Is.Not.Null);
+            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+
+            var externalComponent2 = container.GetExportedValue<IExternalComponent>();
+            Assert.That(externalComponent2, Is.Not.Null);
+            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent1)));
+
+            Assert.That(count, Is.EqualTo(1));
+            Assert.That(externalComponent1, Is.EqualTo(externalComponent2));
+        }
+
+        [Test]
+        public void FactoryExportProviderResolvesSingleInstanceGivenByRegistrationNameTest()
+        {
+            var count = 0;
+
+            // Setup
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var provider = new FactoryExportProvider();
+            var container = new CompositionContainer(assemblyCatalog, provider);
+            
+            provider.RegisterInstance(typeof(IExternalComponent), "ext2", () =>
+            {
+                count++;
+                return new ExternalComponent2();
+            });
+
+            var externalComponent1 = container.GetExportedValue<IExternalComponent>("ext2");
+            Assert.That(externalComponent1, Is.Not.Null);
+            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+
+            var externalComponent2 = container.GetExportedValue<IExternalComponent>("ext2");
+            Assert.That(externalComponent2, Is.Not.Null);
+            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+
+            Assert.That(count, Is.EqualTo(1));
+            Assert.That(externalComponent1, Is.EqualTo(externalComponent2));
+        }
+
+        [Test]
+        public void FactoryExportProviderResolvesSingleInstanceGivenByRegistrationNameGenericTest()
+        {
+            var count = 0;
+
+            // Setup
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var provider = new FactoryExportProvider();
+            var container = new CompositionContainer(assemblyCatalog, provider);
+
+            provider.RegisterInstance<IExternalComponent>("ext2", () =>
+            {
+                count++;
+                return new ExternalComponent2();
+            });
+
+            var externalComponent1 = container.GetExportedValue<IExternalComponent>("ext2");
+            Assert.That(externalComponent1, Is.Not.Null);
+            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+
+            var externalComponent2 = container.GetExportedValue<IExternalComponent>("ext2");
+            Assert.That(externalComponent2, Is.Not.Null);
+            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+
+            Assert.That(count, Is.EqualTo(1));
+            Assert.That(externalComponent1, Is.EqualTo(externalComponent2));
+        }
     }
 }

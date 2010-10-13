@@ -2,6 +2,7 @@ namespace MefContrib.Hosting
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
@@ -25,7 +26,7 @@ namespace MefContrib.Hosting
         public FactoryExportProvider()
         {
             this.definitions = new Dictionary<ContractBasedExportDefinition, Func<object>>();
-            this.factoryMethod = (t, s) => { throw new NotSupportedException(); };
+            this.factoryMethod = (t, s) => { throw new InvalidOperationException("Global factory method has not been supplied."); };
         }
 
         /// <summary>
@@ -99,6 +100,7 @@ namespace MefContrib.Hosting
         /// <param name="type">Type that is being exported.</param>
         /// <param name="factory">Optional factory method. If not supplied, the general
         /// factory method will be used.</param>
+        /// <returns><see cref="FactoryExportProvider"/> instance for fluent registration.</returns>
         public FactoryExportProvider Register(Type type, Func<object> factory = null)
         {
             if (type == null)
@@ -110,11 +112,105 @@ namespace MefContrib.Hosting
         /// <summary>
         /// Registers a new type.
         /// </summary>
+        /// <typeparam name="T">Type that is being exported.</typeparam>
+        /// <param name="factory">Optional factory method. If not supplied, the general
+        /// factory method will be used.</param>
+        /// <returns><see cref="FactoryExportProvider"/> instance for fluent registration.</returns>
+        public FactoryExportProvider Register<T>(Func<T> factory = null)
+        {
+            var factoryWrapper = (factory != null) ? () => factory() : (Func<object>)null;
+            return Register(typeof(T), null, factoryWrapper);
+        }
+
+        /// <summary>
+        /// Registers a new type as a singleton.
+        /// </summary>
+        /// <param name="type">Type that is being exported.</param>
+        /// <param name="factory">Factory method.</param>
+        /// <returns><see cref="FactoryExportProvider"/> instance for fluent registration.</returns>
+        public FactoryExportProvider RegisterInstance(Type type, Func<object> factory)
+        {
+            if (type == null) throw new ArgumentNullException("type");
+            if (factory == null) throw new ArgumentNullException("factory");
+
+            var lazy = new Lazy<object>(factory);
+            return Register(type, null, () => lazy.Value);
+        }
+
+        /// <summary>
+        /// Registers a new type as a singleton.
+        /// </summary>
+        /// <typeparam name="T">Type that is being exported.</typeparam>
+        /// <param name="factory">Optional factory method. If not supplied, the general
+        /// factory method will be used.</param>
+        /// <returns><see cref="FactoryExportProvider"/> instance for fluent registration.</returns>
+        public FactoryExportProvider RegisterInstance<T>(Func<T> factory)
+        {
+            if (factory == null) throw new ArgumentNullException("factory");
+
+            var lazy = new Lazy<object>(() => factory());
+            return Register(typeof(T), null, () => lazy.Value);
+        }
+
+        /// <summary>
+        /// Registers a new type.
+        /// </summary>
         /// <param name="type">Type that is being registered.</param>
         /// <param name="registrationName">Registration name under which <paramref name="type"/>
         /// is being registered.</param>
         /// <param name="factory">Optional factory method. If not supplied, the general
         /// factory method will be used.</param>
+        /// <returns><see cref="FactoryExportProvider"/> instance for fluent registration.</returns>
+        public FactoryExportProvider RegisterInstance(Type type, string registrationName, Func<object> factory)
+        {
+            if (type == null) throw new ArgumentNullException("type");
+            if (factory == null) throw new ArgumentNullException("factory");
+
+            var lazy = new Lazy<object>(factory);
+            return Register(type, registrationName, () => lazy.Value);
+        }
+
+        /// <summary>
+        /// Registers a new type as a singleton.
+        /// </summary>
+        /// <typeparam name="T">Type that is being exported.</typeparam>
+        /// <param name="registrationName">Registration name under which <typeparamref name="T"/>
+        /// is being registered.</param>
+        /// <param name="factory">Optional factory method. If not supplied, the general
+        /// factory method will be used.</param>
+        /// <returns><see cref="FactoryExportProvider"/> instance for fluent registration.</returns>
+        public FactoryExportProvider RegisterInstance<T>(string registrationName, Func<T> factory)
+        {
+            if (factory == null) throw new ArgumentNullException("factory");
+
+            var lazy = new Lazy<object>(() => factory());
+            return Register(typeof(T), registrationName, () => lazy.Value);
+        }
+
+        /// <summary>
+        /// Registers a new type.
+        /// </summary>
+        /// <typeparam name="T">Type that is being exported.</typeparam>
+        /// <param name="registrationName">Registration name under which <typeparamref name="T"/>
+        /// is being registered.</param>
+        /// <param name="factory">Optional factory method. If not supplied, the general
+        /// factory method will be used.</param>
+        /// <returns><see cref="FactoryExportProvider"/> instance for fluent registration.</returns>
+        public FactoryExportProvider Register<T>(string registrationName, Func<T> factory = null)
+        {
+            var factoryWrapper = (factory != null) ? () => factory() : (Func<object>) null;
+            return Register(typeof(T), registrationName, factoryWrapper);
+        }
+
+        /// <summary>
+        /// Registers a new type.
+        /// </summary>
+        /// <param name="type">Type that is being registered.</param>
+        /// <param name="registrationName">Registration name under which <paramref name="type"/>
+        /// is being registered.</param>
+        /// <param name="factory">Optional factory method. If not supplied, the general
+        /// factory method will be used.</param>
+        /// <returns><see cref="FactoryExportProvider"/> instance for fluent registration.</returns>
         public FactoryExportProvider Register(Type type, string registrationName, Func<object> factory = null)
         {
             if (type == null)
@@ -134,7 +230,7 @@ namespace MefContrib.Hosting
             {
                 this.definitions.Add(new ContractBasedExportDefinition(type, registrationName), factory);
             }
-
+            
             return this;
         }
 
@@ -143,7 +239,7 @@ namespace MefContrib.Hosting
         /// </summary>
         public IEnumerable<ContractBasedExportDefinition> ReadOnlyDefinitions
         {
-            get { return new List<ContractBasedExportDefinition>(this.definitions.Keys); }
+            get { return new ReadOnlyCollection<ContractBasedExportDefinition>(this.definitions.Keys.ToList()); }
         }
     }
 }
