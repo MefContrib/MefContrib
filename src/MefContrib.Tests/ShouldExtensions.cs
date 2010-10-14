@@ -14,6 +14,14 @@ namespace MefContrib.Tests
             Assert.True(condition.Invoke(actual));
         }
 
+        public static void ShouldImplementInterface<T>(this Type actual)
+        {
+            var found =
+                actual.GetInterfaces().Contains(typeof(T));
+
+            Assert.True(found);
+        }
+
         public static void ShouldContainType<T>(this IList collection)
         {
             var selection =

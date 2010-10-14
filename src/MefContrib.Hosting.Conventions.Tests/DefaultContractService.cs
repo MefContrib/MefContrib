@@ -3,6 +3,7 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System;
     using System.ComponentModel.Composition;
     using System.Reflection;
+    using MefContrib.Tests;
     using NUnit.Framework;
 
     public class DefaultContractServiceTests
@@ -11,14 +12,14 @@ namespace MefContrib.Hosting.Conventions.Tests
 
         public DefaultContractServiceTests()
         {
-            this.Service = new DefaultContractService();
+            this.Service = new DefaultConventionContractService();
         }
 
         [Test]
         public void GetExportContractName_should_be_virtual()
         {
             var method =
-                ReflectionServices.GetMethod<DefaultContractService>(x => x.GetExportContractName(null, null));
+                ReflectionServices.GetMethod<DefaultConventionContractService>(x => x.GetExportContractName(null, null));
 
             IsMethodVirtual(method).ShouldBeTrue();
         }
@@ -151,7 +152,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         public void GetExportTypeIdentity_should_be_virtual()
         {
             var method =
-                ReflectionServices.GetMethod<DefaultContractService>(x => x.GetExportTypeIdentity(null, null));
+                ReflectionServices.GetMethod<DefaultConventionContractService>(x => x.GetExportTypeIdentity(null, null));
 
             IsMethodVirtual(method).ShouldBeTrue();
         }
@@ -160,7 +161,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         public void GetImportContractName_should_be_virtual()
         {
             var method =
-                ReflectionServices.GetMethod<DefaultContractService>(x => x.GetImportContractName(null, null));
+                ReflectionServices.GetMethod<DefaultConventionContractService>(x => x.GetImportContractName(null, null));
 
             IsMethodVirtual(method).ShouldBeTrue();
         }
@@ -169,7 +170,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         public void GetImportTypeIdentity_should_be_virtual()
         {
             var method =
-                ReflectionServices.GetMethod<DefaultContractService>(x => x.GetImportTypeIdentity(null, null));
+                ReflectionServices.GetMethod<DefaultConventionContractService>(x => x.GetImportTypeIdentity(null, null));
 
             IsMethodVirtual(method).ShouldBeTrue();
         }

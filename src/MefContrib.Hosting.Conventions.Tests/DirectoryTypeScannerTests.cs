@@ -3,6 +3,9 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System;
     using System.IO;
     using System.Linq;
+
+    using MefContrib.Tests;
+
     using NUnit.Framework;
 
     public class DirectoryTypeScannerTests

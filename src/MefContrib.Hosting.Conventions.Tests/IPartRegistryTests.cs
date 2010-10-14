@@ -1,6 +1,8 @@
 ﻿namespace MefContrib.Hosting.Conventions.Tests
 {
     using MefContrib.Hosting.Conventions.Configuration;
+    using MefContrib.Tests;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -9,7 +11,7 @@
         [Test]
         public void IPartRegistry_should_implement_ihideobjectmemebers_interface()
         {
-            typeof(IPartRegistry<IContractService>).GetInterfaces().ShouldContainType<IHideObjectMembers>();
+            typeof(IPartRegistry<IContractService>).ShouldImplementInterface<IHideObjectMembers>();
         }
     }
 }

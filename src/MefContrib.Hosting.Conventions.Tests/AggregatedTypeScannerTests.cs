@@ -3,6 +3,9 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using MefContrib.Tests;
+
     using Moq;
     using NUnit.Framework;
 

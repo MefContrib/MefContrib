@@ -6,6 +6,8 @@
     using System.Linq;
     using System.Reflection;
     using MefContrib.Hosting.Conventions.Configuration;
+    using MefContrib.Tests;
+
     using NUnit.Framework;
 
     [TestFixture]

@@ -3,6 +3,8 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System;
     using System.Linq;
     using MefContrib.Hosting.Conventions.Configuration;
+    using MefContrib.Tests;
+
     using NUnit.Framework;
 
     [TestFixture]

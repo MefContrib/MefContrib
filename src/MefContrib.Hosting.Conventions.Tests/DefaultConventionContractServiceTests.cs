@@ -3,6 +3,8 @@
     using System;
     using System.ComponentModel.Composition;
     using MefContrib.Hosting.Conventions.Configuration;
+    using MefContrib.Tests;
+
     using NUnit.Framework;
 
     public class DefaultConventionContractServiceTests
