@@ -68,7 +68,7 @@
     <Compile Include="Integration\ContainerAdapterBase.cs" />
     <Compile Include="Integration\ContainerServices.cs" />
     <Compile Include="Integration\ContainerExportProvider.cs" />
-    <Compile Include="Hosting\ContractBasedExportDefinition.cs" />
+    <Compile Include="Hosting\FactoryExportDefinition.cs" />
     <Compile Include="Hosting\FactoryExportProvider.cs" />
     <Compile Include="Integration\IContainerAdapter.cs" />
     <Compile Include="Integration\PartNotComposableAttribute.cs" />

@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace MefContrib.Tests.Hosting
 {
     [TestFixture]
-    public class ContractBasedExportDefinitionTests
+    public class FactoryExportDefinitionTests
     {
         public interface IComponent {}
 
@@ -14,14 +14,14 @@ namespace MefContrib.Tests.Hosting
         {
             Assert.That(delegate
             {
-                new ContractBasedExportDefinition(null);
+                new FactoryExportDefinition(null, null, ep => null);
             }, Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]
         public void ContractTypeAndExplicitNameAreProperlySetTest()
         {
-            var exportDefinition = new ContractBasedExportDefinition(typeof(IComponent), "ContractName");
+            var exportDefinition = new FactoryExportDefinition(typeof(IComponent), "ContractName", ep => null);
             Assert.That(exportDefinition.ContractType, Is.EqualTo(typeof(IComponent)));
             Assert.That(exportDefinition.RegistrationName, Is.EqualTo("ContractName"));
             Assert.That(exportDefinition.ContractName, Is.EqualTo("ContractName"));
@@ -30,10 +30,10 @@ namespace MefContrib.Tests.Hosting
         [Test]
         public void ContractTypeAndNullNameAreProperlySetTest()
         {
-            var exportDefinition = new ContractBasedExportDefinition(typeof(IComponent));
+            var exportDefinition = new FactoryExportDefinition(typeof(IComponent), null, ep => null);
             Assert.That(exportDefinition.ContractType, Is.EqualTo(typeof(IComponent)));
             Assert.That(exportDefinition.RegistrationName, Is.Null);
-            Assert.That(exportDefinition.ContractName, Is.EqualTo("MefContrib.Tests.Hosting.ContractBasedExportDefinitionTests+IComponent"));
+            Assert.That(exportDefinition.ContractName, Is.EqualTo("MefContrib.Tests.Hosting.FactoryExportDefinitionTests+IComponent"));
         }
     }
 }

@@ -18,14 +18,14 @@ namespace MefContrib.Hosting
     public class FactoryExportProvider : ExportProvider
     {
         private readonly Func<Type, string, object> factoryMethod;
-        private readonly Dictionary<ContractBasedExportDefinition, Func<ExportProvider,object>> definitions;
+        private readonly List<FactoryExportDefinition> definitions;
 
         /// <summary>
         /// Initializes a new instance of <see cref="FactoryExportProvider"/> class.
         /// </summary>
         public FactoryExportProvider()
         {
-            this.definitions = new Dictionary<ContractBasedExportDefinition, Func<ExportProvider, object>>();
+            this.definitions = new List<FactoryExportDefinition>();
             this.factoryMethod = (t, s) => { throw new InvalidOperationException("Global factory method has not been supplied."); };
         }
 
@@ -69,7 +69,7 @@ namespace MefContrib.Hosting
             if (factoryMethod == null)
                 throw new ArgumentNullException("factoryMethod");
 
-            this.definitions = new Dictionary<ContractBasedExportDefinition, Func<ExportProvider, object>>();
+            this.definitions = new List<FactoryExportDefinition>();
             this.factoryMethod = factoryMethod;
         }
 
@@ -79,16 +79,16 @@ namespace MefContrib.Hosting
             {
                 var constraint = definition.Constraint.Compile();
                 return from exportDefinition in this.definitions
-                       where constraint(exportDefinition.Key)
-                       select new Export(exportDefinition.Key, () => exportDefinition.Value(SourceProvider));
+                       where constraint(exportDefinition)
+                       select new Export(exportDefinition, () => exportDefinition.Factory(SourceProvider));
             }
 
             if (definition.ContractName != null)
             {
                 return from exportDefinition in this.definitions
                        where AttributedModelServices.GetContractName(
-                           exportDefinition.Key.ContractType) == definition.ContractName
-                       select new Export(exportDefinition.Key, () => exportDefinition.Value(SourceProvider));
+                           exportDefinition.ContractType) == definition.ContractName
+                       select new Export(exportDefinition, () => exportDefinition.Factory(SourceProvider));
             }
 
             return Enumerable.Empty<Export>();
@@ -228,7 +228,7 @@ namespace MefContrib.Hosting
             // since we will introduce cardinality problems
             if (exportDefinitions.Count() == 0)
             {
-                this.definitions.Add(new ContractBasedExportDefinition(type, registrationName), factory);
+                this.definitions.Add(new FactoryExportDefinition(type, registrationName, factory));
             }
             
             return this;
@@ -237,9 +237,9 @@ namespace MefContrib.Hosting
         /// <summary>
         /// Gets a read only list of definitions known to the export provider.
         /// </summary>
-        public IEnumerable<ContractBasedExportDefinition> ReadOnlyDefinitions
+        public IEnumerable<FactoryExportDefinition> ReadOnlyDefinitions
         {
-            get { return new ReadOnlyCollection<ContractBasedExportDefinition>(this.definitions.Keys.ToList()); }
+            get { return new ReadOnlyCollection<FactoryExportDefinition>(this.definitions); }
         }
 
         /// <summary>

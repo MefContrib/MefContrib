@@ -487,5 +487,27 @@ namespace MefContrib.Tests.Hosting
             Assert.That(externalComponent14.ExternalComponent.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
             Assert.That(externalComponent14.MefComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
         }
+
+        [Test]
+        public void FactoryExportProviderDoesNotResolveUnknownPartsTest()
+        {
+            // Setup
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var provider = new FactoryExportProvider();
+            var container = new CompositionContainer(assemblyCatalog, provider);
+            provider.SourceProvider = provider;
+
+            provider.RegisterInstance<IExternalComponent>("ext", ep => new ExternalComponent2());
+
+            
+            Assert.That(delegate
+                        {
+                            container.GetExportedValue<IExternalComponent>();
+                        }, Throws.TypeOf<ImportCardinalityMismatchException>());
+
+            var externalComponent2 = container.GetExportedValue<IExternalComponent>("ext");
+            Assert.That(externalComponent2, Is.Not.Null);
+            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+        }
     }
 }

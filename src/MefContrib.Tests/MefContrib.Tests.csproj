@@ -54,7 +54,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Hosting\ContractBasedExportDefinitionTests.cs" />
+    <Compile Include="Hosting\FactoryExportDefinitionTests.cs" />
     <Compile Include="Hosting\FilteringCatalogTests.cs" />
     <Compile Include="Hosting\FactoryExportProviderTests.cs" />
     <Compile Include="ShouldExtensions.cs" />

@@ -7,30 +7,32 @@ namespace MefContrib.Hosting
     using System.ComponentModel.Composition.Primitives;
 
     /// <summary>
-    /// Represents a contract-based export definition that has a type and
-    /// an option registration name.
+    /// Represents a factory export definition that has a type and
+    /// an optional registration name.
     /// </summary>
-    public class ContractBasedExportDefinition : ExportDefinition
+    public class FactoryExportDefinition : ExportDefinition
     {
         /// <summary>
-        /// Represents a metadata which identifies a contract based export.
+        /// Represents a metadata which identifies a factory export.
         /// </summary>
-        public const string IsContractBasedExportMetadataName = "IsContractBasedExport";
+        public const string IsFactoryExportMetadataName = "IsFactoryExport";
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ContractBasedExportDefinition"/> class.
+        /// Initializes a new instance of <see cref="FactoryExportDefinition"/> class.
         /// </summary>
         /// <param name="type">Type this export defines.</param>
         /// <param name="registrationName">Registration name under which <paramref name="type"/>
         /// has been registered.</param>
-        public ContractBasedExportDefinition(Type type, string registrationName = null)
+        /// <param name="factory">Export factory.</param>
+        public FactoryExportDefinition(Type type, string registrationName, Func<ExportProvider, object> factory)
             : base(GetContractName(type, registrationName), GetMetadata(type))
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
-            
+            if (type == null) throw new ArgumentNullException("type");
+            if (factory == null) throw new ArgumentNullException("factory");
+
             ContractType = type;
             RegistrationName = registrationName;
+            Factory = factory;
         }
 
         /// <summary>
@@ -43,6 +45,11 @@ namespace MefContrib.Hosting
         /// </summary>
         public string RegistrationName { get; private set; }
 
+        /// <summary>
+        /// Gets the factory used to create instances of export described by this <see cref="ExportDefinition"/>.
+        /// </summary>
+        public Func<ExportProvider, object> Factory { get; private set; }
+
         #region Private Implementation
 
         private static IDictionary<string,object> GetMetadata(Type type)
@@ -54,7 +61,7 @@ namespace MefContrib.Hosting
                                AttributedModelServices.GetTypeIdentity(type)
                            },
                            {
-                               IsContractBasedExportMetadataName,
+                               IsFactoryExportMetadataName,
                                true
                            }
                        };

@@ -37,8 +37,8 @@ namespace MefContrib.Integration
             var lazyExport = exports.First();
             var lazyExportMetadata = lazyExport.Metadata as IDictionary<string, object>;
             if (lazyExportMetadata != null &&
-                lazyExportMetadata.ContainsKey(ContractBasedExportDefinition.IsContractBasedExportMetadataName) &&
-                true.Equals(lazyExportMetadata[ContractBasedExportDefinition.IsContractBasedExportMetadataName]))
+                lazyExportMetadata.ContainsKey(FactoryExportDefinition.IsFactoryExportMetadataName) &&
+                true.Equals(lazyExportMetadata[FactoryExportDefinition.IsFactoryExportMetadataName]))
             {
                 return null;
             }
@@ -71,8 +71,8 @@ namespace MefContrib.Integration
             {
                 var lazyExportMetadata = export.Metadata as IDictionary<string, object>;
                 if (lazyExportMetadata != null &&
-                    lazyExportMetadata.ContainsKey(ContractBasedExportDefinition.IsContractBasedExportMetadataName) &&
-                    true.Equals(lazyExportMetadata[ContractBasedExportDefinition.IsContractBasedExportMetadataName]))
+                    lazyExportMetadata.ContainsKey(FactoryExportDefinition.IsFactoryExportMetadataName) &&
+                    true.Equals(lazyExportMetadata[FactoryExportDefinition.IsFactoryExportMetadataName]))
                 {
                     continue;
                 }
