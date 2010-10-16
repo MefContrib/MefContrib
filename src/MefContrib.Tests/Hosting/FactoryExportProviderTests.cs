@@ -31,6 +31,37 @@ namespace MefContrib.Tests.Hosting
             }
         }
 
+        public class ExternalComponent3 : IExternalComponent
+        {
+            public IExternalComponent ExternalComponent { get; set; }
+            
+            public ExternalComponent3(IExternalComponent externalComponent)
+            {
+                ExternalComponent = externalComponent;
+            }
+
+            public void Foo()
+            {
+            }
+        }
+
+        public class ExternalComponent4 : IExternalComponent
+        {
+            public IExternalComponent ExternalComponent { get; set; }
+
+            public IMefComponent MefComponent { get; set; }
+
+            public ExternalComponent4(IExternalComponent externalComponent, IMefComponent mefComponent)
+            {
+                ExternalComponent = externalComponent;
+                MefComponent = mefComponent;
+            }
+
+            public void Foo()
+            {
+            }
+        }
+
         #endregion
 
         #region Fake MEF Components
@@ -248,8 +279,8 @@ namespace MefContrib.Tests.Hosting
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
             var provider = new FactoryExportProvider()
-                .Register(typeof (IExternalComponent), () => new ExternalComponent1())
-                .Register(typeof (ExternalComponent2), () => new ExternalComponent2());
+                .Register(typeof (IExternalComponent), ep => new ExternalComponent1())
+                .Register(typeof (ExternalComponent2), ep => new ExternalComponent2());
             var container = new CompositionContainer(assemblyCatalog, provider);
             
             var externalComponent = container.GetExportedValue<IExternalComponent>();
@@ -273,7 +304,7 @@ namespace MefContrib.Tests.Hosting
 
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
-            var provider = new FactoryExportProvider(typeof (ExternalComponent2), () =>
+            var provider = new FactoryExportProvider(typeof (ExternalComponent2), ep =>
             {
                 count++;
                 return new ExternalComponent2();
@@ -301,7 +332,7 @@ namespace MefContrib.Tests.Hosting
             var provider = new FactoryExportProvider();
             var container = new CompositionContainer(assemblyCatalog, provider);
 
-            provider.RegisterInstance(typeof(IExternalComponent), () =>
+            provider.RegisterInstance(typeof(IExternalComponent), ep =>
             {
                 count++;
                 return new ExternalComponent1();
@@ -329,7 +360,7 @@ namespace MefContrib.Tests.Hosting
             var provider = new FactoryExportProvider();
             var container = new CompositionContainer(assemblyCatalog, provider);
 
-            provider.RegisterInstance<IExternalComponent>(() =>
+            provider.RegisterInstance<IExternalComponent>(ep =>
             {
                 count++;
                 return new ExternalComponent1();
@@ -357,7 +388,7 @@ namespace MefContrib.Tests.Hosting
             var provider = new FactoryExportProvider();
             var container = new CompositionContainer(assemblyCatalog, provider);
             
-            provider.RegisterInstance(typeof(IExternalComponent), "ext2", () =>
+            provider.RegisterInstance(typeof(IExternalComponent), "ext2", ep =>
             {
                 count++;
                 return new ExternalComponent2();
@@ -384,8 +415,9 @@ namespace MefContrib.Tests.Hosting
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
             var provider = new FactoryExportProvider();
             var container = new CompositionContainer(assemblyCatalog, provider);
+            provider.SourceProvider = container;
 
-            provider.RegisterInstance<IExternalComponent>("ext2", () =>
+            provider.RegisterInstance<IExternalComponent>("ext2", ep =>
             {
                 count++;
                 return new ExternalComponent2();
@@ -401,6 +433,59 @@ namespace MefContrib.Tests.Hosting
 
             Assert.That(count, Is.EqualTo(1));
             Assert.That(externalComponent1, Is.EqualTo(externalComponent2));
+        }
+
+        [Test]
+        public void FactoryExportProviderResolvesAdditionalExportsFromTheFactoryTest()
+        {
+            // Setup
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var provider = new FactoryExportProvider();
+            var container = new CompositionContainer(assemblyCatalog, provider);
+            provider.SourceProvider = provider;
+
+            provider.RegisterInstance<IExternalComponent>(ep => new ExternalComponent2());
+            provider.Register<IExternalComponent>("ext3", ep => new ExternalComponent3(ep.GetExportedValue<IExternalComponent>()));
+
+            var externalComponent1 = container.GetExportedValue<IExternalComponent>("ext3");
+            Assert.That(externalComponent1, Is.Not.Null);
+            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent3)));
+            var externalComponent13 = (ExternalComponent3) externalComponent1;
+            Assert.That(externalComponent13.ExternalComponent, Is.Not.Null);
+            Assert.That(externalComponent13.ExternalComponent.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+
+            var externalComponent2 = container.GetExportedValue<IExternalComponent>("ext3");
+            Assert.That(externalComponent2, Is.Not.Null);
+            Assert.That(externalComponent2.GetType(), Is.EqualTo(typeof(ExternalComponent3)));
+            var externalComponent23 = (ExternalComponent3)externalComponent1;
+            Assert.That(externalComponent23.ExternalComponent, Is.Not.Null);
+            Assert.That(externalComponent23.ExternalComponent.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+
+            Assert.That(externalComponent13.ExternalComponent, Is.SameAs(externalComponent23.ExternalComponent));
+        }
+
+        [Test]
+        public void FactoryExportProviderResolvesAdditionalExportsFromTheContainerTest()
+        {
+            // Setup
+            var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var provider = new FactoryExportProvider()
+                .RegisterInstance<IExternalComponent>(ep => new ExternalComponent2())
+                .Register<IExternalComponent>("ext", ep => new ExternalComponent4(
+                                                               ep.GetExportedValue<IExternalComponent>(),
+                                                               ep.GetExportedValue<IMefComponent>()));
+
+            var container = new CompositionContainer(assemblyCatalog, provider);
+            provider.SourceProvider = container;
+
+            var externalComponent1 = container.GetExportedValue<IExternalComponent>("ext");
+            Assert.That(externalComponent1, Is.Not.Null);
+            Assert.That(externalComponent1.GetType(), Is.EqualTo(typeof(ExternalComponent4)));
+            var externalComponent14 = (ExternalComponent4)externalComponent1;
+            Assert.That(externalComponent14.ExternalComponent, Is.Not.Null);
+            Assert.That(externalComponent14.MefComponent, Is.Not.Null);
+            Assert.That(externalComponent14.ExternalComponent.GetType(), Is.EqualTo(typeof(ExternalComponent2)));
+            Assert.That(externalComponent14.MefComponent.GetType(), Is.EqualTo(typeof(MefComponent1)));
         }
     }
 }

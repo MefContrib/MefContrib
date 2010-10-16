@@ -52,11 +52,11 @@ namespace MefContrib.Hosting
                            {
                                CompositionConstants.ExportTypeIdentityMetadataName,
                                AttributedModelServices.GetTypeIdentity(type)
-                               },
+                           },
                            {
                                IsContractBasedExportMetadataName,
                                true
-                               }
+                           }
                        };
         }
 
