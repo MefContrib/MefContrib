@@ -50,5 +50,34 @@ namespace MefContrib.Hosting.Conventions
         {
             return Equals(this.Name, requiredMetadataItem.Name) && Equals(this.Type, requiredMetadataItem.Type);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is RequiredMetadataItem)
+            {
+                return Equals((RequiredMetadataItem)obj);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            var hash1 = (this.Name == null) ? 0 : this.Name.GetHashCode();
+            var hash2 = (this.Type == null) ? 0 : this.Type.GetHashCode();
+            return hash1 ^ hash2;
+        }
+
+        public static bool operator ==(RequiredMetadataItem item1, RequiredMetadataItem item2)
+        {
+            return item1.Equals(item2);
+        }
+
+        public static bool operator !=(RequiredMetadataItem item1, RequiredMetadataItem item2)
+        {
+            return !item1.Equals(item2);
+        }
     }
 }
