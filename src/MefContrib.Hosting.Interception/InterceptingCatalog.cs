@@ -79,9 +79,16 @@
                 {
                     if (_innerPartsQueryable == null)
                     {
+#if SILVERLIGHT
+                        var parts = _interceptedCatalog.Parts
+                            .Select(p => new InterceptingComposablePartDefinition(p, _valueInterceptor))
+                            .Cast<ComposablePartDefinition>()
+                            .AsQueryable();
+#else
                         var parts = _interceptedCatalog.Parts
                             .Select(p => new InterceptingComposablePartDefinition(p, _valueInterceptor))
                             .AsQueryable();
+#endif
                         Thread.MemoryBarrier();
                         _innerPartsQueryable = parts;
                     }
