@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Silverlight", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Hosting.Interception.Silverlight", "MefContrib.Hosting.Interception\MefContrib.Hosting.Interception.Silverlight.csproj", "{5D7CF974-B690-46FE-B0F1-A11F177A900B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Hosting.Interception.Castle.Silverlight", "MefContrib.Hosting.Interception.Castle\MefContrib.Hosting.Interception.Castle.Silverlight.csproj", "{022C074C-2D56-42FD-8804-1428ADB20D86}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,14 @@ Global
 		{5D7CF974-B690-46FE-B0F1-A11F177A900B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5D7CF974-B690-46FE-B0F1-A11F177A900B}.Release|x86.ActiveCfg = Release|x86
 		{5D7CF974-B690-46FE-B0F1-A11F177A900B}.Release|x86.Build.0 = Release|x86
+		{022C074C-2D56-42FD-8804-1428ADB20D86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{022C074C-2D56-42FD-8804-1428ADB20D86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{022C074C-2D56-42FD-8804-1428ADB20D86}.Debug|x86.ActiveCfg = Debug|x86
+		{022C074C-2D56-42FD-8804-1428ADB20D86}.Debug|x86.Build.0 = Debug|x86
+		{022C074C-2D56-42FD-8804-1428ADB20D86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{022C074C-2D56-42FD-8804-1428ADB20D86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{022C074C-2D56-42FD-8804-1428ADB20D86}.Release|x86.ActiveCfg = Release|x86
+		{022C074C-2D56-42FD-8804-1428ADB20D86}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
