@@ -17,7 +17,7 @@ namespace MefContrib.Hosting.Conventions
         public static Dictionary<string, object> ToMetadataDictionary(this IEnumerable<MetadataItem> metadata)
         {
             if (metadata == null)
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("metadata");
 
             var metadataDictionary =
                 new Dictionary<string, object>();
