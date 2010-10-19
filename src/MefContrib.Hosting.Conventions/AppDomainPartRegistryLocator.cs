@@ -62,11 +62,6 @@
             var isPreviouslyDiscovered =
                 registries.Any(x => x.GetType().Equals(type));
 
-            if (isPreviouslyDiscovered)
-            {
-                var sdf = 10;
-            }
-
             return !isPreviouslyDiscovered;
         }
 
