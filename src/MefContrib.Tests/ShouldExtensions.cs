@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-
-namespace MefContrib.Tests
+﻿namespace MefContrib.Tests
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+
     public static class ShouldAssertExtensions
     {
         public static void ShouldMatch<T>(this T actual, Func<T, bool> condition)
@@ -50,6 +49,11 @@ namespace MefContrib.Tests
         public static void ShouldEqual(this object actual, object expected)
         {
             Assert.AreEqual(expected, actual);
+        }
+
+        public static void ShouldBeGreaterThan(this int actual, int smallestValueNotAccepted)
+        {
+            Assert.Greater(actual, smallestValueNotAccepted);
         }
 
         public static void ShouldNotEqual(this object actual, object expected)

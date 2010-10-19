@@ -5,7 +5,7 @@ namespace MefContrib.Hosting.Conventions
     using System.ComponentModel.Composition.Primitives;
     using System.Linq;
     using MefContrib.Hosting.Conventions.Configuration;
-    
+
     /// <summary>
     /// Defines the class for composable part catalogs, which produce and return <see cref="ComposablePartDefinition"/> objects based on conventions.
     /// </summary>
@@ -13,48 +13,10 @@ namespace MefContrib.Hosting.Conventions
     {
         public ConventionCatalog()
         {
-            var registries =
-               from a in AppDomain.CurrentDomain.GetAssemblies()
-               from t in a.GetTypes().Where(x => x.IsPublic)
-               where t.IsSubclassOf(typeof(PartRegistry))
-               select Activator.CreateInstance(t);
+            var locator =
+                new AppDomainPartRegistryLocator(AppDomain.CurrentDomain);
 
-            this.Registries = ScanForRegistries(registries.Cast<IPartRegistry<IContractService>>());
-        }
-
-        private static IEnumerable<IPartRegistry<IContractService>> ScanForRegistries(
-            IEnumerable<IPartRegistry<IContractService>> registries)
-        {
-            var found = new List<IPartRegistry<IContractService>>();
-            found.AddRange(registries);
-
-            foreach (var partRegistry in registries)
-            {
-                if (partRegistry.TypeScanner != null)
-                {
-                    //var types =
-                    //    partRegistry.TypeScanner.GetTypes(x => x.IsSubclassOf(typeof(PartRegistry)));
-
-                    var types =
-                        partRegistry.TypeScanner.GetTypes(x => x.GetInterfaces()
-                            .Any(i => i.Equals(typeof(IPartRegistry<IContractService>))));
-
-                    var instances = new List<IPartRegistry<IContractService>>();
-                    foreach (var type in types)
-                    {
-                        if (!found.Any(x => x.GetType().Equals(type)))
-                        {
-                            var instance =
-                                (IPartRegistry<IContractService>)Activator.CreateInstance(type);
-                            instances.Add(instance);
-                        }
-                    }
-
-                    found.AddRange(ScanForRegistries(instances));
-                }
-            }
-
-            return found;
+            this.Registries = locator.Locate();
         }
 
         /// <summary>

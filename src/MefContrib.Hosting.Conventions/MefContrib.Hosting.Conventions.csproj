@@ -72,6 +72,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AggregatedTypeScanner.cs" />
+    <Compile Include="AppDomainPartRegistryLocator.cs" />
     <Compile Include="AssemblyTypeScanner.cs" />
     <Compile Include="Configuration\ConventionBuilder.cs" />
     <Compile Include="Configuration\ExpressionBuilderFactory.cs" />

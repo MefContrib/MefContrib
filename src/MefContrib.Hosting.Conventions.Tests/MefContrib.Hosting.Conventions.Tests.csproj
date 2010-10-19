@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AggregatedTypeScannerTests.cs" />
+    <Compile Include="AppDomainPartRegistryLocatorTests.cs" />
     <Compile Include="AssemblyFactory.cs" />
     <Compile Include="AssemblyWrapper.cs">
       <SubType>Code</SubType>
