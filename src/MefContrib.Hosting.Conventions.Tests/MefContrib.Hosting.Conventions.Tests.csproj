@@ -79,7 +79,9 @@
   <ItemGroup>
     <Compile Include="AggregatedTypeScannerTests.cs" />
     <Compile Include="AssemblyFactory.cs" />
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="AssemblyWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="AssemblyTypeScannerTests.cs" />
     <Compile Include="Catch.cs" />
     <Compile Include="ContextSpecificationAssertions.cs" />

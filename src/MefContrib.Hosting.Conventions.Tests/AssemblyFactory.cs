@@ -9,21 +9,21 @@
     {
         public AssemblyFactory()
         {
-            this.Assemblies = new List<AssemblyInfo>();
+            this.Assemblies = new List<AssemblyWrapper>();
             this.AssemblyDirectory = CreateTemporaryDirectory();
         }
 
-        public AssemblyInfo Build(string code)
+        public AssemblyWrapper Build(string code)
         {
             var builtAssembly =
                 CSharpAssemblyFactory.Compile(code, this.GenerateTemporaryAssemblyName());
 
-            this.Assemblies.Add(new AssemblyInfo(builtAssembly));
+            this.Assemblies.Add(new AssemblyWrapper(builtAssembly));
 
             return this.Assemblies.Last();
         }
 
-        public IList<AssemblyInfo> Assemblies { get; private set; }
+        public IList<AssemblyWrapper> Assemblies { get; private set; }
 
         public DirectoryInfo AssemblyDirectory { get; set; }
 
