@@ -6,48 +6,31 @@
     using System.ComponentModel.Composition.Primitives;
     using System.Linq;
     using System.Threading;
+    using MefContrib.Hosting.Interception.Configuration;
 
     public class InterceptingCatalog : ComposablePartCatalog, INotifyComposablePartCatalogChanged
     {
         private readonly object _lock = new object();
         private readonly ComposablePartCatalog _interceptedCatalog;
         private readonly INotifyComposablePartCatalogChanged _interceptedCatalogNotifyChange;
-        private readonly IExportedValueInterceptor _valueInterceptor;
-        private readonly IEnumerable<IExportHandler> _handlers;
+        private readonly IInterceptionConfiguration _configuration;
         private IQueryable<ComposablePartDefinition> _innerPartsQueryable;
-
-        public InterceptingCatalog(ComposablePartCatalog interceptedCatalog, IExportedValueInterceptor valueInterceptor)
-            : this(interceptedCatalog, valueInterceptor, Enumerable.Empty<IExportHandler>())
-        {
-        }
-
-        public InterceptingCatalog(ComposablePartCatalog interceptedCatalog, IExportedValueInterceptor valueInterceptor, params IExportHandler[] handlers)
-            : this(interceptedCatalog, valueInterceptor, handlers.ToList())
-        {
-        }
-
-        public InterceptingCatalog(ComposablePartCatalog interceptedCatalog, params IExportHandler[] handlers)
-            : this(interceptedCatalog, new EmptyInterceptor(), handlers.ToList())
-        {
-        }
-
-        public InterceptingCatalog(ComposablePartCatalog interceptedCatalog, IExportedValueInterceptor valueInterceptor, IEnumerable<IExportHandler> handlers)
+        
+        public InterceptingCatalog(ComposablePartCatalog interceptedCatalog, IInterceptionConfiguration configuration)
         {
             if (interceptedCatalog == null) throw new ArgumentNullException("interceptedCatalog");
-            if (valueInterceptor == null) throw new ArgumentNullException("valueInterceptor");
-            if (handlers == null) throw new ArgumentNullException("handlers");
-            
+            if (configuration == null) throw new ArgumentNullException("configuration");
+
             _interceptedCatalog = interceptedCatalog;
             _interceptedCatalogNotifyChange = interceptedCatalog as INotifyComposablePartCatalogChanged;
-            _valueInterceptor = valueInterceptor;
-            _handlers = handlers;
+            _configuration = configuration;
             
             InitializeHandlers();
         }
 
         private void InitializeHandlers()
         {
-            foreach(var handler in _handlers)
+            foreach(var handler in _configuration.Handlers)
             {
                 handler.Initialize(_interceptedCatalog);
             }
@@ -58,7 +41,7 @@
             if (definition == null) throw new ArgumentNullException("definition");
 
             var exports = base.GetExports(definition);
-            foreach (var handler in _handlers)
+            foreach (var handler in _configuration.Handlers)
             {
                 exports = handler.GetExports(definition, exports);
             }
@@ -81,12 +64,12 @@
                     {
 #if SILVERLIGHT
                         var parts = _interceptedCatalog.Parts
-                            .Select(p => new InterceptingComposablePartDefinition(p, _valueInterceptor))
+                            .Select(p => new InterceptingComposablePartDefinition(p, GetInterceptor(p)))
                             .Cast<ComposablePartDefinition>()
                             .AsQueryable();
 #else
                         var parts = _interceptedCatalog.Parts
-                            .Select(p => new InterceptingComposablePartDefinition(p, _valueInterceptor))
+                            .Select(p => new InterceptingComposablePartDefinition(p, GetInterceptor(p)))
                             .AsQueryable();
 #endif
                         Thread.MemoryBarrier();
@@ -96,6 +79,27 @@
             }
 
             return _innerPartsQueryable;
+        }
+
+        private IExportedValueInterceptor GetInterceptor(ComposablePartDefinition partDefinition)
+        {
+            var interceptors = new List<IExportedValueInterceptor>();
+            var globalInterceptor = _configuration.Interceptor;
+            var additionalInterceptors = from partInterceptor in _configuration.PartInterceptors
+                                         where partInterceptor.Predicate(partDefinition)
+                                         select partInterceptor.Interceptor;
+
+            if (globalInterceptor != null)
+            {
+                interceptors.Add(globalInterceptor);
+            }
+
+            interceptors.AddRange(additionalInterceptors);
+
+            if (interceptors.Count == 0) return EmptyInterceptor.Default;
+            if (interceptors.Count == 1) return interceptors[0];
+
+            return new CompositeValueInterceptor(interceptors.ToArray());
         }
 
         #region INotifyComposablePartCatalogChanged Implementation
@@ -132,6 +136,8 @@
 
         private class EmptyInterceptor : IExportedValueInterceptor
         {
+            public static readonly IExportedValueInterceptor Default = new EmptyInterceptor();
+
             public object Intercept(object value)
             {
                 return value;

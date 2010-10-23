@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using System.ComponentModel.Composition.Hosting;
+using MefContrib.Hosting.Interception.Configuration;
 using MefContrib.Tests;
 using Moq;
 using NUnit.Framework;
@@ -35,7 +37,8 @@ namespace MefContrib.Hosting.Interception.Tests
             {
                 var innerCatalog = new TypeCatalog(typeof(Logger));
                 MockInterceptor = new Mock<IExportedValueInterceptor>();
-                Catalog = new InterceptingCatalog(innerCatalog, MockInterceptor.Object);
+                var cfg = new InterceptionConfiguration().AddInterceptor(MockInterceptor.Object);
+                Catalog = new InterceptingCatalog(innerCatalog, cfg);
                 Context();
             }
 
@@ -44,5 +47,66 @@ namespace MefContrib.Hosting.Interception.Tests
             }
         }
 
+        [TestFixture]
+        public class when_querying_for_an_import : InterceptingCatalogPartsContext
+        {
+            [Test]
+            public void it_should_return_non_intercepted_value_for_part1()
+            {
+                var part = Container.GetExportedValue<IPart>();
+                Assert.That(part.GetType(), Is.EqualTo(typeof(Part1)));
+            }
+
+            [Test]
+            public void it_should_return_an_intercepted_value_for_part2()
+            {
+                var part = Container.GetExportedValue<IPart>("part2");
+                Assert.That(part.GetType(), Is.EqualTo(typeof(PartWrapper)));
+                Assert.That(((PartWrapper)part).Inner.GetType(), Is.EqualTo(typeof(Part2)));
+            }
+        }
+
+        public class InterceptingCatalogPartsContext
+        {
+            public CompositionContainer Container;
+
+            public InterceptingCatalogPartsContext()
+            {
+                var innerCatalog = new TypeCatalog(typeof(Part1), typeof(Part2));
+                var cfg = new InterceptionConfiguration()
+                    .AddPartInterceptor(
+                        new PredicatePartInterceptor(
+                            new PartInterceptor(), d => d.Metadata.ContainsKey("metadata1")));
+                var catalog = new InterceptingCatalog(innerCatalog, cfg);
+                Container = new CompositionContainer(catalog);
+                Context();
+            }
+
+            public virtual void Context()
+            {
+            }
+        }
+
+        public interface IPart {}
+
+        [Export(typeof(IPart))]
+        public class Part1 : IPart { }
+
+        [Export("part2", typeof(IPart))]
+        [PartMetadata("metadata1", true)]
+        public class Part2 : IPart { }
+
+        public class PartWrapper : IPart
+        {
+            public object Inner { get; set; }
+        }
+
+        public class PartInterceptor : IExportedValueInterceptor
+        {
+            public object Intercept(object value)
+            {
+                return new PartWrapper { Inner = value };
+            }
+        }
     }
 }

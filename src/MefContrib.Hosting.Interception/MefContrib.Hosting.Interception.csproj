@@ -42,14 +42,18 @@
     </Compile>
     <Compile Include="CompositeValueInterceptor.cs" />
     <Compile Include="ConcreteTypeExportHandler.cs" />
+    <Compile Include="Configuration\IPartInterceptor.cs" />
+    <Compile Include="Configuration\PredicatePartInterceptor.cs" />
     <Compile Include="Generics\GenericContractTypeMapping.cs" />
     <Compile Include="Generics\GenericExportHandler.cs" />
     <Compile Include="Generics\TypeHelper.cs" />
     <Compile Include="IExportedValueInterceptor.cs" />
     <Compile Include="IExportHandler.cs" />
+    <Compile Include="Configuration\IInterceptionConfiguration.cs" />
     <Compile Include="InterceptingCatalog.cs" />
     <Compile Include="InterceptingComposablePart.cs" />
     <Compile Include="InterceptingComposablePartDefinition.cs" />
+    <Compile Include="Configuration\InterceptionConfiguration.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,6 +3,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using Castle.DynamicProxy;
+using MefContrib.Hosting.Interception.Configuration;
 using MefContrib.Tests;
 using NUnit.Framework;
 
@@ -38,7 +39,9 @@ namespace MefContrib.Hosting.Interception.Castle.Tests
                 var interceptor = new FreezableInterceptor();
                 interceptor.Freeze();
                 var valueInterceptor = new DynamicProxyInterceptor(interceptor);
-                Catalog = new InterceptingCatalog(innerCatalog, valueInterceptor);
+                var cfg = new InterceptionConfiguration()
+                    .AddInterceptor(valueInterceptor);
+                Catalog = new InterceptingCatalog(innerCatalog, cfg);
                 Container = new CompositionContainer(Catalog);
                 Context();
             }
