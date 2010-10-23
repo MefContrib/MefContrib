@@ -40,6 +40,7 @@
     <Compile Include="..\MefContrib\Properties\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CompositeValueInterceptor.cs" />
     <Compile Include="ConcreteTypeExportHandler.cs" />
     <Compile Include="Generics\GenericContractTypeMapping.cs" />
     <Compile Include="Generics\GenericExportHandler.cs" />

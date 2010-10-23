@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Castle\DynamicProxyValueInterceptorSpecs.cs" />
+    <Compile Include="CompositeValueInterceptorTests.cs" />
     <Compile Include="ConcreteTypeExportHandlerSpecs.cs" />
     <Compile Include="GenericExportHandlerSpecs.cs" />
     <Compile Include="InterceptingCatalogSpecs.cs" />
