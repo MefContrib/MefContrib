@@ -5,20 +5,20 @@ namespace MefContrib.Hosting.Interception.Configuration
 
     public class InterceptionConfiguration : IInterceptionConfiguration
     {
-        private readonly List<IPartInterceptor> partInterceptors;
+        private readonly List<IPartInterceptionCriteria> interceptionCriteria;
         private readonly List<IExportHandler> handlers;
 
         public InterceptionConfiguration()
         {
-            this.partInterceptors = new List<IPartInterceptor>();
+            this.interceptionCriteria = new List<IPartInterceptionCriteria>();
             this.handlers = new List<IExportHandler>();
         }
 
         public IExportedValueInterceptor Interceptor { get; set; }
 
-        public IEnumerable<IPartInterceptor> PartInterceptors
+        public IEnumerable<IPartInterceptionCriteria> InterceptionCriteria
         {
-            get { return this.partInterceptors; }
+            get { return this.interceptionCriteria; }
         }
 
         public IEnumerable<IExportHandler> Handlers
@@ -28,6 +28,8 @@ namespace MefContrib.Hosting.Interception.Configuration
 
         public InterceptionConfiguration AddInterceptor(IExportedValueInterceptor interceptor)
         {
+            if (interceptor == null) throw new ArgumentNullException("interceptor");
+
             if (this.Interceptor == null)
             {
                 this.Interceptor = interceptor;
@@ -41,7 +43,7 @@ namespace MefContrib.Hosting.Interception.Configuration
                 }
                 else
                 {
-                    this.Interceptor = new CompositeValueInterceptor(this.Interceptor);
+                    this.Interceptor = new CompositeValueInterceptor(this.Interceptor, interceptor);
                 }
             }
 
@@ -50,13 +52,17 @@ namespace MefContrib.Hosting.Interception.Configuration
 
         public InterceptionConfiguration AddHandler(IExportHandler handler)
         {
+            if (handler == null) throw new ArgumentNullException("handler");
+
             this.handlers.Add(handler);
             return this;
         }
 
-        public InterceptionConfiguration AddPartInterceptor(IPartInterceptor partInterceptor)
+        public InterceptionConfiguration AddInterceptionCriteria(IPartInterceptionCriteria partInterceptionCriteria)
         {
-            this.partInterceptors.Add(partInterceptor);
+            if (partInterceptionCriteria == null) throw new ArgumentNullException("partInterceptionCriteria");
+
+            this.interceptionCriteria.Add(partInterceptionCriteria);
             return this;
         }
     }

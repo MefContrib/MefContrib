@@ -42,8 +42,8 @@
     </Compile>
     <Compile Include="CompositeValueInterceptor.cs" />
     <Compile Include="ConcreteTypeExportHandler.cs" />
-    <Compile Include="Configuration\IPartInterceptor.cs" />
-    <Compile Include="Configuration\PredicatePartInterceptor.cs" />
+    <Compile Include="Configuration\IPartInterceptionCriteria.cs" />
+    <Compile Include="Configuration\PredicateInterceptionCriteria.cs" />
     <Compile Include="Generics\GenericContractTypeMapping.cs" />
     <Compile Include="Generics\GenericExportHandler.cs" />
     <Compile Include="Generics\TypeHelper.cs" />

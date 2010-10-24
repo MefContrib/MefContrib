@@ -3,9 +3,9 @@ namespace MefContrib.Hosting.Interception.Configuration
     using System;
     using System.ComponentModel.Composition.Primitives;
 
-    public class PredicatePartInterceptor : IPartInterceptor
+    public class PredicateInterceptionCriteria : IPartInterceptionCriteria
     {
-        public PredicatePartInterceptor(IExportedValueInterceptor interceptor, Func<ComposablePartDefinition, bool> predicate)
+        public PredicateInterceptionCriteria(IExportedValueInterceptor interceptor, Func<ComposablePartDefinition, bool> predicate)
         {
             Interceptor = interceptor;
             Predicate = predicate;

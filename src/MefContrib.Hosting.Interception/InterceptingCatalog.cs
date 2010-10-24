@@ -84,14 +84,14 @@
         private IExportedValueInterceptor GetInterceptor(ComposablePartDefinition partDefinition)
         {
             var interceptors = new List<IExportedValueInterceptor>();
-            var globalInterceptor = _configuration.Interceptor;
-            var additionalInterceptors = from partInterceptor in _configuration.PartInterceptors
-                                         where partInterceptor.Predicate(partDefinition)
-                                         select partInterceptor.Interceptor;
+            var catalogInterceptor = _configuration.Interceptor;
+            var additionalInterceptors = from criteria in _configuration.InterceptionCriteria
+                                         where criteria.Predicate(partDefinition)
+                                         select criteria.Interceptor;
 
-            if (globalInterceptor != null)
+            if (catalogInterceptor != null)
             {
-                interceptors.Add(globalInterceptor);
+                interceptors.Add(catalogInterceptor);
             }
 
             interceptors.AddRange(additionalInterceptors);

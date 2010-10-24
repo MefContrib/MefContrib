@@ -7,7 +7,7 @@ namespace MefContrib.Hosting.Interception.Configuration
     {
         IExportedValueInterceptor Interceptor { get; }
 
-        IEnumerable<IPartInterceptor> PartInterceptors { get; }
+        IEnumerable<IPartInterceptionCriteria> InterceptionCriteria { get; }
 
         IEnumerable<IExportHandler> Handlers { get; }
     }
