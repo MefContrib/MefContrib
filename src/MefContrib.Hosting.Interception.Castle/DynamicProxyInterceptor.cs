@@ -8,11 +8,11 @@ namespace MefContrib.Hosting.Interception.Castle
     {
         private static readonly ProxyGenerator Generator = new ProxyGenerator();
 
-        private readonly IInterceptor[] _interceptors;
+        private readonly IInterceptor[] interceptors;
 
         public DynamicProxyInterceptor(params IInterceptor[] interceptors)
         {
-            _interceptors = interceptors;
+            this.interceptors = interceptors;
         }
 
         public object Intercept(object value)
@@ -20,8 +20,12 @@ namespace MefContrib.Hosting.Interception.Castle
             var interfaces = value.GetType().GetInterfaces();
             Type proxyInterface = interfaces.FirstOrDefault();
             Type[] additionalInterfaces = interfaces.Skip(1).ToArray();
-            var proxy = Generator.CreateInterfaceProxyWithTargetInterface(proxyInterface, additionalInterfaces, value, _interceptors);            
-            return proxy;
+            
+            return Generator.CreateInterfaceProxyWithTargetInterface(
+                proxyInterface,
+                additionalInterfaces,
+                value,
+                this.interceptors);
         }
     }
 }
