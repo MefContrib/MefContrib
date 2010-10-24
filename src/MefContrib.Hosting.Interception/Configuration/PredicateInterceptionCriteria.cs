@@ -7,6 +7,9 @@ namespace MefContrib.Hosting.Interception.Configuration
     {
         public PredicateInterceptionCriteria(IExportedValueInterceptor interceptor, Func<ComposablePartDefinition, bool> predicate)
         {
+            if (interceptor == null) throw new ArgumentNullException("interceptor");
+            if (predicate == null) throw new ArgumentNullException("predicate");
+
             Interceptor = interceptor;
             Predicate = predicate;
         }

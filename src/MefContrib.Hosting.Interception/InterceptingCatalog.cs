@@ -10,29 +10,29 @@
 
     public class InterceptingCatalog : ComposablePartCatalog, INotifyComposablePartCatalogChanged
     {
-        private readonly object _lock = new object();
-        private readonly ComposablePartCatalog _interceptedCatalog;
-        private readonly INotifyComposablePartCatalogChanged _interceptedCatalogNotifyChange;
-        private readonly IInterceptionConfiguration _configuration;
-        private IQueryable<ComposablePartDefinition> _innerPartsQueryable;
+        private readonly object synchRoot = new object();
+        private readonly ComposablePartCatalog interceptedCatalog;
+        private readonly INotifyComposablePartCatalogChanged interceptedCatalogNotifyChange;
+        private readonly IInterceptionConfiguration configuration;
+        private IQueryable<ComposablePartDefinition> innerPartsQueryable;
         
         public InterceptingCatalog(ComposablePartCatalog interceptedCatalog, IInterceptionConfiguration configuration)
         {
             if (interceptedCatalog == null) throw new ArgumentNullException("interceptedCatalog");
             if (configuration == null) throw new ArgumentNullException("configuration");
 
-            _interceptedCatalog = interceptedCatalog;
-            _interceptedCatalogNotifyChange = interceptedCatalog as INotifyComposablePartCatalogChanged;
-            _configuration = configuration;
+            this.interceptedCatalog = interceptedCatalog;
+            this.interceptedCatalogNotifyChange = interceptedCatalog as INotifyComposablePartCatalogChanged;
+            this.configuration = configuration;
             
             InitializeHandlers();
         }
 
         private void InitializeHandlers()
         {
-            foreach(var handler in _configuration.Handlers)
+            foreach(var handler in this.configuration.Handlers)
             {
-                handler.Initialize(_interceptedCatalog);
+                handler.Initialize(this.interceptedCatalog);
             }
         }
 
@@ -41,7 +41,7 @@
             if (definition == null) throw new ArgumentNullException("definition");
 
             var exports = base.GetExports(definition);
-            foreach (var handler in _configuration.Handlers)
+            foreach (var handler in this.configuration.Handlers)
             {
                 exports = handler.GetExports(definition, exports);
             }
@@ -56,45 +56,45 @@
 
         private IQueryable<ComposablePartDefinition> GetParts()
         {
-            if (_innerPartsQueryable == null)
+            if (this.innerPartsQueryable == null)
             {
-                lock (_lock)
+                lock (this.synchRoot)
                 {
-                    if (_innerPartsQueryable == null)
+                    if (this.innerPartsQueryable == null)
                     {
 #if SILVERLIGHT
-                        var parts = _interceptedCatalog.Parts
+                        var parts = this.interceptedCatalog.Parts
                             .Select(p => new InterceptingComposablePartDefinition(p, GetInterceptor(p)))
                             .Cast<ComposablePartDefinition>()
                             .AsQueryable();
 #else
-                        var parts = _interceptedCatalog.Parts
+                        var parts = this.interceptedCatalog.Parts
                             .Select(p => new InterceptingComposablePartDefinition(p, GetInterceptor(p)))
                             .AsQueryable();
 #endif
                         Thread.MemoryBarrier();
-                        _innerPartsQueryable = parts;
+                        this.innerPartsQueryable = parts;
                     }
                 }
             }
 
-            return _innerPartsQueryable;
+            return this.innerPartsQueryable;
         }
 
         private IExportedValueInterceptor GetInterceptor(ComposablePartDefinition partDefinition)
         {
             var interceptors = new List<IExportedValueInterceptor>();
-            var catalogInterceptor = _configuration.Interceptor;
-            var additionalInterceptors = from criteria in _configuration.InterceptionCriteria
-                                         where criteria.Predicate(partDefinition)
-                                         select criteria.Interceptor;
+            var catalogInterceptor = this.configuration.Interceptor;
+            var partInterceptors = from criteria in this.configuration.InterceptionCriteria
+                                   where criteria.Predicate(partDefinition)
+                                   select criteria.Interceptor;
 
             if (catalogInterceptor != null)
             {
                 interceptors.Add(catalogInterceptor);
             }
 
-            interceptors.AddRange(additionalInterceptors);
+            interceptors.AddRange(partInterceptors);
 
             if (interceptors.Count == 0) return EmptyInterceptor.Default;
             if (interceptors.Count == 1) return interceptors[0];
@@ -108,13 +108,13 @@
         {
             add
             {
-                if (this._interceptedCatalogNotifyChange != null)
-                    this._interceptedCatalogNotifyChange.Changed += value;
+                if (this.interceptedCatalogNotifyChange != null)
+                    this.interceptedCatalogNotifyChange.Changed += value;
             }
             remove
             {
-                if (this._interceptedCatalogNotifyChange != null)
-                    this._interceptedCatalogNotifyChange.Changed -= value;
+                if (this.interceptedCatalogNotifyChange != null)
+                    this.interceptedCatalogNotifyChange.Changed -= value;
             }
         }
 
@@ -122,13 +122,13 @@
         {
             add
             {
-                if (this._interceptedCatalogNotifyChange != null)
-                    this._interceptedCatalogNotifyChange.Changing += value;
+                if (this.interceptedCatalogNotifyChange != null)
+                    this.interceptedCatalogNotifyChange.Changing += value;
             }
             remove
             {
-                if (this._interceptedCatalogNotifyChange != null)
-                    this._interceptedCatalogNotifyChange.Changing -= value;
+                if (this.interceptedCatalogNotifyChange != null)
+                    this.interceptedCatalogNotifyChange.Changing -= value;
             }
         }
 

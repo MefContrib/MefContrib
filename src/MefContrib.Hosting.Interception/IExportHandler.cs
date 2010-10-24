@@ -6,7 +6,7 @@
 
     public interface IExportHandler
     {
-        void Initialize(ComposablePartCatalog catalog);
+        void Initialize(ComposablePartCatalog interceptedCatalog);
 
         IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition, IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> exports);
     }

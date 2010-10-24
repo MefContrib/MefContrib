@@ -6,8 +6,8 @@
 
     public class InterceptingComposablePart : ComposablePart
     {
-        private readonly IExportedValueInterceptor _valueInterceptor;
-        private readonly IDictionary<ExportDefinition, object> _values;
+        private readonly IExportedValueInterceptor valueInterceptor;
+        private readonly IDictionary<ExportDefinition, object> values;
 
         public InterceptingComposablePart(ComposablePart interceptedPart, IExportedValueInterceptor valueInterceptor)
         {
@@ -15,8 +15,8 @@
             if (valueInterceptor == null) throw new ArgumentNullException("valueInterceptor");
 
             InterceptedPart = interceptedPart;
-            _valueInterceptor = valueInterceptor;
-            _values = new Dictionary<ExportDefinition, object>();
+            this.valueInterceptor = valueInterceptor;
+            this.values = new Dictionary<ExportDefinition, object>();
         }
 
         public ComposablePart InterceptedPart { get; private set; }
@@ -25,12 +25,12 @@
         {
             if (exportDefinition == null) throw new ArgumentNullException("exportDefinition");
 
-            if (_values.ContainsKey(exportDefinition))
-                return _values[exportDefinition];
+            if (this.values.ContainsKey(exportDefinition))
+                return this.values[exportDefinition];
 
             var value = InterceptedPart.GetExportedValue(exportDefinition);
-            var interceptingValue = _valueInterceptor.Intercept(value);
-            _values.Add(exportDefinition, interceptingValue);
+            var interceptingValue = this.valueInterceptor.Intercept(value);
+            this.values.Add(exportDefinition, interceptingValue);
             
             return interceptingValue;
         }

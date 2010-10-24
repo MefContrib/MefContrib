@@ -6,7 +6,7 @@
 
     public class InterceptingComposablePartDefinition : ComposablePartDefinition
     {
-        private readonly IExportedValueInterceptor _valueInterceptor;
+        private readonly IExportedValueInterceptor valueInterceptor;
 
         public InterceptingComposablePartDefinition(ComposablePartDefinition interceptedPartDefinition, IExportedValueInterceptor valueInterceptor)
         {
@@ -14,7 +14,7 @@
             if (valueInterceptor == null) throw new ArgumentNullException("valueInterceptor");
             
             InterceptedPartDefinition = interceptedPartDefinition;
-            _valueInterceptor = valueInterceptor;
+            this.valueInterceptor = valueInterceptor;
         }
 
         /// <summary>
@@ -25,7 +25,7 @@
         public override ComposablePart CreatePart()
         {
             var interceptedPart = InterceptedPartDefinition.CreatePart();
-            return new InterceptingComposablePart(interceptedPart, _valueInterceptor);
+            return new InterceptingComposablePart(interceptedPart, this.valueInterceptor);
         }
 
         public override IEnumerable<ExportDefinition> ExportDefinitions

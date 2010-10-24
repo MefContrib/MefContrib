@@ -8,21 +8,21 @@
 
     public class ConcreteTypeExportHandler : IExportHandler
     {
-        private readonly AggregateCatalog _catalog;
+        private readonly AggregateCatalog catalog;
 
         public ConcreteTypeExportHandler()
         {
-            _catalog = new AggregateCatalog();
+            this.catalog = new AggregateCatalog();
         }
 
-        public void Initialize(ComposablePartCatalog catalog)
+        public void Initialize(ComposablePartCatalog interceptedCatalog)
         {
         }
 
         public IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition, IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> exports)
         {
             if (!exports.Any())
-                exports = _catalog.GetExports(definition);
+                exports = this.catalog.GetExports(definition);
                         
             if (exports.Any())
                 return exports;
@@ -32,10 +32,10 @@
             
             if (!importDefinitionType.IsAbstract && !importDefinitionType.IsInterface)
             {
-                var catalog = new TypeCatalog(importDefinitionType);
-                _catalog.Catalogs.Add(catalog);
-                var tempExport = _catalog.GetExports(definition);
-                returnedExports.AddRange(tempExport);
+                var typeCatalog = new TypeCatalog(importDefinitionType);
+                this.catalog.Catalogs.Add(typeCatalog);
+                var currentExports = this.catalog.GetExports(definition);
+                returnedExports.AddRange(currentExports);
             }
             
             return returnedExports;
