@@ -4,12 +4,11 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
-using MefContrib.Hosting.Interception.Generics;
-using MefContrib.Hosting.Interception.Tests.Generics;
+using MefContrib.Hosting.Interception.Handlers;
 using MefContrib.Tests;
 using NUnit.Framework;
 
-namespace MefContrib.Hosting.Interception.Tests
+namespace MefContrib.Hosting.Interception.Tests.Handlers
 {
     namespace Given_a_GenericExportHandler
     {
@@ -100,7 +99,6 @@ namespace MefContrib.Hosting.Interception.Tests
 
         public class OrderRepository : IRepository<Order>
         {
-
         }
     }
 }

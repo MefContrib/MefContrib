@@ -74,7 +74,7 @@ namespace MefContrib.Hosting.Interception.Tests
             {
                 var innerCatalog = new TypeCatalog(typeof(Part1), typeof(Part2));
                 var cfg = new InterceptionConfiguration()
-                    .AddPartInterceptor(
+                    .AddInterceptionCriteria(
                         new PredicateInterceptionCriteria(
                             new PartInterceptor(), d => d.Metadata.ContainsKey("metadata1")));
                 var catalog = new InterceptingCatalog(innerCatalog, cfg);

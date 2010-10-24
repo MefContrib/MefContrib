@@ -40,13 +40,13 @@
     <Compile Include="..\MefContrib\Properties\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="CompositeValueInterceptor.cs" />
-    <Compile Include="ConcreteTypeExportHandler.cs" />
+    <Compile Include="Interceptors\CompositeValueInterceptor.cs" />
+    <Compile Include="Handlers\ConcreteTypeExportHandler.cs" />
     <Compile Include="Configuration\IPartInterceptionCriteria.cs" />
     <Compile Include="Configuration\PredicateInterceptionCriteria.cs" />
-    <Compile Include="Generics\GenericContractTypeMapping.cs" />
-    <Compile Include="Generics\GenericExportHandler.cs" />
-    <Compile Include="Generics\TypeHelper.cs" />
+    <Compile Include="Handlers\GenericContractTypeMapping.cs" />
+    <Compile Include="Handlers\GenericExportHandler.cs" />
+    <Compile Include="Handlers\TypeHelper.cs" />
     <Compile Include="IExportedValueInterceptor.cs" />
     <Compile Include="IExportHandler.cs" />
     <Compile Include="Configuration\IInterceptionConfiguration.cs" />
@@ -54,7 +54,9 @@
     <Compile Include="InterceptingComposablePart.cs" />
     <Compile Include="InterceptingComposablePartDefinition.cs" />
     <Compile Include="Configuration\InterceptionConfiguration.cs" />
+    <Compile Include="Interceptors\EmptyInterceptor.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

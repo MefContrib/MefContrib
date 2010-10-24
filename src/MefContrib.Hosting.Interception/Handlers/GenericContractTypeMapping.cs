@@ -1,4 +1,4 @@
-﻿namespace MefContrib.Hosting.Interception.Generics
+﻿namespace MefContrib.Hosting.Interception.Handlers
 {
     using System;
     using System.ComponentModel.Composition;

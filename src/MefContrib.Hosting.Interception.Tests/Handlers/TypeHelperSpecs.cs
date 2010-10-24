@@ -4,10 +4,10 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
-using MefContrib.Hosting.Interception.Generics;
+using MefContrib.Hosting.Interception.Handlers;
 using NUnit.Framework;
 
-namespace MefContrib.Hosting.Interception.Tests.Generics
+namespace MefContrib.Hosting.Interception.Tests.Handlers
 {
     namespace Given_using_TypeHelper
     {

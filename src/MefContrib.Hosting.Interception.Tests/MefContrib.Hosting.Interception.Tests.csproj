@@ -48,17 +48,17 @@
   <ItemGroup>
     <Compile Include="Castle\DynamicProxyValueInterceptorSpecs.cs" />
     <Compile Include="CompositeValueInterceptorTests.cs" />
-    <Compile Include="ConcreteTypeExportHandlerSpecs.cs" />
-    <Compile Include="GenericExportHandlerSpecs.cs" />
+    <Compile Include="Handlers\ConcreteTypeExportHandlerSpecs.cs" />
+    <Compile Include="Handlers\GenericExportHandlerSpecs.cs" />
     <Compile Include="InterceptingCatalogSpecs.cs" />
     <Compile Include="InterceptingComposablePartDefinitionSpecs.cs" />
     <Compile Include="InterceptingComposablePartSpecs.cs" />
-    <Compile Include="Generics\IRepository.cs" />
+    <Compile Include="Handlers\IRepository.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Generics\Order.cs" />
+    <Compile Include="Handlers\Order.cs" />
     <Compile Include="OrderProcessor.cs" />
-    <Compile Include="Generics\Repository.cs" />
-    <Compile Include="Generics\TypeHelperSpecs.cs" />
+    <Compile Include="Handlers\Repository.cs" />
+    <Compile Include="Handlers\TypeHelperSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MefContrib.Hosting.Interception.Castle\MefContrib.Hosting.Interception.Castle.csproj">
