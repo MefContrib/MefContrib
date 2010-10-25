@@ -35,6 +35,11 @@
             return interceptingValue;
         }
 
+        public override void Activate()
+        {
+            InterceptedPart.Activate();
+        }
+
         public override void SetImport(ImportDefinition definition, IEnumerable<Export> exports)
         {
             if (definition == null) throw new ArgumentNullException("definition");

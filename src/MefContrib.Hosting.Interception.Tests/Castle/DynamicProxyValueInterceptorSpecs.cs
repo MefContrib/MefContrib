@@ -18,13 +18,8 @@ namespace MefContrib.Hosting.Interception.Tests.Castle
             [Test]
             public void it_should_error()
             {
-                typeof(InvalidOperationException).ShouldBeThrownBy(() => { Customer.Name = "John Doe"; });
-                
-            }
-
-            public override void Context()
-            {
-                Customer = Container.GetExportedValue<ICustomer>();
+                var customer = Container.GetExportedValue<ICustomer>();
+                typeof(InvalidOperationException).ShouldBeThrownBy(() => { customer.Name = "John Doe"; });
             }
         }
 
@@ -32,7 +27,6 @@ namespace MefContrib.Hosting.Interception.Tests.Castle
         {
             public ComposablePartCatalog Catalog;
             public CompositionContainer Container;
-            public ICustomer Customer;
 
             public DynamicProxyValueInterceptorContext()
             {
@@ -55,7 +49,7 @@ namespace MefContrib.Hosting.Interception.Tests.Castle
         [Export(typeof(ICustomer))]
         public class Customer : ICustomer
         {
-            public virtual string Name { get; set; }
+            public string Name { get; set; }
         }
 
         public interface ICustomer

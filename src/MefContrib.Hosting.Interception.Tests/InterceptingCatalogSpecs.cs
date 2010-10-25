@@ -64,6 +64,33 @@ namespace MefContrib.Hosting.Interception.Tests
                 Assert.That(part.GetType(), Is.EqualTo(typeof(PartWrapper)));
                 Assert.That(((PartWrapper)part).Inner.GetType(), Is.EqualTo(typeof(Part2)));
             }
+
+            [Test]
+            public void it_should_return_a_part_with_properly_set_name()
+            {
+                var part1 = Container.GetExportedValue<IPart>();
+                var part2 = Container.GetExportedValue<IPart>("part2");
+
+                Assert.That(part1.Name, Is.EqualTo("Name property is set be the interceptor."));
+                Assert.That(part2.Name, Is.EqualTo("Name property is set be the interceptor."));
+            }
+
+            [Test]
+            public void it_should_return_a_part_with_respect_to_its_creation_policy()
+            {
+                Part1.InstanceCount = 0;
+                Part3.InstanceCount = 0;
+
+                var part11 = Container.GetExportedValue<IPart>();
+                var part12 = Container.GetExportedValue<IPart>();
+                var part31 = Container.GetExportedValue<IPart>("part3");
+                var part32 = Container.GetExportedValue<IPart>("part3");
+
+                Assert.That(Part1.InstanceCount, Is.EqualTo(1));
+                Assert.That(Part3.InstanceCount, Is.EqualTo(2));
+                Assert.That(part11, Is.SameAs(part12));
+                Assert.That(part31, Is.Not.SameAs(part32));
+            }
         }
 
         public class InterceptingCatalogPartsContext
@@ -72,8 +99,9 @@ namespace MefContrib.Hosting.Interception.Tests
 
             public InterceptingCatalogPartsContext()
             {
-                var innerCatalog = new TypeCatalog(typeof(Part1), typeof(Part2));
+                var innerCatalog = new TypeCatalog(typeof(Part1), typeof(Part2), typeof(Part3));
                 var cfg = new InterceptionConfiguration()
+                    .AddInterceptor(new GeneralInterceptor())
                     .AddInterceptionCriteria(
                         new PredicateInterceptionCriteria(
                             new PartInterceptor(), d => d.Metadata.ContainsKey("metadata1")));
@@ -87,25 +115,76 @@ namespace MefContrib.Hosting.Interception.Tests
             }
         }
 
-        public interface IPart {}
+        public interface IPart
+        {
+            string Name { get; set; }
+        }
 
         [Export(typeof(IPart))]
-        public class Part1 : IPart { }
+        [PartCreationPolicy(CreationPolicy.Shared)]
+        public class Part1 : IPart
+        {
+            public static int InstanceCount;
+            
+            public Part1()
+            {
+                InstanceCount++;
+            }
+
+            public string Name { get; set; }
+        }
 
         [Export("part2", typeof(IPart))]
         [PartMetadata("metadata1", true)]
-        public class Part2 : IPart { }
+        public class Part2 : IPart
+        {
+            public string Name { get; set; }
+        }
+
+        [Export("part3", typeof(IPart))]
+        [PartCreationPolicy(CreationPolicy.NonShared)]
+        public class Part3 : IPart
+        {
+            public static int InstanceCount;
+            
+            public Part3()
+            {
+                InstanceCount++;
+            }
+
+            public string Name { get; set; }
+        }
 
         public class PartWrapper : IPart
         {
-            public object Inner { get; set; }
+            public string Name
+            {
+                get { return Inner.Name; }
+                set { Inner.Name = value; }
+            }
+
+            public IPart Inner { get; set; }
         }
 
         public class PartInterceptor : IExportedValueInterceptor
         {
             public object Intercept(object value)
             {
-                return new PartWrapper { Inner = value };
+                return new PartWrapper { Inner = (IPart) value };
+            }
+        }
+
+        public class GeneralInterceptor : IExportedValueInterceptor
+        {
+            public object Intercept(object value)
+            {
+                var part = value as IPart;
+                if (part != null)
+                {
+                    part.Name = "Name property is set be the interceptor.";
+                }
+
+                return value;
             }
         }
     }
