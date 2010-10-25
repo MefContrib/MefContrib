@@ -48,8 +48,23 @@ namespace MefContrib.Hosting.Interception.Tests
         }
 
         [TestFixture]
-        public class when_querying_for_an_import : InterceptingCatalogPartsContext
+        public class When_querying_for_an_import
         {
+            public CompositionContainer Container;
+
+            [TestFixtureSetUp]
+            public void TestSetUp()
+            {
+                var innerCatalog = new TypeCatalog(typeof(Part1), typeof(Part2), typeof(Part3));
+                var cfg = new InterceptionConfiguration()
+                    .AddInterceptor(new GeneralInterceptor())
+                    .AddInterceptionCriteria(
+                        new PredicateInterceptionCriteria(
+                            new PartInterceptor(), d => d.Metadata.ContainsKey("metadata1")));
+                var catalog = new InterceptingCatalog(innerCatalog, cfg);
+                Container = new CompositionContainer(catalog);
+            }
+
             [Test]
             public void it_should_return_non_intercepted_value_for_part1()
             {
@@ -78,40 +93,21 @@ namespace MefContrib.Hosting.Interception.Tests
             [Test]
             public void it_should_return_a_part_with_respect_to_its_creation_policy()
             {
-                Part1.InstanceCount = 0;
-                Part3.InstanceCount = 0;
-
                 var part11 = Container.GetExportedValue<IPart>();
                 var part12 = Container.GetExportedValue<IPart>();
                 var part31 = Container.GetExportedValue<IPart>("part3");
                 var part32 = Container.GetExportedValue<IPart>("part3");
 
-                Assert.That(Part1.InstanceCount, Is.EqualTo(1));
-                Assert.That(Part3.InstanceCount, Is.EqualTo(2));
+                Assert.That(part11, Is.Not.Null);
+                Assert.That(part12, Is.Not.Null);
+                Assert.That(part31, Is.Not.Null);
+                Assert.That(part32, Is.Not.Null);
+                
                 Assert.That(part11, Is.SameAs(part12));
                 Assert.That(part31, Is.Not.SameAs(part32));
-            }
-        }
 
-        public class InterceptingCatalogPartsContext
-        {
-            public CompositionContainer Container;
-
-            public InterceptingCatalogPartsContext()
-            {
-                var innerCatalog = new TypeCatalog(typeof(Part1), typeof(Part2), typeof(Part3));
-                var cfg = new InterceptionConfiguration()
-                    .AddInterceptor(new GeneralInterceptor())
-                    .AddInterceptionCriteria(
-                        new PredicateInterceptionCriteria(
-                            new PartInterceptor(), d => d.Metadata.ContainsKey("metadata1")));
-                var catalog = new InterceptingCatalog(innerCatalog, cfg);
-                Container = new CompositionContainer(catalog);
-                Context();
-            }
-
-            public virtual void Context()
-            {
+                Assert.That(Part1.InstanceCount, Is.EqualTo(1));
+                Assert.That(Part3.InstanceCount, Is.EqualTo(2));
             }
         }
 

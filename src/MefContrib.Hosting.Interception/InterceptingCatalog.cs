@@ -66,10 +66,12 @@
                         var parts = this.interceptedCatalog.Parts
                             .Select(p => new InterceptingComposablePartDefinition(p, GetInterceptor(p)))
                             .Cast<ComposablePartDefinition>()
+                            .ToList()
                             .AsQueryable();
 #else
                         var parts = this.interceptedCatalog.Parts
                             .Select(p => new InterceptingComposablePartDefinition(p, GetInterceptor(p)))
+                            .ToList()
                             .AsQueryable();
 #endif
                         Thread.MemoryBarrier();
