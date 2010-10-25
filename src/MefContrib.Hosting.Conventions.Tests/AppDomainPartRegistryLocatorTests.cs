@@ -123,6 +123,66 @@ namespace MefContrib.Hosting.Conventions.Tests
             instances.Count().ShouldBeGreaterThan(0);
         }
 
+        [Test]
+        public void TargetName_should_TestExpectation()
+        {
+            var registries = new List<object> { new object(), new object() };
+            var foo = new TestConventionCatalog(registries);
+
+            var locator = new DomainLocator();
+            var bar = new TestConventionCatalog(locator);
+
+            var bas = new TestConventionCatalog(locator, registries);
+
+            var i = 10;
+        }
+
+
+        private class TestConventionCatalog
+        {
+            private readonly ITestPartRegistryLocator locator;
+            private readonly IEnumerable<object> values;
+
+            public TestConventionCatalog(params object[] values)
+            {
+            }
+
+            public TestConventionCatalog(ITestPartRegistryLocator locator, params IPartRegistry<IContractService>[] registries)
+            {
+                this.locator = locator;
+                this.values = locator.Locate(registries);
+            }
+        }
+
+        public interface ITestPartRegistryLocator
+        {
+            IEnumerable<IPartRegistry<IContractService>> Locate(IEnumerable<IPartRegistry<IContractService>> knownRegistries);
+        }
+
+        public class DomainLocator : ITestPartRegistryLocator
+        {
+            public IEnumerable<IPartRegistry<IContractService>> Locate(IEnumerable<IPartRegistry<IContractService>> knownRegistries)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public class RegistryLocator : ITestPartRegistryLocator
+        {
+            public IEnumerable<IPartRegistry<IContractService>> Locate(IEnumerable<IPartRegistry<IContractService>> knownRegistries)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        [Test]
+        public void Should_be_able_to_set_locator_of_convention_catalog()
+        {
+            
+
+            throw new System.NotImplementedException();
+        }
+
         private static IPartRegistry<IContractService> CreateNewRegistryInstance(Type registryType)
         {
             if (!registryType.HasDefaultConstructor())

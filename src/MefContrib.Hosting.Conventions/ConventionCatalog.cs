@@ -11,35 +11,12 @@ namespace MefContrib.Hosting.Conventions
     /// </summary>
     public class ConventionCatalog : ComposablePartCatalog
     {
-        public ConventionCatalog()
-        {
-            var locator =
-                new AppDomainPartRegistryLocator(AppDomain.CurrentDomain);
-
-            this.Registries = locator.Locate();
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ConventionCatalog"/> class, using the provided array part registries.
         /// </summary>
         /// <param name="registries">An array of <see cref="IPartRegistry{T}"/> instance.</param>
-        public ConventionCatalog(params IPartRegistry<IContractService>[] registries) 
-            : this(registries.ToList())
+        public ConventionCatalog(params IPartRegistry<IContractService>[] registries)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConventionCatalog"/> class, using the providedenumerable of part registries.
-        /// </summary>
-        /// <param name="registries">An <see cref="IEnumerable{T}"/> instance, containing <see cref="IPartRegistry"/> instances.</param>
-        /// <exception cref="ArgumentNullException">The <paramref name="registries"/> parameter was <see langword="null" />.</exception>
-        public ConventionCatalog(IEnumerable<IPartRegistry<IContractService>> registries)
-        {
-            if (registries == null)
-            {
-                throw new ArgumentNullException("registries", "The registries parameter cannot be null.");
-            }
-
             this.Registries = registries;
         }
 

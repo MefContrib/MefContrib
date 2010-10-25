@@ -10,22 +10,19 @@
         IEnumerable<IPartRegistry<IContractService>> Locate();
     }
 
-    public class AppDomainPartRegistryLocator : IPartRegistryLocator
+    public class PartRegistryLocator : IPartRegistryLocator
     {
-        private readonly AppDomain appDomain;
+        private readonly IEnumerable<IPartRegistry<IContractService>> partRegistries;
 
-        public AppDomainPartRegistryLocator(AppDomain appDomain)
+        public PartRegistryLocator(IEnumerable<IPartRegistry<IContractService>> partRegistries)
         {
-            this.appDomain = appDomain;
+            this.partRegistries = partRegistries;
         }
 
         public IEnumerable<IPartRegistry<IContractService>> Locate()
         {
-            var registries =
-                GetPublicPartRegistryInstancesInAppDomain(this.appDomain);
-
             var result =
-                ScanForDiscoverableRegistries(registries);
+                ScanForDiscoverableRegistries(this.partRegistries);
 
             return result;
         }
@@ -51,10 +48,10 @@
         {
             return registries
                 .Where(registry => registry.TypeScanner != null)
-                .SelectMany(registry => registry.TypeScanner.GetTypes(TypeImplements<IPartRegistry<IContractService>>))
-                //.Where(type => !registries.Any(x => x.GetType().Equals(type)))
+                .SelectMany(registry => registry.TypeScanner.GetTypes(TypeImplementsPartRegistryInterface))
                 .Where(x => RegistryNotPreviouslyDiscovered(x, registries))
-                .Select(CreateNewRegistryInstance);
+                .Select(CreateNewRegistryInstance)
+                .Where(x => x != null);
         }
 
         private static bool RegistryNotPreviouslyDiscovered(Type type, IEnumerable<IPartRegistry<IContractService>> registries)
@@ -65,12 +62,56 @@
             return !isPreviouslyDiscovered;
         }
 
+        public static IEnumerable<IPartRegistry<IContractService>> CreateNewPartRegistryInstances(IEnumerable<Type> types)
+        {
+            return types.Select(CreateNewRegistryInstance);
+        }
+
+        private static IPartRegistry<IContractService> CreateNewRegistryInstance(Type registryType)
+        {
+            if (!registryType.HasDefaultConstructor())
+            {
+                return null;
+            }
+
+            var instance =
+                Activator.CreateInstance(registryType);
+
+            return (IPartRegistry<IContractService>)instance;
+        }
+
+        private static bool TypeImplementsPartRegistryInterface(Type type)
+        {
+            return type.GetInterfaces()
+                .Where(x => x.IsGenericType)
+                .Any(x => x.GetGenericTypeDefinition().Equals(typeof(IPartRegistry<>)));
+        }
+    }
+
+    public class AppDomainPartRegistryLocator : IPartRegistryLocator
+    {
+        private readonly AppDomain appDomain;
+
+        public AppDomainPartRegistryLocator(AppDomain appDomain)
+        {
+            this.appDomain = appDomain;
+        }
+
+        public IEnumerable<IPartRegistry<IContractService>> Locate()
+        {
+            var registries =
+                GetPublicPartRegistryInstancesInAppDomain(this.appDomain);
+
+            return (new PartRegistryLocator(registries)).Locate();
+        }
+
         private static IEnumerable<IPartRegistry<IContractService>> GetPublicPartRegistryInstancesInAppDomain(AppDomain domain)
         {
             var results = domain
                 .GetAssemblies()
                 .Select(x => GetPublicPartRegistryTypes(x.GetTypes()))
-                .SelectMany(CreateNewPartRegistryInstances);
+                .SelectMany(CreateNewPartRegistryInstances)
+                .Where(x => x != null);
 
             return results;
         }
@@ -97,10 +138,10 @@
         {
             return types
                 .Where(x => x.IsPublic)
-                .Where(TypeImplements<IPartRegistry<IContractService>>);
+                .Where(TypeImplementsPartRegistryInterface);
         }
 
-        private static bool TypeImplements<T>(Type type)
+        private static bool TypeImplementsPartRegistryInterface(Type type)
         {
             return type.GetInterfaces()
                 .Where(x => x.IsGenericType)
