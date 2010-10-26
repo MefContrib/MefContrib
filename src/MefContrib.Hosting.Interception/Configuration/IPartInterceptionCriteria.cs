@@ -5,8 +5,8 @@ namespace MefContrib.Hosting.Interception.Configuration
 
     /// <summary>
     /// Defines the <see cref="ComposablePartDefinition"/> interception criteria.
-    /// All <see cref="ComposablePartDefinition"/> instances whill have their
-    /// value intercepted by a given interceptor.
+    /// All <see cref="ComposablePartDefinition"/> instances which satisfy given
+    /// <see cref="Predicate"/> whill have their value intercepted <see cref="Interceptor"/> instance.
     /// </summary>
     public interface IPartInterceptionCriteria
     {
