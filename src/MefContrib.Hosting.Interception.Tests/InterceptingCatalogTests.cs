@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using System.ComponentModel.Composition.Hosting;
 using MefContrib.Hosting.Interception.Configuration;
@@ -86,11 +88,51 @@ namespace MefContrib.Hosting.Interception.Tests
             Assert.That(Part1.InstanceCount, Is.EqualTo(1));
             Assert.That(Part3.InstanceCount, Is.EqualTo(2));
         }
+
+        [Test]
+        public void Catalog_should_filter_out_parts()
+        {
+            var innerCatalog = new TypeCatalog(typeof(Part0), typeof(Part1), typeof(Part2), typeof(Part3));
+            var cfg = new InterceptionConfiguration()
+                .AddHandler(new PartFilter());
+            var catalog = new InterceptingCatalog(innerCatalog, cfg);
+            container = new CompositionContainer(catalog);
+
+            var parts = container.GetExportedValues<IPart>();
+            Assert.That(parts.Count(), Is.EqualTo(1));
+            Assert.That(parts.First().GetType(), Is.EqualTo(typeof(Part0)));
+        }
+    }
+
+    public class PartFilter : IExportHandler
+    {
+        public void Initialize(ComposablePartCatalog interceptedCatalog)
+        {
+        }
+
+        public IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition, IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> exports)
+        {
+            foreach (var export in exports)
+            {
+                if (export.Item1.Metadata.ContainsKey("ImportantPart") &&
+                    export.Item1.Metadata["ImportantPart"].Equals(true))
+                {
+                    yield return export;
+                }
+            }
+        }
     }
 
     public interface IPart
     {
         string Name { get; set; }
+    }
+
+    [Export(typeof(IPart))]
+    [PartMetadata("ImportantPart", true)]
+    public class Part0 : IPart
+    {
+        public string Name { get; set; }
     }
 
     [Export(typeof(IPart))]

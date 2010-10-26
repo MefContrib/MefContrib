@@ -34,6 +34,17 @@ namespace MefContrib.Hosting.Interception.Tests
         }
 
         [TestFixture]
+        public class When_accessing_metadata
+            : InterceptingComposablePartContext
+        {
+            [Test]
+            public void It_should_pull_from_the_inner_part()
+            {
+                InterceptingPart.Metadata.ShouldEqual(InterceptedPart.Metadata);
+            }
+        }
+
+        [TestFixture]
         public class When_setting_an_import
             : InterceptingComposablePartContext
         {

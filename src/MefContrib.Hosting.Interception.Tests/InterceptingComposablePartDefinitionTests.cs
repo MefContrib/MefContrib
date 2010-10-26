@@ -34,6 +34,12 @@ namespace MefContrib.Hosting.Interception.Tests
         }
 
         [Test]
+        public void When_accessing_metadat_it_should_pull_from_the_inner_part_definition()
+        {
+            interceptingPartDefinition.Metadata.ShouldEqual(interceptedPartDefinition.Metadata);
+        }
+
+        [Test]
         public void When_calling_create_part_it_should_create_an_intercepting_part()
         {
             var part = interceptingPartDefinition.CreatePart();
