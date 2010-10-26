@@ -11,25 +11,25 @@ using NUnit.Framework;
 
 namespace MefContrib.Hosting.Interception.Tests.Handlers
 {
-    namespace Given_a_ConcreteTypeExportHandler
+    namespace ConcreteTypeExportHandlerTests
     {
         [TestFixture]
         public class When_querying_using_a_concrete_order_repository : ConcreteTypeExportHandlerContext
         {
             [Test]
-            public void order_repository_part_is_created()
+            public void Order_repository_part_is_created()
             {
-                _partType.ShouldBeOfType<OrderRepository>();
+                partType.ShouldBeOfType<OrderRepository>();
             }
 
             public override void Context()
             {
                 var exports = new List<Tuple<ComposablePartDefinition, ExportDefinition>>();
                 var export = ConcreteTypeHandler.GetExports(RepositoryImportDefinition, exports).FirstOrDefault();
-                _partType = ReflectionModelServices.GetPartType(export.Item1).Value;
+                partType = ReflectionModelServices.GetPartType(export.Item1).Value;
             }
 
-            private Type _partType;
+            private Type partType;
 
         }
 
@@ -37,14 +37,12 @@ namespace MefContrib.Hosting.Interception.Tests.Handlers
         {
             public ConcreteTypeExportHandler ConcreteTypeHandler;
             public ImportDefinition RepositoryImportDefinition;
-            public OrderRepository OrderRepository;
 
             public ConcreteTypeExportHandlerContext()
             {
-                var typeCatalog = new TypeCatalog(typeof(OrderProcessor));
-                var catalog = new AggregateCatalog();
                 ConcreteTypeHandler = new ConcreteTypeExportHandler();
-                string orderProcessorContract = AttributedModelServices.GetContractName(typeof(OrderProcessor));
+                var typeCatalog = new TypeCatalog(typeof(OrderProcessor));
+                var orderProcessorContract = AttributedModelServices.GetContractName(typeof(OrderProcessor));
                 var orderProcessPartDefinition = typeCatalog.Parts.Single(p => p.ExportDefinitions.Any(d => d.ContractName == orderProcessorContract));
                 RepositoryImportDefinition = orderProcessPartDefinition.ImportDefinitions.First();
                 Context();
@@ -58,7 +56,6 @@ namespace MefContrib.Hosting.Interception.Tests.Handlers
         [Export]
         public class OrderRepository
         {
-
         }
 
         [Export]
@@ -67,6 +64,5 @@ namespace MefContrib.Hosting.Interception.Tests.Handlers
             [Import]
             OrderRepository OrderRepository { get; set; }
         }
-
     }
 }

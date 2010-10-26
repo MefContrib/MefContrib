@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Primitives;
@@ -9,144 +9,132 @@ using NUnit.Framework;
 
 namespace MefContrib.Hosting.Interception.Tests
 {
-    namespace Given_an_InterceptingComposablePart
+    namespace InterceptingComposablePartTests
     {
         [TestFixture]
-        public class when_accessing_import_definitions
+        public class When_accessing_import_definitions
             : InterceptingComposablePartContext
         {
             [Test]
-            public void it_should_pull_from_the_inner_part()
+            public void It_should_pull_from_the_inner_part()
             {
                 InterceptingPart.ImportDefinitions.ShouldEqual(InterceptedPart.ImportDefinitions);
             }
         }
 
         [TestFixture]
-        public class when_accessing_export_definitions 
+        public class When_accessing_export_definitions
             : InterceptingComposablePartContext
         {
             [Test]
-            public void it_should_pull_from_the_inner_part()
+            public void It_should_pull_from_the_inner_part()
             {
                 InterceptingPart.ExportDefinitions.ShouldEqual(InterceptedPart.ExportDefinitions);
             }
         }
 
         [TestFixture]
-        public class when_setting_an_import
+        public class When_setting_an_import
             : InterceptingComposablePartContext
         {
             [Test]
-            public void it_should_set_the_import_on_intercepted_part()
-            {
-                MockPart.Verify(p => p.SetImport(LoggerImportDefinition, Exports));
-            }
-
-            public override void Context()
+            public void It_should_set_the_import_on_intercepted_part()
             {
                 InterceptedPart = MockPart.Object;
                 InterceptingPart = new InterceptingComposablePart(InterceptedPart, MockInterceptor.Object);
                 InterceptingPart.SetImport(LoggerImportDefinition, Exports);
+
+                MockPart.Verify(p => p.SetImport(LoggerImportDefinition, Exports));
             }
         }
 
         [TestFixture]
-        public class when_retrieving_an_exported_value
+        public class When_retrieving_an_exported_value
             : InterceptingComposablePartContext
         {
             [Test]
-            public void it_should_pass_the_value_to_the_value_interceptor()
+            public void It_should_pass_the_value_to_the_value_interceptor()
             {
+                InterceptingPart.GetExportedValue(OrderProcessorExportDefinition);
                 MockInterceptor.Verify(p => p.Intercept(interceptedOrderProcessor));
             }
 
             [Test]
-            public void it_should_return_the_intercepted_value()
+            public void It_should_return_the_intercepted_value()
             {
+                var retrievedOrderProcessor = InterceptingPart.GetExportedValue(OrderProcessorExportDefinition);
                 retrievedOrderProcessor.ShouldEqual(interceptingOrderProcessor);
             }
 
-            public override void Context()
+            public override void TestSetUp()
             {
-                interceptedOrderProcessor = new OrderProcessor();
-                MockPart.Setup(p => p.GetExportedValue(OrderProcessorExportDefinition)).Returns(
-                    interceptedOrderProcessor);
+                MockPart.Setup(p => p.GetExportedValue(OrderProcessorExportDefinition)).Returns(interceptedOrderProcessor);
                 InterceptedPart = MockPart.Object;
                 MockInterceptor.Setup(p => p.Intercept(interceptedOrderProcessor)).Returns(interceptingOrderProcessor);
                 InterceptingPart = new InterceptingComposablePart(InterceptedPart, MockInterceptor.Object);
-                retrievedOrderProcessor = InterceptingPart.GetExportedValue(OrderProcessorExportDefinition);
             }
 
-            private OrderProcessor interceptingOrderProcessor = new OrderProcessor();
-            private OrderProcessor interceptedOrderProcessor = new OrderProcessor();
-            private object retrievedOrderProcessor;
+            private readonly OrderProcessor interceptingOrderProcessor = new OrderProcessor();
+            private readonly OrderProcessor interceptedOrderProcessor = new OrderProcessor();
         }
 
         [TestFixture]
-        public class when_retrieving_an_exported_value_twice
+        public class When_retrieving_an_exported_value_twice
             : InterceptingComposablePartContext
         {
-           
+
             [Test]
-            public void it_should_only_invoke_the_interceptor_once()
+            public void It_should_only_invoke_the_interceptor_once()
             {
                 MockInterceptor.Verify(p => p.Intercept(interceptedOrderProcessor), Times.Once());
             }
 
             [Test]
-            public void it_should_return_the_intercepted_value()
+            public void It_should_return_the_intercepted_value()
             {
+                var retrievedOrderProcessor = InterceptingPart.GetExportedValue(OrderProcessorExportDefinition);
                 retrievedOrderProcessor.ShouldEqual(interceptingOrderProcessor);
             }
 
-            public override void Context()
+            public override void TestSetUp()
             {
-                interceptedOrderProcessor = new OrderProcessor();
-                MockPart.Setup(p => p.GetExportedValue(OrderProcessorExportDefinition)).Returns(
-                    interceptedOrderProcessor);
+                MockPart.Setup(p => p.GetExportedValue(OrderProcessorExportDefinition)).Returns(interceptedOrderProcessor);
                 InterceptedPart = MockPart.Object;
                 InterceptingPart = new InterceptingComposablePart(InterceptedPart, MockInterceptor.Object);
                 MockInterceptor.Setup(p => p.Intercept(interceptedOrderProcessor)).Returns(interceptingOrderProcessor);
                 InterceptingPart.GetExportedValue(OrderProcessorExportDefinition);
-                retrievedOrderProcessor = InterceptingPart.GetExportedValue(OrderProcessorExportDefinition);
-
             }
 
-            private OrderProcessor interceptingOrderProcessor = new OrderProcessor();
-            private OrderProcessor interceptedOrderProcessor = new OrderProcessor();
-            private object retrievedOrderProcessor;
-
+            private readonly OrderProcessor interceptingOrderProcessor = new OrderProcessor();
+            private readonly OrderProcessor interceptedOrderProcessor = new OrderProcessor();
         }
 
-        public class InterceptingComposablePartContext
+        public abstract class InterceptingComposablePartContext
         {
-            public InterceptingComposablePartContext()
+            protected InterceptingComposablePartContext()
             {
                 MockPart = new Mock<ComposablePart>();
                 InterceptedPart = AttributedModelServices.CreatePart(new OrderProcessor());
                 LoggerImportDefinition = InterceptedPart.ImportDefinitions.First();
                 OrderProcessorExportDefinition = InterceptedPart.ExportDefinitions.First();
                 MockInterceptor = new Mock<IExportedValueInterceptor>();
-                Exports = new List<Export> {new Export(OrderProcessorExportDefinition, () => _loggerInstance)};
+                Exports = new List<Export> { new Export(OrderProcessorExportDefinition, () => new Logger()) };
                 InterceptingPart = new InterceptingComposablePart(InterceptedPart, MockInterceptor.Object);
-                Context();
             }
 
-            public virtual void Context()
+            [SetUp]
+            public virtual void TestSetUp()
             {
             }
 
-            public ComposablePart InterceptedPart;
-            public InterceptingComposablePart InterceptingPart;
-            public ImportDefinition LoggerImportDefinition;
-            public ExportDefinition OrderProcessorExportDefinition;
-            private ILogger _loggerInstance = new Logger();
-            public IEnumerable<Export> Exports;
-            public Mock<IExportedValueInterceptor> MockInterceptor;
-            public Mock<ComposablePart> MockPart;
+            protected ComposablePart InterceptedPart;
+            protected InterceptingComposablePart InterceptingPart;
+
+            protected readonly ImportDefinition LoggerImportDefinition;
+            protected readonly ExportDefinition OrderProcessorExportDefinition;
+            protected readonly IEnumerable<Export> Exports;
+            protected readonly Mock<IExportedValueInterceptor> MockInterceptor;
+            protected readonly Mock<ComposablePart> MockPart;
         }
-
-
     }
 }

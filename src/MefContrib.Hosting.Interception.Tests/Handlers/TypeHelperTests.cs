@@ -9,94 +9,69 @@ using NUnit.Framework;
 
 namespace MefContrib.Hosting.Interception.Tests.Handlers
 {
-    namespace Given_using_TypeHelper
+    namespace TypeHelperTests
     {
         [TestFixture]
-        public class when_retrieving_import_definition_type_for_constructor_import_import_1 : TypeHelperContext
+        public class When_retrieving_import_definition_type_for_constructor_import_import_1 : TypeHelperContext
         {
             [Test]
             public void DummyImport1_is_returned()
             {
-                Assert.AreEqual(typeof(IDummyImport1), TypeHelper.GetImportDefinitionType(ImportDefinition));
-            }
-
-
-            public override void Context()
-            {
                 ImportDefinition = DummyPartImports.Single(d => d.ContractName == AttributedModelServices.GetContractName(typeof(IDummyImport1)));
+                Assert.AreEqual(typeof(IDummyImport1), TypeHelper.GetImportDefinitionType(ImportDefinition));
             }
         }
 
         [TestFixture]
-        public class when_retrieving_import_definition_type_for_property_import_import_2 : TypeHelperContext
+        public class When_retrieving_import_definition_type_for_property_import_import_2 : TypeHelperContext
         {
             [Test]
             public void DummyImport2_is_returned()
             {
-                Assert.AreEqual(typeof(IDummyImport2), TypeHelper.GetImportDefinitionType(ImportDefinition));
-            }
-
-
-            public override void Context()
-            {
                 ImportDefinition = DummyPartImports.Single(d => d.ContractName == AttributedModelServices.GetContractName(typeof(IDummyImport2)));
+                Assert.AreEqual(typeof(IDummyImport2), TypeHelper.GetImportDefinitionType(ImportDefinition));
             }
         }
 
         [TestFixture]
-        public class when_retrieving_import_definition_typoe_for_field_import_import_3 : TypeHelperContext
+        public class When_retrieving_import_definition_typoe_for_field_import_import_3 : TypeHelperContext
         {
             [Test]
             public void DummyImport3_is_returned()
             {
+                ImportDefinition = DummyPartImports.Single(d => d.ContractName == AttributedModelServices.GetContractName(typeof(IDummyImport3)));
                 Assert.AreEqual(typeof(IDummyImport3), TypeHelper.GetImportDefinitionType(ImportDefinition));
             }
-
-
-            public override void Context()
-            {
-                ImportDefinition = DummyPartImports.Single(d => d.ContractName == AttributedModelServices.GetContractName(typeof(IDummyImport3)));
-            }
-
         }
 
         [TestFixture]
         public class When_building_a_closed_generic_repository : TypeHelperContext
         {
             [Test]
-            public void order_repository_is_returned()
-            {
-                Assert.AreEqual(typeof(Repository<Order>), OrderRepositoryType);
-            }
-
-            public override void Context()
+            public void Order_repository_is_returned()
             {
                 var importDefinitionType = typeof(IRepository<Order>);
-                var typeMapping = new Dictionary<Type, Type>();
-                typeMapping.Add(typeof(IRepository<>), typeof(Repository<>));
-                OrderRepositoryType = TypeHelper.BuildGenericType(importDefinitionType, typeMapping);
-            }
+                var typeMapping = new Dictionary<Type, Type>
+                                      {
+                                          {typeof (IRepository<>), typeof (Repository<>)}
+                                      };
+                var orderRepositoryType = TypeHelper.BuildGenericType(importDefinitionType, typeMapping);
 
-            public Type OrderRepositoryType { get; set; }
+                Assert.AreEqual(typeof(Repository<Order>), orderRepositoryType);
+            }
         }
 
-        public class TypeHelperContext
+        public abstract class TypeHelperContext
         {
             public TypeHelperContext()
             {
                 var catalog = new TypeCatalog(typeof(DummyPart));
                 var part = catalog.Parts.First();
                 DummyPartImports = part.ImportDefinitions;
-
-                Context();
             }
 
             public IEnumerable<ImportDefinition> DummyPartImports { get; set; }
             public ImportDefinition ImportDefinition { get; set; }
-
-            public virtual void Context()
-            {
-            }
         }
 
         [Export]

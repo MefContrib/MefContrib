@@ -10,52 +10,51 @@ using NUnit.Framework;
 
 namespace MefContrib.Hosting.Interception.Tests.Handlers
 {
-    namespace Given_a_GenericExportHandler
+    namespace GenericExportHandlerTests
     {
         [TestFixture]
         public class When_querying_for_an_order_repository_and_no_closed_repository_is_present : GenericExportHandlerContext
         {
             [Test]
-            public void order_repository_part_definition_is_created()
+            public void Order_repository_part_definition_is_created()
             {
-                Assert.IsNotNull(_result.Item1);
+                Assert.IsNotNull(result.Item1);
             }
 
             [Test]
-            public void order_repository_export_is_created()
+            public void Order_repository_export_is_created()
             {
-                Assert.IsNotNull(_result.Item2);
+                Assert.IsNotNull(result.Item2);
             }
 
             public override void Context()
             {
-                _result = GenericExportHandler.GetExports(RepositoryImportDefinition, Enumerable.Empty<Tuple<ComposablePartDefinition, ExportDefinition>>()).Single();
+                result = GenericExportHandler.GetExports(RepositoryImportDefinition, Enumerable.Empty<Tuple<ComposablePartDefinition, ExportDefinition>>()).Single();
             }
 
-            private Tuple<ComposablePartDefinition, ExportDefinition> _result;
+            private Tuple<ComposablePartDefinition, ExportDefinition> result;
         }
 
         [TestFixture]
         public class When_querying_for_an_order_repository_and_closed_repository_is_passed_in : GenericExportHandlerContext
         {
             [Test]
-            public void closed_generic_repository_is_not_created()
+            public void Closed_generic_repository_is_not_created()
             {
-                _result.Count().ShouldEqual(1);
+                result.Count().ShouldEqual(1);
             }
 
             public override void Context()
             {
                 var catalog = new TypeCatalog(typeof (OrderRepository));
                 var exports = catalog.GetExports(RepositoryImportDefinition);
-                _result = GenericExportHandler.GetExports(RepositoryImportDefinition, exports);
+                result = GenericExportHandler.GetExports(RepositoryImportDefinition, exports);
                 
             }
 
-            private IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> _result;
+            private IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> result;
 
         }
-
 
         public class GenericExportHandlerContext
         {
@@ -70,15 +69,15 @@ namespace MefContrib.Hosting.Interception.Tests.Handlers
                 AggegateCatalog.Catalogs.Add(typeCatalog);
                 GenericExportHandler = new GenericExportHandler();
                 GenericExportHandler.Initialize(AggegateCatalog);
-                string orderProcessorContract = AttributedModelServices.GetContractName(typeof(OrderProcessor));
+                var orderProcessorContract = AttributedModelServices.GetContractName(typeof(OrderProcessor));
                 var orderProcessPartDefinition = typeCatalog.Parts.Single(p => p.ExportDefinitions.Any(d => d.ContractName == orderProcessorContract));
                 RepositoryImportDefinition = orderProcessPartDefinition.ImportDefinitions.First();
+                
                 Context();
             }
 
             public virtual void Context()
             {
-
             }
         }
 
