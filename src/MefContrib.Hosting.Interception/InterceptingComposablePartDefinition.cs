@@ -25,7 +25,9 @@
         public override ComposablePart CreatePart()
         {
             var interceptedPart = InterceptedPartDefinition.CreatePart();
-            return new InterceptingComposablePart(interceptedPart, this.valueInterceptor);
+            return RequiresDisposal(interceptedPart)
+                       ? new DisposableInterceptingComposablePart(interceptedPart, this.valueInterceptor)
+                       : new InterceptingComposablePart(interceptedPart, this.valueInterceptor);
         }
 
         public override IEnumerable<ExportDefinition> ExportDefinitions
@@ -46,6 +48,11 @@
         public override string ToString()
         {
             return InterceptedPartDefinition.ToString();
+        }
+
+        private static bool RequiresDisposal(object obj)
+        {
+            return (obj as IDisposable) != null;
         }
     }
 }

@@ -45,5 +45,15 @@ namespace MefContrib.Hosting.Interception.Tests
             var part = interceptingPartDefinition.CreatePart();
             part.ShouldBeOfType<InterceptingComposablePart>();
         }
+
+        [Test]
+        public void When_calling_create_part_it_should_create_a_disposable_intercepting_part()
+        {
+            var mockInterceptor = new Mock<IExportedValueInterceptor>();
+            interceptedPartDefinition = AttributedModelServices.CreatePartDefinition(typeof(DisposablePart), null);
+            interceptingPartDefinition = new InterceptingComposablePartDefinition(interceptedPartDefinition, mockInterceptor.Object);
+            var part = interceptingPartDefinition.CreatePart();
+            part.ShouldBeOfType<DisposableInterceptingComposablePart>();
+        }
     }
 }
