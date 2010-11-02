@@ -1,15 +1,17 @@
 namespace MefContrib.Hosting.Conventions.Tests.Integration
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
     using System.Reflection;
     using MefContrib.Hosting.Conventions.Configuration;
+    using MefContrib.Tests;
     using NUnit.Framework;
     using MefContrib.Tests;
 
-    [TestFixture]
+    [TestFixture, Category("Integration")]
     public class IntegrationTests
     {
         [Test]

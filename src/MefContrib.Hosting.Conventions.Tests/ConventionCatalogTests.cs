@@ -8,8 +8,14 @@ namespace MefContrib.Hosting.Conventions.Tests
     using System.ComponentModel.Composition.ReflectionModel;
     using System.Linq;
     using MefContrib.Hosting.Conventions.Configuration;
+    using Moq;
     using NUnit.Framework;
     using MefContrib.Tests;
+
+    [TestFixture]
+    public class TypeScannerPartRegistryLocatorFixture
+    {
+    }
 
     [TestFixture]
     public class ConventionCatalogTests
@@ -30,6 +36,40 @@ namespace MefContrib.Hosting.Conventions.Tests
                 new ConventionCatalog(new NonEmptyRegistry());
 
             catalog.Registries.Count().ShouldEqual(1);
+        }
+
+        [Test]
+        public void Ctor_should_retrieve_registries_when_called_with_locator()
+        {
+            var locator = new Mock<IPartRegistryLocator>();
+
+            var catalog =
+                new ConventionCatalog(locator.Object);
+
+            locator.Verify(x => x.GetRegistries(), Times.Once());
+        }
+
+        [Test]
+        public void Ctor_should_set_registry_property_to_registries_returned_by_locator()
+        {
+            var knownRegistries = new[] { new NonEmptyRegistry() };
+
+            var locator = new Mock<IPartRegistryLocator>();
+            locator.Setup(x => x.GetRegistries()).Returns(knownRegistries);
+
+            var catalog =
+                new ConventionCatalog(locator.Object);
+
+            catalog.Registries.ShouldBeSameAs(knownRegistries);
+        }
+
+        [Test]
+        public void Ctor_should_throw_argument_null_exception_when_created_with_null_value_for_locator()
+        {
+            var exception =
+                Catch.Exception(() => new ConventionCatalog((IPartRegistryLocator)null));
+
+            exception.ShouldBeOfType<ArgumentNullException>();
         }
 
         [Test]

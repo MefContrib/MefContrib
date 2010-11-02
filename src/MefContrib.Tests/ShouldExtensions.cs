@@ -21,7 +21,7 @@
             Assert.True(found);
         }
 
-        public static void ShouldContainType<T>(this IList collection)
+        public static void ShouldContainType<T>(this IEnumerable collection)
         {
             var selection =
                 from c in collection.Cast<object>()

@@ -112,12 +112,15 @@
     <Compile Include="IImportConvention.cs" />
     <Compile Include="ImportConvention.cs" />
     <Compile Include="IPartConvention.cs" />
+    <Compile Include="IPartRegistryLocator.cs" />
     <Compile Include="ITypeScanner.cs" />
     <Compile Include="MemberInfoExtensions.cs" />
     <Compile Include="MetadataItem.cs" />
     <Compile Include="PartConvention.cs" />
+    <Compile Include="PartRegistryTypeFilter.cs" />
     <Compile Include="RequiredMetadataItem.cs" />
     <Compile Include="IContractService.cs" />
+    <Compile Include="PartRegistryLocator.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="TypeScanner.cs" />
   </ItemGroup>

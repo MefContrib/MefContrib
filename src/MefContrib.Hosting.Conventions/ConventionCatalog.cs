@@ -17,9 +17,32 @@ namespace MefContrib.Hosting.Conventions
         /// <param name="registries">An array of <see cref="IPartRegistry{T}"/> instance.</param>
         public ConventionCatalog(params IPartRegistry<IContractService>[] registries)
         {
+            if (registries == null)
+            {
+                throw new ArgumentNullException("registries", "The registries parameter cannot be null.");
+            }
+
             this.Registries = registries;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConventionCatalog"/> class.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
+        public ConventionCatalog(IPartRegistryLocator locator)
+        {
+            if (locator == null)
+            {
+                throw new ArgumentNullException("locator", "The locator parameter cannot be null.");
+            }
+
+            this.Registries = locator.GetRegistries();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public IEnumerable<IPartRegistry<IContractService>> Registries { get; private set; }
 
         /// <summary>

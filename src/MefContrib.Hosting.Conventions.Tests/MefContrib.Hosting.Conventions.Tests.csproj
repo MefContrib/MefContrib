@@ -116,6 +116,7 @@
     <Compile Include="PartRegistryTests.cs" />
     <Compile Include="ReflectionServices.cs" />
     <Compile Include="RequiredMetadataItemTests.cs" />
+    <Compile Include="PartRegistryLocatorTests.cs" />
     <Compile Include="TypeDefaultConventionBuilderTests.cs" />
     <Compile Include="TypeDefaultConventionConfiguratorTests.cs" />
     <Compile Include="TypeExtensionsTests.cs" />
