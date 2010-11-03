@@ -8,14 +8,13 @@ properties {
 
 include .\psake_ext.ps1
 
-task default -depends Merge
+task default -depends Test
 
-task Clean {
+task Clean -description "This task cleans up the build directory" {
     Remove-Item $build_directory\\MefContrib.Silverlight -Force -Recurse -ErrorAction SilentlyContinue
-    Remove-Item $build_directory\\MefContrib.Silverlight.dll -Force -ErrorAction SilentlyContinue
 }
 
-task Init {  
+task Init -description "This tasks makes sure the build environment is correctly setup" {  
     Generate-Assembly-Info `
 		-file "$source_directory\MefContrib\Properties\SharedAssemblyInfo.cs" `
 		-title "MefContrib $version" `
@@ -31,7 +30,7 @@ task Init {
     }
 }
 
-task Test {
+task Test -depends Compile -description "This task executes all tests" {
     $previous_directory = pwd
     cd $build_directory\\MefContrib.Silverlight
 
@@ -47,37 +46,11 @@ task Test {
     cd $previous_directory 
 }
 
-task Compile -depends Clean, Init {
+task Compile -depends Clean, Init -description "This task compiles the solution" {
     exec { 
         msbuild $source_directory\MefContrib.Silverlight.sln `
             /p:outdir=$build_directory\\MefContrib.Silverlight\\ `
             /verbosity:quiet `
             /p:Configuration=Release
     }
-}
-
-task Merge -depends Compile, Test { 
-    $previous_directory = pwd
-    cd $build_directory\\MefContrib.Silverlight
-    
-	Rename-Item "MefContrib.Silverlight.dll" "MefContrib.Silverlight.Partial.dll"
-                                
-    & "$tools_directory\\ILMerge\ILMerge.exe" `
-        MefContrib.Hosting.Conventions.Silverlight.dll `
-        MefContrib.Hosting.Generics.Silverlight.dll `
-        MefContrib.Integration.Unity.Silverlight.dll `
-        MefContrib.Silverlight.Partial.dll `
-        /targetplatform:"v4,$(GetSilverlightPath)"  `
-        /out:MefContrib.Silverlight.dll `
-        /target:library
-        
-
-    if ($lastExitCode -ne 0) {
-        throw "Error: Failed to merge assemblies"
-    }
-    
-    cd $previous_directory
-     
-    Move-Item -Path "$build_directory\\MefContrib.Silverlight\\MefContrib.Silverlight.dll" -Destination "$build_directory\\"
-    Remove-Item "$build_directory\\MefContrib.Silverlight" -Force -Recurse -ErrorAction SilentlyContinue
 }
