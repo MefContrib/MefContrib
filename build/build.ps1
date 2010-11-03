@@ -8,14 +8,14 @@ properties {
 
 include .\psake_ext.ps1
 
-task default -depends Merge
+task default -depends Test
 
-task Clean {
+task Clean -description "This task cleans up the build directory" {
     Remove-Item $build_directory\\MefContrib -Force -Recurse -ErrorAction SilentlyContinue
     Remove-Item $build_directory\\MefContrib.dll -Force -ErrorAction SilentlyContinue
 }
 
-task Init {  
+task Init -description "This tasks makes sure the build environment is correctly setup" {  
     Generate-Assembly-Info `
 		-file "$source_directory\MefContrib\Properties\SharedAssemblyInfo.cs" `
 		-title "MefContrib $version" `
@@ -31,7 +31,7 @@ task Init {
     }
 }
 
-task Test {
+task Test -depends Compile -description "This task executes all tests" {
     $previous_directory = pwd
     cd $build_directory\\MefContrib
 
@@ -47,36 +47,11 @@ task Test {
     cd $previous_directory 
 }
 
-task Compile -depends Clean, Init {
+task Compile -depends Clean, Init -description "This task compiles the solution" {
     exec { 
         msbuild $source_directory\MefContrib.sln `
             /p:outdir=$build_directory\\MefContrib\\ `
             /verbosity:quiet `
             /p:Configuration=Release
     }
-}
-
-task Merge -depends Compile, Test { 
-    $previous_directory = pwd
-    cd $build_directory\\MefContrib
-    
-	Rename-Item "MefContrib.dll" "MefContrib.Partial.dll"
-        
-    & "$tools_directory\\ILMerge\ILMerge.exe" `
-        MefContrib.Hosting.Conventions.dll `
-        MefContrib.Hosting.Generics.dll `
-        MefContrib.Integration.Unity.dll `
-        MefContrib.Partial.dll `
-        /targetplatform:"v4,$(GetFrameworkPath)" `
-        /out:MefContrib.dll `
-        /target:library
-        
-    if ($lastExitCode -ne 0) {
-        throw "Error: Failed to merge assemblies"
-    }
-    
-    cd $previous_directory
-     
-    Move-Item -Path "$build_directory\\MefContrib\\MefContrib.dll" -Destination "$build_directory\\"
-    Remove-Item "$build_directory\\MefContrib" -Force -Recurse -ErrorAction SilentlyContinue
 }
