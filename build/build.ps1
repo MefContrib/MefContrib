@@ -12,7 +12,6 @@ task default -depends Test
 
 task Clean -description "This task cleans up the build directory" {
     Remove-Item $build_directory\\MefContrib -Force -Recurse -ErrorAction SilentlyContinue
-    Remove-Item $build_directory\\MefContrib.dll -Force -ErrorAction SilentlyContinue
 }
 
 task Init -description "This tasks makes sure the build environment is correctly setup" {  
