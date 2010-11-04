@@ -6,6 +6,7 @@
 *.user
 *.orig
 AssemblyInfo.cs
+SharedAssemblyInfo.cs
 deploy/
 build/
 [Bb]in/
