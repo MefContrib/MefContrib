@@ -4,33 +4,6 @@ function Get-Git-Commit
 	return $gitLog.Split(' ')[0]
 }
 
-function GetFrameworkPath
-{
-    $bitness = "Framework"
-    if (Test-Path HKLM:Software\Wow6432Node) {
-        $bitness = 'Framework64'
-    }
-      
-    return "$env:windir\Microsoft.NET\$bitness\v4.0.30319\"
-}
-
-function GetSilverlightPath
-{
-    $root = "\SOFTWARE"
-    if (Test-Path HKLM:Software\Wow6432Node) {
-        $root = "\SOFTWARE\Wow6432Node"
-    }
-    
-    $path = (Get-ItemProperty -Path "HKLM:\$root\Microsoft\Microsoft SDKs\Silverlight\v4.0\ReferenceAssemblies").SLRuntimeInstallPath
-    
-    if($path.EndsWith("\") -eq $true)
-    {
-        $path = $path.SubString(0, $path.Length - 1)
-    }
-    
-    return $path
-}
-
 function Generate-Assembly-Info
 {
 param(
