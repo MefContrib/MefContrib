@@ -1,5 +1,3 @@
-using MefContrib.Tests;
-
 namespace MefContrib.Hosting.Conventions.Tests.Integration
 {
     using System.Collections.Generic;
@@ -9,6 +7,7 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
     using System.Reflection;
     using MefContrib.Hosting.Conventions.Configuration;
     using NUnit.Framework;
+    using MefContrib.Tests;
 
     [TestFixture]
     public class IntegrationTests
@@ -16,11 +15,8 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
         [Test]
         public void ConventionCatalog_should_support_constructor_injection()
         {
-            //var catalog =
-            //    new ConventionCatalog(new CtorRegistry());
-
             var catalog =
-                new ConventionCatalog();
+                new ConventionCatalog(new CtorRegistry());
 
             var instance =
                 new ConventionPart<InjectedHost>();
