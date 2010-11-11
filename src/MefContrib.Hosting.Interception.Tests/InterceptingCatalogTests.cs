@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Primitives;
+using System.ComponentModel.Composition.ReflectionModel;
 using System.Linq;
 using System.ComponentModel.Composition.Hosting;
 using MefContrib.Hosting.Interception.Configuration;
@@ -39,6 +40,17 @@ namespace MefContrib.Hosting.Interception.Tests
 
             var partDefinition = catalog.Parts.First();
             partDefinition.ShouldBeOfType<InterceptingComposablePartDefinition>();
+        }
+
+        [Test]
+        public void When_querying_for_a_part_not_being_intercepted_it_should_return_original_part_definition()
+        {
+            var innerCatalog = new TypeCatalog(typeof(Logger));
+            var cfg = new InterceptionConfiguration();
+            var catalog = new InterceptingCatalog(innerCatalog, cfg);
+
+            var partDefinition = catalog.Parts.First();
+            partDefinition.ShouldNotBeOfType<InterceptingComposablePartDefinition>();
         }
 
         [Test]

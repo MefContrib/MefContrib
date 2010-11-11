@@ -70,18 +70,11 @@
                 {
                     if (this.innerPartsQueryable == null)
                     {
-#if SILVERLIGHT
                         var parts = this.interceptedCatalog.Parts
-                            .Select(p => new InterceptingComposablePartDefinition(p, GetInterceptor(p)))
-                            .Cast<ComposablePartDefinition>()
+                            .Select(p => GetPart(p))
                             .ToList()
                             .AsQueryable();
-#else
-                        var parts = this.interceptedCatalog.Parts
-                            .Select(p => new InterceptingComposablePartDefinition(p, GetInterceptor(p)))
-                            .ToList()
-                            .AsQueryable();
-#endif
+
                         Thread.MemoryBarrier();
                         this.innerPartsQueryable = parts;
                     }
@@ -89,6 +82,19 @@
             }
 
             return this.innerPartsQueryable;
+        }
+
+        private ComposablePartDefinition GetPart(ComposablePartDefinition partDefinition)
+        {
+            var interceptor = GetInterceptor(partDefinition);
+            if (interceptor == null)
+            {
+                // If the part is not being intercepted, suppress interception
+                // by returning the original part
+                return partDefinition;
+            }
+
+            return new InterceptingComposablePartDefinition(partDefinition, interceptor);
         }
 
         private IExportedValueInterceptor GetInterceptor(ComposablePartDefinition partDefinition)
@@ -100,7 +106,7 @@
             
             interceptors.AddRange(partInterceptors);
 
-            if (interceptors.Count == 0) return EmptyInterceptor.Default;
+            if (interceptors.Count == 0) return null;
             if (interceptors.Count == 1) return interceptors[0];
 
             return GetCompositeInterceptor(interceptors);

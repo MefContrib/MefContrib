@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using MefContrib.Hosting.Interception.Configuration;
 using MefContrib.Hosting.Interception.Handlers;
@@ -25,21 +26,29 @@ namespace MefContrib.Hosting.Interception.Tests.Configuration
         {
             var cfg = new InterceptionConfiguration()
                 .AddInterceptor(new CompositeValueInterceptor())
-                .AddInterceptor(new EmptyInterceptor());
+                .AddInterceptor(new FakeInterceptor());
 
             Assert.That(cfg.Interceptors.Count(), Is.EqualTo(2));
             Assert.That(cfg.Interceptors.OfType<CompositeValueInterceptor>().Any());
-            Assert.That(cfg.Interceptors.OfType<EmptyInterceptor>().Any());
+            Assert.That(cfg.Interceptors.OfType<FakeInterceptor>().Any());
         }
 
         [Test]
         public void Adding_s_is_reflecteed_in_the_Interceptors_collection()
         {
             var cfg = new InterceptionConfiguration()
-                .AddInterceptionCriteria(new PredicateInterceptionCriteria(new EmptyInterceptor(), part => true));
+                .AddInterceptionCriteria(new PredicateInterceptionCriteria(new FakeInterceptor(), part => true));
 
             Assert.That(cfg.InterceptionCriteria.Count(), Is.EqualTo(1));
             Assert.That(cfg.InterceptionCriteria.OfType<PredicateInterceptionCriteria>().Any());
+        }
+    }
+
+    public class FakeInterceptor : IExportedValueInterceptor
+    {
+        public object Intercept(object value)
+        {
+            throw new NotSupportedException();
         }
     }
 }

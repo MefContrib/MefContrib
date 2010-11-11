@@ -77,8 +77,10 @@
     <Compile Include="Configuration\PredicateInterceptionCriteria.cs" />
     <Compile Include="DisposableInterceptingComposablePart.cs" />
     <Compile Include="Handlers\ConcreteTypeExportHandler.cs" />
+    <Compile Include="Handlers\GenericContractRegistry.cs" />
     <Compile Include="Handlers\GenericContractTypeMapping.cs" />
     <Compile Include="Handlers\GenericExportHandler.cs" />
+    <Compile Include="Handlers\IGenericContractRegistry.cs" />
     <Compile Include="Handlers\TypeHelper.cs" />
     <Compile Include="IExportedValueInterceptor.cs" />
     <Compile Include="IExportHandler.cs" />
@@ -86,7 +88,6 @@
     <Compile Include="InterceptingComposablePart.cs" />
     <Compile Include="InterceptingComposablePartDefinition.cs" />
     <Compile Include="Interceptors\CompositeValueInterceptor.cs" />
-    <Compile Include="Interceptors\EmptyInterceptor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MefContrib\MefContrib.Silverlight.csproj">

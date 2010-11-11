@@ -100,21 +100,18 @@
         {
             if (assertedType != null)
             {
-                Assert.IsInstanceOf(typeof(T), assertedType);
+                Assert.IsNotInstanceOf(typeof(T), assertedType);
             }
         }
 
         public static void ShouldBeThrownBy(this Type expectedType, Action context)
         {
-            Exception exception = null;
-
             try
             {
                 context();
             }
             catch (Exception thrownException)
             {
-                exception = thrownException;
                 Assert.AreEqual(expectedType, thrownException.GetType());
             }
         }
