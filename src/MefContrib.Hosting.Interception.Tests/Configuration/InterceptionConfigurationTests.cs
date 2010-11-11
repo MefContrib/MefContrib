@@ -43,12 +43,4 @@ namespace MefContrib.Hosting.Interception.Tests.Configuration
             Assert.That(cfg.InterceptionCriteria.OfType<PredicateInterceptionCriteria>().Any());
         }
     }
-
-    public class FakeInterceptor : IExportedValueInterceptor
-    {
-        public object Intercept(object value)
-        {
-            throw new NotSupportedException();
-        }
-    }
 }

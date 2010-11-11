@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
+using System.Linq;
 using MefContrib.Tests;
 using Moq;
 using NUnit.Framework;
@@ -19,6 +21,26 @@ namespace MefContrib.Hosting.Interception.Tests
             var mockInterceptor = new Mock<IExportedValueInterceptor>();
             interceptedPartDefinition = AttributedModelServices.CreatePartDefinition(typeof(OrderProcessor), null);    
             interceptingPartDefinition = new InterceptingComposablePartDefinition(interceptedPartDefinition, mockInterceptor.Object);
+        }
+
+        [Test]
+        public void Ctor_should_throw_argument_null_exception_if_called_with_null_composable_part_definition()
+        {
+            Assert.That(delegate
+            {
+                new InterceptingComposablePartDefinition(null, new FakeInterceptor());
+            }, Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void Ctor_should_throw_argument_null_exception_if_called_with_null_interceptor()
+        {
+            var partDefinition = new TypeCatalog(typeof (Part1)).Parts.First();
+            Assert.That(delegate
+            {
+
+                new InterceptingComposablePartDefinition(partDefinition, null);
+            }, Throws.TypeOf<ArgumentNullException>());
         }
 
         [Test]

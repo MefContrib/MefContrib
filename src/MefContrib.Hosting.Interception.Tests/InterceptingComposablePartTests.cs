@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using MefContrib.Tests;
@@ -9,6 +10,30 @@ using NUnit.Framework;
 
 namespace MefContrib.Hosting.Interception.Tests
 {
+    [TestFixture]
+    public class _InterceptingComposablePartTests
+    {
+        [Test]
+        public void Ctor_should_throw_argument_null_exception_if_called_with_null_composable_part()
+        {
+            Assert.That(delegate
+            {
+                new InterceptingComposablePart(null, new FakeInterceptor());
+            }, Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void Ctor_should_throw_argument_null_exception_if_called_with_null_interceptor()
+        {
+            var partDefinition = new TypeCatalog(typeof(Part1)).Parts.First();
+            Assert.That(delegate
+            {
+
+                new InterceptingComposablePart(partDefinition.CreatePart(), null);
+            }, Throws.TypeOf<ArgumentNullException>());
+        }
+    }
+
     namespace InterceptingComposablePartTests
     {
         [TestFixture]

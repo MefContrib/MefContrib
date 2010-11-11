@@ -49,6 +49,7 @@
     <Compile Include="Castle\DynamicProxyValueInterceptorTests.cs" />
     <Compile Include="CompositeValueInterceptorTests.cs" />
     <Compile Include="Configuration\InterceptionConfigurationTests.cs" />
+    <Compile Include="FakeInterceptor.cs" />
     <Compile Include="FakeParts.cs" />
     <Compile Include="Handlers\ConcreteTypeExportHandlerTests.cs" />
     <Compile Include="Handlers\GenericExportHandlerTests.cs" />

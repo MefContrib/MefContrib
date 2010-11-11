@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Primitives;
-using System.ComponentModel.Composition.ReflectionModel;
 using System.Linq;
 using System.ComponentModel.Composition.Hosting;
 using MefContrib.Hosting.Interception.Configuration;
@@ -30,6 +26,24 @@ namespace MefContrib.Hosting.Interception.Tests
             container = new CompositionContainer(catalog);
         }
 
+        [Test]
+        public void Ctor_should_throw_argument_null_exception_if_called_with_null_catalog()
+        {
+            Assert.That(delegate
+            {
+                new InterceptingCatalog(null, new InterceptionConfiguration());
+            }, Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void Ctor_should_throw_argument_null_exception_if_called_with_null_configuration()
+        {
+            Assert.That(delegate
+            {
+                new InterceptingCatalog(new TypeCatalog(typeof (Part1)), null);
+            }, Throws.TypeOf<ArgumentNullException>());
+        }
+        
         [Test]
         public void When_querying_for_a_part_it_should_return_an_intercepting_part_definition()
         {
@@ -119,9 +133,13 @@ namespace MefContrib.Hosting.Interception.Tests
         public void Disposing_catalog_should_dispose_parts_implementing_dispose_pattern()
         {
             var innerCatalog = new TypeCatalog(typeof(DisposablePart));
-            var cfg = new InterceptionConfiguration();
+            var cfg = new InterceptionConfiguration()
+                .AddInterceptor(new FakeInterceptor());
             var catalog = new InterceptingCatalog(innerCatalog, cfg);
+            var partDefinition = catalog.Parts.First();
             container = new CompositionContainer(catalog);
+
+            partDefinition.ShouldBeOfType<InterceptingComposablePartDefinition>();
 
             var part = container.GetExportedValueOrDefault<DisposablePart>();
             Assert.That(part.IsDisposed, Is.False);
