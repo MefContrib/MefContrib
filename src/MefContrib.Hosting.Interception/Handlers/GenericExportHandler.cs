@@ -33,12 +33,13 @@
             using (var ep = new CatalogExportProvider(this.decoratedCatalog))
             {
                 ep.SourceProvider = ep;
-                var locators = ep.GetExportedValues<GenericContractTypeMapping>();
-                foreach (var locator in locators)
+                var locators = ep.GetExportedValues<IGenericContractRegistry>();
+                
+                foreach (var mapping in locators.SelectMany(locator => locator.GetMappings()))
                 {
                     this.genericTypes.Add(
-                        locator.GenericContractTypeDefinition,
-                        locator.GenericImplementationTypeDefinition);
+                        mapping.GenericContractTypeDefinition,
+                        mapping.GenericImplementationTypeDefinition);
                 }
             }
         }

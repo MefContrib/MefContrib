@@ -81,11 +81,11 @@ namespace MefContrib.Hosting.Interception.Tests.Handlers
             }
         }
 
-        public class RepositoryTypeLocator : GenericContractTypeMapping
+        public class RepositoryTypeLocator : GenericContractRegistry
         {
-            public RepositoryTypeLocator()
-                : base(typeof(IRepository<>), typeof(Repository<>))
+            protected override void Initialize()
             {
+                Register(typeof(IRepository<>), typeof(Repository<>));
             }
         }
 

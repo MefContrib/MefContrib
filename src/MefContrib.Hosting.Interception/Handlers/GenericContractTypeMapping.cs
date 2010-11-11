@@ -1,22 +1,28 @@
 ﻿namespace MefContrib.Hosting.Interception.Handlers
 {
     using System;
-    using System.ComponentModel.Composition;
-
-    [InheritedExport]
-    public abstract class GenericContractTypeMapping
+    
+    public sealed class GenericContractTypeMapping
     {
         private readonly Type genericContractTypeDefinitionDefinition;
         private readonly Type genericImplementationType;
 
-        protected GenericContractTypeMapping(Type genericContractTypeDefinition, Type genericImplementationTypeDefinition)
+        public GenericContractTypeMapping(
+            Type genericContractTypeDefinition,
+            Type genericImplementationTypeDefinition)
         {
-            if (!genericImplementationTypeDefinition.IsGenericTypeDefinition)
-                throw new ArgumentException("Implementation Type must be a generic definition.", "genericImplementationTypeDefinition");
+            if (genericContractTypeDefinition == null)
+                throw new ArgumentNullException("genericContractTypeDefinition");
+
+            if (genericImplementationTypeDefinition == null)
+                throw new ArgumentNullException("genericImplementationTypeDefinition");
 
             if (!genericContractTypeDefinition.IsGenericTypeDefinition)
                 throw new ArgumentException("Contract Type must be a generic definition.", "genericImplementationTypeDefinition");
 
+            if (!genericImplementationTypeDefinition.IsGenericTypeDefinition)
+                throw new ArgumentException("Implementation Type must be a generic definition.", "genericImplementationTypeDefinition");
+            
             this.genericContractTypeDefinitionDefinition = genericContractTypeDefinition;
             this.genericImplementationType = genericImplementationTypeDefinition;
         }
