@@ -10,6 +10,7 @@
     {
         public static Type GetImportDefinitionType(ImportDefinition definition)
         {
+            
             Type importDefinitionType = null;
             importDefinitionType = ReflectionModelServices.IsImportingParameter(definition)
                                        ? GetParameterType(definition)
@@ -62,7 +63,6 @@
         public static bool ShouldCreateClosedGenericPart(ContractBasedImportDefinition contractDef, Type importDefinitionType)
         {
             return contractDef.Cardinality != ImportCardinality.ZeroOrMore && importDefinitionType.IsGenericType;
-
         }
     }
 }

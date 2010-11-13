@@ -52,6 +52,7 @@
     <Compile Include="FakeInterceptor.cs" />
     <Compile Include="FakeParts.cs" />
     <Compile Include="Handlers\ConcreteTypeExportHandlerTests.cs" />
+    <Compile Include="Handlers\GenericExportHandlerIntegrationTests.cs" />
     <Compile Include="Handlers\GenericExportHandlerTests.cs" />
     <Compile Include="InterceptingCatalogTests.cs" />
     <Compile Include="InterceptingComposablePartDefinitionTests.cs" />

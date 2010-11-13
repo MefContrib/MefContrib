@@ -29,7 +29,9 @@ namespace MefContrib.Hosting.Interception.Tests.Handlers
 
             public override void Context()
             {
-                result = GenericExportHandler.GetExports(RepositoryImportDefinition, Enumerable.Empty<Tuple<ComposablePartDefinition, ExportDefinition>>()).Single();
+                result = GenericExportHandler.GetExports(
+                    RepositoryImportDefinition,
+                    Enumerable.Empty<Tuple<ComposablePartDefinition, ExportDefinition>>()).Single();
             }
 
             private Tuple<ComposablePartDefinition, ExportDefinition> result;
@@ -49,30 +51,74 @@ namespace MefContrib.Hosting.Interception.Tests.Handlers
                 var catalog = new TypeCatalog(typeof (OrderRepository));
                 var exports = catalog.GetExports(RepositoryImportDefinition);
                 result = GenericExportHandler.GetExports(RepositoryImportDefinition, exports);
-                
             }
 
             private IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> result;
+        }
 
+        [TestFixture]
+        public class When_querying_for_order_processor : GenericExportHandlerContext
+        {
+            [Test]
+            public void Order_processor_part_is_returned()
+            {
+                Assert.NotNull(result.Item1);
+                Assert.NotNull(result.Item2);
+            }
+
+            public override void Context()
+            {
+                var catalog = new TypeCatalog(typeof(OrderProcessor));
+                var exports = catalog.GetExports(OrderProcessorImportDefinition);
+                result = GenericExportHandler.GetExports(OrderProcessorImportDefinition, exports).Single();
+            }
+
+            private Tuple<ComposablePartDefinition, ExportDefinition> result;
+        }
+
+        [TestFixture]
+        public class When_querying_for_ctor_order_processor : GenericExportHandlerContext
+        {
+            [Test]
+            public void Ctor_order_processor_part_is_returned()
+            {
+                Assert.NotNull(result.Item1);
+                Assert.NotNull(result.Item2);
+            }
+
+            public override void Context()
+            {
+                var catalog = new TypeCatalog(typeof(CtorOrderProcessor));
+                var exports = catalog.GetExports(CtorOrderProcessorImportDefinition);
+                result = GenericExportHandler.GetExports(CtorOrderProcessorImportDefinition, exports).Single();
+            }
+
+            private Tuple<ComposablePartDefinition, ExportDefinition> result;
         }
 
         public class GenericExportHandlerContext
         {
-            public AggregateCatalog AggegateCatalog;
-            public GenericExportHandler GenericExportHandler;
-            public ImportDefinition RepositoryImportDefinition;
+            public readonly GenericExportHandler GenericExportHandler;
+            public readonly ImportDefinition RepositoryImportDefinition;
+            public readonly ImportDefinition OrderProcessorImportDefinition;
+            public readonly ImportDefinition CtorOrderProcessorImportDefinition;
 
             public GenericExportHandlerContext()
             {
-                var typeCatalog = new TypeCatalog(typeof(OrderProcessor), typeof(RepositoryTypeLocator));
-                AggegateCatalog = new AggregateCatalog();
-                AggegateCatalog.Catalogs.Add(typeCatalog);
+                var typeCatalog = new TypeCatalog(typeof(OrderProcessor), typeof(CtorOrderProcessor), typeof(ImportDefinitionHelper), typeof(RepositoryTypeLocator));
                 GenericExportHandler = new GenericExportHandler();
-                GenericExportHandler.Initialize(AggegateCatalog);
+                GenericExportHandler.Initialize(typeCatalog);
+                
                 var orderProcessorContract = AttributedModelServices.GetContractName(typeof(OrderProcessor));
                 var orderProcessPartDefinition = typeCatalog.Parts.Single(p => p.ExportDefinitions.Any(d => d.ContractName == orderProcessorContract));
                 RepositoryImportDefinition = orderProcessPartDefinition.ImportDefinitions.First();
-                
+
+                var importDefinitionHelperContract = AttributedModelServices.GetContractName(typeof(ImportDefinitionHelper));
+                var importDefinitionHelperPartDefinition = typeCatalog.Parts.Single(p => p.ExportDefinitions.Any(d => d.ContractName == importDefinitionHelperContract));
+
+                OrderProcessorImportDefinition = importDefinitionHelperPartDefinition.ImportDefinitions.First();
+                CtorOrderProcessorImportDefinition = importDefinitionHelperPartDefinition.ImportDefinitions.Skip(1).First();
+
                 Context();
             }
 
@@ -80,24 +126,46 @@ namespace MefContrib.Hosting.Interception.Tests.Handlers
             {
             }
         }
+    }
 
-        public class RepositoryTypeLocator : GenericContractRegistry
+    public class RepositoryTypeLocator : GenericContractRegistry
+    {
+        protected override void Initialize()
         {
-            protected override void Initialize()
-            {
-                Register(typeof(IRepository<>), typeof(Repository<>));
-            }
+            Register(typeof(IRepository<>), typeof(Repository<>));
+        }
+    }
+
+    [Export]
+    public class ImportDefinitionHelper
+    {
+        [Import]
+        public OrderProcessor OrderProcessor { get; set; }
+
+        [Import]
+        public CtorOrderProcessor CtorOrderProcessor { get; set; }
+    }
+
+    [Export]
+    public class OrderProcessor
+    {
+        [Import]
+        public IRepository<Order> OrderRepository { get; set; }
+    }
+
+    [Export]
+    public class CtorOrderProcessor
+    {
+        [ImportingConstructor]
+        public CtorOrderProcessor(IRepository<Order> orderRepository)
+        {
+            OrderRepository = orderRepository;
         }
 
-        [Export]
-        public class OrderProcessor
-        {
-            [Import]
-            public IRepository<Order> OrderRepository { get; set; }
-        }
+        public IRepository<Order> OrderRepository { get; set; }
+    }
 
-        public class OrderRepository : IRepository<Order>
-        {
-        }
+    public class OrderRepository : IRepository<Order>
+    {
     }
 }

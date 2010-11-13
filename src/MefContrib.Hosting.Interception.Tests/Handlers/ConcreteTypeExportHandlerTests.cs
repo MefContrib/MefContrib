@@ -11,58 +11,41 @@ using NUnit.Framework;
 
 namespace MefContrib.Hosting.Interception.Tests.Handlers
 {
-    namespace ConcreteTypeExportHandlerTests
+    [TestFixture]
+    public class ConcreteTypeExportHandlerTests
     {
-        [TestFixture]
-        public class When_querying_using_a_concrete_order_repository : ConcreteTypeExportHandlerContext
+        public ConcreteTypeExportHandler ConcreteTypeHandler;
+        public ImportDefinition RepositoryImportDefinition;
+
+        [Test]
+        public void When_querying_using_a_concrete_order_repository_the_order_repository_part_is_created()
         {
-            [Test]
-            public void Order_repository_part_is_created()
-            {
-                partType.ShouldBeOfType<OrderRepository>();
-            }
-
-            public override void Context()
-            {
-                var exports = new List<Tuple<ComposablePartDefinition, ExportDefinition>>();
-                var export = ConcreteTypeHandler.GetExports(RepositoryImportDefinition, exports).FirstOrDefault();
-                partType = ReflectionModelServices.GetPartType(export.Item1).Value;
-            }
-
-            private Type partType;
-
+            var exports = new List<Tuple<ComposablePartDefinition, ExportDefinition>>();
+            var export = ConcreteTypeHandler.GetExports(RepositoryImportDefinition, exports).FirstOrDefault();
+            var partType = ReflectionModelServices.GetPartType(export.Item1).Value;
+            partType.ShouldBeOfType<CustomerRepository>();
         }
 
-        public class ConcreteTypeExportHandlerContext
+        [TestFixtureSetUp]
+        public void TestSetUp()
         {
-            public ConcreteTypeExportHandler ConcreteTypeHandler;
-            public ImportDefinition RepositoryImportDefinition;
-
-            public ConcreteTypeExportHandlerContext()
-            {
-                ConcreteTypeHandler = new ConcreteTypeExportHandler();
-                var typeCatalog = new TypeCatalog(typeof(OrderProcessor));
-                var orderProcessorContract = AttributedModelServices.GetContractName(typeof(OrderProcessor));
-                var orderProcessPartDefinition = typeCatalog.Parts.Single(p => p.ExportDefinitions.Any(d => d.ContractName == orderProcessorContract));
-                RepositoryImportDefinition = orderProcessPartDefinition.ImportDefinitions.First();
-                Context();
-            }
-
-            public virtual void Context()
-            {
-            }
+            ConcreteTypeHandler = new ConcreteTypeExportHandler();
+            var typeCatalog = new TypeCatalog(typeof(CustomerProcessor));
+            var orderProcessorContract = AttributedModelServices.GetContractName(typeof(CustomerProcessor));
+            var orderProcessPartDefinition = typeCatalog.Parts.Single(p => p.ExportDefinitions.Any(d => d.ContractName == orderProcessorContract));
+            RepositoryImportDefinition = orderProcessPartDefinition.ImportDefinitions.First();
         }
+    }
 
-        [Export]
-        public class OrderRepository
-        {
-        }
+    [Export]
+    public class CustomerRepository
+    {
+    }
 
-        [Export]
-        public class OrderProcessor
-        {
-            [Import]
-            OrderRepository OrderRepository { get; set; }
-        }
+    [Export]
+    public class CustomerProcessor
+    {
+        [Import]
+        CustomerRepository CustomerRepository { get; set; }
     }
 }
