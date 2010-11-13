@@ -6,6 +6,9 @@
     using System.ComponentModel.Composition.Primitives;
     using System.Linq;
 
+    /// <summary>
+    /// Defines an export handler which enables open generics support.
+    /// </summary>
     public class GenericExportHandler : IExportHandler
     {
         private ComposablePartCatalog decoratedCatalog;
@@ -13,6 +16,9 @@
         private readonly IDictionary<Type, Type> genericTypeMapping;
         private readonly List<Type> manufacturedParts;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericExportHandler"/> class.
+        /// </summary>
         public GenericExportHandler()
         {
             this.aggregateCatalog = new AggregateCatalog();
@@ -22,6 +28,10 @@
 
         #region IExportHandler Members
 
+        /// <summary>
+        /// Initializes this export handler.
+        /// </summary>
+        /// <param name="interceptedCatalog">The <see cref="ComposablePartCatalog"/> being intercepted.</param>
         public void Initialize(ComposablePartCatalog interceptedCatalog)
         {
             this.decoratedCatalog = interceptedCatalog;
@@ -52,6 +62,14 @@
             this.aggregateCatalog.Catalogs.Add(new TypeCatalog(type));
         }
 
+        /// <summary>
+        /// Method which can filter exports for given <see cref="ImportDefinition"/> or produce new exports.
+        /// </summary>
+        /// <param name="definition"><see cref="ImportDefinition"/> instance.</param>
+        /// <param name="exports">A collection of <see cref="ExportDefinition"/>
+        /// instances along with their <see cref="ComposablePartDefinition"/> instances which match given <see cref="ImportDefinition"/>.</param>
+        /// <returns>A collection of <see cref="ExportDefinition"/>
+        /// instances along with their <see cref="ComposablePartDefinition"/> instances which match given <see cref="ImportDefinition"/>.</returns>
         public IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition, IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> exports)
         {
             if (exports.Any())

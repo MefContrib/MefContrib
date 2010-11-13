@@ -55,11 +55,6 @@
             return genericType;
         }
 
-        public static bool IsReflectionMemberImportDefinition(ImportDefinition definition)
-        {
-            return definition.GetType().Name.Equals("ReflectionMemberImportDefinition");
-        }
-
         public static bool ShouldCreateClosedGenericPart(ContractBasedImportDefinition contractDef, Type importDefinitionType)
         {
             return contractDef.Cardinality != ImportCardinality.ZeroOrMore && importDefinitionType.IsGenericType;

@@ -48,5 +48,23 @@ namespace MefContrib.Hosting.Interception.Tests.Handlers
                 new GenericContractTypeMapping(typeof(IRepository<>), typeof(OrderProcessor));
             }, Throws.TypeOf<ArgumentException>());
         }
+
+        [Test]
+        public void Calling_ctor_with_closed_generic_contract_type_definition_causes_argument_exception_to_be_thrown()
+        {
+            Assert.That(delegate
+            {
+                new GenericContractTypeMapping(typeof(IRepository<Order>), typeof(IRepository<>));
+            }, Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void Calling_ctor_with_closed_generic_implementation_type_definition_causes_argument_exception_to_be_thrown()
+        {
+            Assert.That(delegate
+            {
+                new GenericContractTypeMapping(typeof(IRepository<>), typeof(IRepository<Order>));
+            }, Throws.TypeOf<ArgumentException>());
+        }
     }
 }
