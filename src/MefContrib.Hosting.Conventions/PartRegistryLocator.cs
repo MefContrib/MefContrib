@@ -5,10 +5,18 @@
     using System.Linq;
     using MefContrib.Hosting.Conventions.Configuration;
 
+    /// <summary>
+    /// Locates <see cref="IPartRegistry{TContractService}"/> instances by inspecting the <see cref="ITypeScanner"/> of each
+    /// registry. It will recurse any located registry until no more are found.
+    /// </summary>
     public class PartRegistryLocator : IPartRegistryLocator
     {
         private IEnumerable<IPartRegistry<IContractService>> registries;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PartRegistryLocator"/> class.
+        /// </summary>
+        /// <param name="registries">An <see cref="IEnumerable{T}"/> of <see cref="IPartRegistry{TContractService}"/> instances that the locator should inspect for more available registries.</param>
         public PartRegistryLocator(IEnumerable<IPartRegistry<IContractService>> registries)
         {
             if (registries == null)
@@ -19,6 +27,10 @@
             this.registries = registries;
         }
 
+        /// <summary>
+        /// Locates <see cref="IPartRegistry{TContractService}"/> instances in the available <see cref="IPartRegistry{TContractService}"/> collection.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="IPartRegistry{TContractService}"/> instances.</returns>
         public IEnumerable<IPartRegistry<IContractService>> GetRegistries()
         {
             var reachableTypes = this.registries
