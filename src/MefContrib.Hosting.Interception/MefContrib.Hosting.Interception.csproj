@@ -41,7 +41,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DisposableInterceptingComposablePart.cs" />
-    <Compile Include="Handlers\GenericContractRegistry.cs" />
+    <Compile Include="Handlers\GenericContractRegistryBase.cs" />
     <Compile Include="Handlers\IGenericContractRegistry.cs" />
     <Compile Include="Interceptors\CompositeValueInterceptor.cs" />
     <Compile Include="Handlers\ConcreteTypeExportHandler.cs" />

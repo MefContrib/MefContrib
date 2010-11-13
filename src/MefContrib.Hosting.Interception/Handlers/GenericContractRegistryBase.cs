@@ -4,13 +4,13 @@ namespace MefContrib.Hosting.Interception.Handlers
     using System.Collections.Generic;
     using System.Threading;
 
-    public abstract class GenericContractRegistry : IGenericContractRegistry
+    public abstract class GenericContractRegistryBase : IGenericContractRegistry
     {
         private readonly List<GenericContractTypeMapping> mappings;
 
         private int isInitialized;
 
-        protected GenericContractRegistry()
+        protected GenericContractRegistryBase()
         {
             this.mappings = new List<GenericContractTypeMapping>();
         }

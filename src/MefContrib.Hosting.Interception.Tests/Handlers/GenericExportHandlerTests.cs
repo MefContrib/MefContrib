@@ -128,7 +128,7 @@ namespace MefContrib.Hosting.Interception.Tests.Handlers
         }
     }
 
-    public class RepositoryTypeLocator : GenericContractRegistry
+    public class RepositoryTypeLocator : GenericContractRegistryBase
     {
         protected override void Initialize()
         {
