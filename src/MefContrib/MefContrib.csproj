@@ -62,9 +62,78 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hosting\Conventions\AggregatedTypeScanner.cs" />
+    <Compile Include="Hosting\Conventions\AppDomainPartRegistryLocator.cs" />
+    <Compile Include="Hosting\Conventions\AssemblyTypeScanner.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ConventionBuilder.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ExportConventionBuilder.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ExportRegistry.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ExpressionBuilder.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ExpressionBuilderFactory.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\IConventionBuilder.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\IConventionRegistry.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\IExportRegistry.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\IImportRegistry.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ImportConventionBuilder.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ImportRegistry.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\IPartRegistry.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ITypeDefaultConvention.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ITypeDefaultConventionBuilder.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ITypeDefaultConventionConfigurator.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ITypeScannerConfigurator.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\PartConventionBuilder.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\PartConventionBuilderExtensions.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\PartRegistry.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\TypeDefaultConvention.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\TypeDefaultConventionBuilder.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\TypeDefaultConventionConfigurator.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\TypeScannerConfigurator.cs" />
+    <Compile Include="Hosting\Conventions\ContractService.cs" />
+    <Compile Include="Hosting\Conventions\ConventionCatalog.cs" />
+    <Compile Include="Hosting\Conventions\ConventionContractService.cs" />
+    <Compile Include="Hosting\Conventions\ConventionPart.cs" />
+    <Compile Include="Hosting\Conventions\ConventionPartCreator.cs" />
+    <Compile Include="Hosting\Conventions\DefaultConventionContractService.cs" />
+    <Compile Include="Hosting\Conventions\DirectoryTypeScanner.cs" />
+    <Compile Include="Hosting\Conventions\EnumerableExtensions.cs" />
+    <Compile Include="Hosting\Conventions\ExportConvention.cs" />
+    <Compile Include="Hosting\Conventions\ExpressionExtensions.cs" />
+    <Compile Include="Hosting\Conventions\IContractService.cs" />
+    <Compile Include="Hosting\Conventions\IExportConvention.cs" />
+    <Compile Include="Hosting\Conventions\IHideObjectMembers.cs" />
+    <Compile Include="Hosting\Conventions\IImportConvention.cs" />
+    <Compile Include="Hosting\Conventions\ImportConvention.cs" />
+    <Compile Include="Hosting\Conventions\IPartConvention.cs" />
+    <Compile Include="Hosting\Conventions\IPartRegistryLocator.cs" />
+    <Compile Include="Hosting\Conventions\ITypeScanner.cs" />
+    <Compile Include="Hosting\Conventions\MemberInfoExtensions.cs" />
+    <Compile Include="Hosting\Conventions\MetadataItem.cs" />
+    <Compile Include="Hosting\Conventions\PartConvention.cs" />
+    <Compile Include="Hosting\Conventions\PartRegistryLocator.cs" />
+    <Compile Include="Hosting\Conventions\PartRegistryTypeFilter.cs" />
+    <Compile Include="Hosting\Conventions\RequiredMetadataItem.cs" />
+    <Compile Include="Hosting\Conventions\TypeExtensions.cs" />
+    <Compile Include="Hosting\Conventions\TypeScanner.cs" />
     <Compile Include="Hosting\Filter\CommonFilters.cs" />
     <Compile Include="Hosting\Filter\FilteringCatalog.cs" />
     <Compile Include="Hosting\Filter\IFilter.cs" />
+    <Compile Include="Hosting\Interception\Configuration\IInterceptionConfiguration.cs" />
+    <Compile Include="Hosting\Interception\Configuration\InterceptionConfiguration.cs" />
+    <Compile Include="Hosting\Interception\Configuration\IPartInterceptionCriteria.cs" />
+    <Compile Include="Hosting\Interception\Configuration\PredicateInterceptionCriteria.cs" />
+    <Compile Include="Hosting\Interception\DisposableInterceptingComposablePart.cs" />
+    <Compile Include="Hosting\Interception\Handlers\ConcreteTypeExportHandler.cs" />
+    <Compile Include="Hosting\Interception\Handlers\GenericContractRegistryBase.cs" />
+    <Compile Include="Hosting\Interception\Handlers\GenericContractTypeMapping.cs" />
+    <Compile Include="Hosting\Interception\Handlers\GenericExportHandler.cs" />
+    <Compile Include="Hosting\Interception\Handlers\IGenericContractRegistry.cs" />
+    <Compile Include="Hosting\Interception\Handlers\TypeHelper.cs" />
+    <Compile Include="Hosting\Interception\IExportedValueInterceptor.cs" />
+    <Compile Include="Hosting\Interception\IExportHandler.cs" />
+    <Compile Include="Hosting\Interception\InterceptingCatalog.cs" />
+    <Compile Include="Hosting\Interception\InterceptingComposablePart.cs" />
+    <Compile Include="Hosting\Interception\InterceptingComposablePartDefinition.cs" />
+    <Compile Include="Hosting\Interception\Interceptors\CompositeValueInterceptor.cs" />
     <Compile Include="Integration\ContainerAdapterBase.cs" />
     <Compile Include="Integration\ContainerServices.cs" />
     <Compile Include="Integration\ContainerExportProvider.cs" />
@@ -103,6 +172,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

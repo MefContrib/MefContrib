@@ -1,9 +1,8 @@
-﻿namespace MefContrib.Hosting.Interception.Castle
-{
-    using System;
-    using System.Linq;
-    using global::Castle.DynamicProxy;
+﻿using System.Linq;
+using Castle.DynamicProxy;
 
+namespace MefContrib.Hosting.Interception.Castle
+{
     /// <summary>
     /// Defines an interceptor which creates proxies using the Castle.DynamicProxy library.
     /// </summary>
@@ -30,8 +29,8 @@
         public object Intercept(object value)
         {
             var interfaces = value.GetType().GetInterfaces();
-            Type proxyInterface = interfaces.FirstOrDefault();
-            Type[] additionalInterfaces = interfaces.Skip(1).ToArray();
+            var proxyInterface = interfaces.FirstOrDefault();
+            var additionalInterfaces = interfaces.Skip(1).ToArray();
             
             return Generator.CreateInterfaceProxyWithTargetInterface(
                 proxyInterface,

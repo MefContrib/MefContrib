@@ -11,7 +11,8 @@
     <RootNamespace>MefContrib.Tests</RootNamespace>
     <AssemblyName>MefContrib.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup>
@@ -46,6 +47,9 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq">
+      <HintPath>..\..\dependencies\desktop\moq\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\dependencies\desktop\nunit\nunit.framework.dll</HintPath>
     </Reference>
@@ -54,9 +58,70 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hosting\Conventions\AggregatedTypeScannerTests.cs" />
+    <Compile Include="Hosting\Conventions\AppDomainPartRegistryLocatorTests.cs" />
+    <Compile Include="Hosting\Conventions\AssemblyFactory.cs" />
+    <Compile Include="Hosting\Conventions\AssemblyTypeScannerTests.cs" />
+    <Compile Include="Hosting\Conventions\AssemblyWrapper.cs" />
+    <Compile Include="Hosting\Conventions\Catch.cs" />
+    <Compile Include="Hosting\Conventions\ContextSpecificationAssertions.cs" />
+    <Compile Include="Hosting\Conventions\ConventionCatalogTests.cs" />
+    <Compile Include="Hosting\Conventions\ConventionPartCreatorTests.cs" />
+    <Compile Include="Hosting\Conventions\CSharpAssemblyFactory.cs" />
+    <Compile Include="Hosting\Conventions\CSharpAssemblyFactoryTests.cs" />
+    <Compile Include="Hosting\Conventions\DefaultContractService.cs" />
+    <Compile Include="Hosting\Conventions\DefaultConventionContractServiceTests.cs" />
+    <Compile Include="Hosting\Conventions\DirectoryTypeScannerTests.cs" />
+    <Compile Include="Hosting\Conventions\ExportConventionBuilderTests.cs" />
+    <Compile Include="Hosting\Conventions\ExportConventionTests.cs" />
+    <Compile Include="Hosting\Conventions\ExportRegistryTests.cs" />
+    <Compile Include="Hosting\Conventions\FakeConventionRegistry.cs" />
+    <Compile Include="Hosting\Conventions\FakeExportConvention.cs" />
+    <Compile Include="Hosting\Conventions\FakeImportConvetion.cs" />
+    <Compile Include="Hosting\Conventions\FakePart.cs" />
+    <Compile Include="Hosting\Conventions\FakePartConvention.cs" />
+    <Compile Include="Hosting\Conventions\IConventionRegistryTests.cs" />
+    <Compile Include="Hosting\Conventions\IFakeInterface.cs" />
+    <Compile Include="Hosting\Conventions\IFakeMetadataView.cs" />
+    <Compile Include="Hosting\Conventions\ImportConventionBuilderTests.cs" />
+    <Compile Include="Hosting\Conventions\ImportConventionTests.cs" />
+    <Compile Include="Hosting\Conventions\ImportRegistryTests.cs" />
+    <Compile Include="Hosting\Conventions\Integration\IntegrationTests.cs" />
+    <Compile Include="Hosting\Conventions\IPartRegistryTests.cs" />
+    <Compile Include="Hosting\Conventions\MefIntegrationTests.cs" />
+    <Compile Include="Hosting\Conventions\MetadataItemTests.cs" />
+    <Compile Include="Hosting\Conventions\PartConventionBuilderTests.cs" />
+    <Compile Include="Hosting\Conventions\PartConventionTests.cs" />
+    <Compile Include="Hosting\Conventions\PartRegistryLocatorTests.cs" />
+    <Compile Include="Hosting\Conventions\PartRegistryTests.cs" />
+    <Compile Include="Hosting\Conventions\ReflectionServices.cs" />
+    <Compile Include="Hosting\Conventions\RequiredMetadataItemTests.cs" />
+    <Compile Include="Hosting\Conventions\TypeDefaultConventionBuilderTests.cs" />
+    <Compile Include="Hosting\Conventions\TypeDefaultConventionConfiguratorTests.cs" />
+    <Compile Include="Hosting\Conventions\TypeExtensionsTests.cs" />
+    <Compile Include="Hosting\Conventions\TypeScannerConfiguratorTests.cs" />
+    <Compile Include="Hosting\Conventions\TypeScannerTests.cs" />
     <Compile Include="Hosting\FactoryExportDefinitionTests.cs" />
     <Compile Include="Hosting\FilteringCatalogTests.cs" />
     <Compile Include="Hosting\FactoryExportProviderTests.cs" />
+    <Compile Include="Hosting\Interception\CompositeValueInterceptorTests.cs" />
+    <Compile Include="Hosting\Interception\Configuration\InterceptionConfigurationTests.cs" />
+    <Compile Include="Hosting\Interception\Configuration\PredicateInterceptionCriteriaTests.cs" />
+    <Compile Include="Hosting\Interception\FakeInterceptor.cs" />
+    <Compile Include="Hosting\Interception\FakeParts.cs" />
+    <Compile Include="Hosting\Interception\Handlers\ConcreteTypeExportHandlerTests.cs" />
+    <Compile Include="Hosting\Interception\Handlers\GenericContractTypeMappingTests.cs" />
+    <Compile Include="Hosting\Interception\Handlers\GenericExportHandlerIntegrationTests.cs" />
+    <Compile Include="Hosting\Interception\Handlers\GenericExportHandlerTests.cs" />
+    <Compile Include="Hosting\Interception\Handlers\IRepository.cs" />
+    <Compile Include="Hosting\Interception\Handlers\Order.cs" />
+    <Compile Include="Hosting\Interception\Handlers\Repository.cs" />
+    <Compile Include="Hosting\Interception\Handlers\TypeHelperTests.cs" />
+    <Compile Include="Hosting\Interception\InterceptingCatalogTests.cs" />
+    <Compile Include="Hosting\Interception\InterceptingComposablePartDefinitionTests.cs" />
+    <Compile Include="Hosting\Interception\InterceptingComposablePartTests.cs" />
+    <Compile Include="Hosting\Interception\Logger.cs" />
+    <Compile Include="Hosting\Interception\OrderProcessor.cs" />
     <Compile Include="ShouldExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

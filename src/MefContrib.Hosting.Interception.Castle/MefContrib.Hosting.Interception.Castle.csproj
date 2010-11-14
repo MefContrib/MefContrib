@@ -32,7 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
+    <Reference Include="Castle.Core, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\dependencies\desktop\castle\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -46,9 +47,9 @@
     <Compile Include="DynamicProxyInterceptor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MefContrib.Hosting.Interception\MefContrib.Hosting.Interception.csproj">
-      <Project>{11F6AAB8-BF84-4F7B-A03A-7A5972A15F38}</Project>
-      <Name>MefContrib.Hosting.Interception</Name>
+    <ProjectReference Include="..\MefContrib\MefContrib.csproj">
+      <Project>{0CCE812A-F4EB-4379-B820-D8ADA4330235}</Project>
+      <Name>MefContrib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
