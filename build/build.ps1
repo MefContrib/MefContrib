@@ -51,6 +51,7 @@ task Compile -depends Clean, Init -description "This task compiles the solution"
         msbuild $source_directory\$solution.sln `
             /p:outdir=$build_directory\\$solution\\ `
             /verbosity:quiet `
-            /p:Configuration=Release
+            /p:Configuration=Release `
+			/property:WarningLevel=3
     }
 }
