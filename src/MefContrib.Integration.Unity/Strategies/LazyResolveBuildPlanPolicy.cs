@@ -11,6 +11,11 @@ namespace MefContrib.Integration.Unity.Strategies
     /// </summary>
     public class LazyResolveBuildPlanPolicy : IBuildPlanPolicy
     {
+        /// <summary>
+        /// Creates an instance of this build plan's type, or fills
+        /// in the existing type if passed in.
+        /// </summary>
+        /// <param name="context">Context used to build up the object.</param>
         public void BuildUp(IBuilderContext context)
         {
             if (context.Existing == null)

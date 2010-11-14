@@ -31,12 +31,33 @@ namespace MefContrib.Integration.Unity.Extensions
             this.entries = new List<TypeRegistrationEntry>();
         }
 
+        /// <summary>
+        /// Initial the container with this extension's functionality.
+        /// </summary>
+        /// <remarks>
+        /// When overridden in a derived class, this method will modify the given
+        /// <see cref="ExtensionContext"/> by adding strategies, policies, etc.
+        /// to install it's functions into the container.
+        /// </remarks>
         protected override void Initialize()
         {
             Context.Registering += OnRegistering;
             Context.RegisteringInstance += OnRegisteringInstance;
         }
 
+        /// <summary>
+        /// Removes the extension's functions from the container.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method is called when extensions are being removed from the container. It can be
+        /// used to do things like disconnect event handlers or clean up member state. You do not
+        /// need to remove strategies or policies here; the container will do that automatically.
+        /// </para>
+        /// <para>
+        /// The default implementation of this method does nothing.
+        /// </para>
+        /// </remarks>
         public override void Remove()
         {
             Context.Registering -= OnRegistering;

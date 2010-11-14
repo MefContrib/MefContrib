@@ -19,18 +19,33 @@
             this.values = new Dictionary<ExportDefinition, object>();
         }
 
+        /// <summary>
+        /// Gets the intercepted <see cref="ComposablePart"/> instance.
+        /// </summary>
         public ComposablePart InterceptedPart { get; private set; }
 
-        public override object GetExportedValue(ExportDefinition exportDefinition)
+        /// <summary>
+        /// Gets the exported object described by the specified <see cref="ExportDefinition"/> object.
+        /// </summary>
+        /// <returns>
+        /// The exported object described by <paramref name="definition"/>.
+        /// </returns>
+        /// <param name="definition">One of the <see cref="ExportDefinition"/> objects from the <see cref="ComposablePart.ExportDefinitions"/> property that describes the exported object to return.</param>
+        /// <exception cref="ObjectDisposedException">The <see cref="ComposablePart"/> object has been disposed of.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="definition"/> is null.</exception>
+        /// <exception cref="ComposablePartException">An error occurred getting the exported object described by the <see cref="ExportDefinition"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="definition"/> did not originate from the <see cref="ComposablePart.ExportDefinitions"/> property on the <see cref="ComposablePart"/>.</exception>
+        /// <exception cref="InvalidOperationException">One or more prerequisite imports, indicated by <see cref="ImportDefinition.IsPrerequisite"/>, have not been set.</exception>
+        public override object GetExportedValue(ExportDefinition definition)
         {
-            if (exportDefinition == null) throw new ArgumentNullException("exportDefinition");
+            if (definition == null) throw new ArgumentNullException("definition");
 
-            if (this.values.ContainsKey(exportDefinition))
-                return this.values[exportDefinition];
+            if (this.values.ContainsKey(definition))
+                return this.values[definition];
 
-            var value = InterceptedPart.GetExportedValue(exportDefinition);
+            var value = InterceptedPart.GetExportedValue(definition);
             var interceptingValue = this.valueInterceptor.Intercept(value);
-            this.values.Add(exportDefinition, interceptingValue);
+            this.values.Add(definition, interceptingValue);
             
             return interceptingValue;
         }

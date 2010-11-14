@@ -9,6 +9,12 @@ namespace MefContrib.Integration.Unity.Strategies
     /// </summary>
     public class CompositionStrategy : BuilderStrategy
     {
+        /// <summary>
+        /// Called during the chain of responsibility for a build operation. The
+        /// PreBuildUp method is called when the chain is being executed in the
+        /// forward direction.
+        /// </summary>
+        /// <param name="context">Context of the build operation.</param>
         public override void PreBuildUp(IBuilderContext context)
         {
             // If type is registered in the Unity container, don't even bother messing with MEF

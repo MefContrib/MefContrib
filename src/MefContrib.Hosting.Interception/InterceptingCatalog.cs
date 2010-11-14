@@ -44,6 +44,18 @@
             }
         }
 
+        /// <summary>
+        /// Gets a list of export definitions that match the constraint defined
+        /// by the specified <see cref="ImportDefinition"/> object.
+        /// </summary>
+        /// <returns>
+        /// A collection of <see cref="T:System.Tuple`2"/> containing the <see cref="ExportDefinition"/>
+        /// objects and their associated <see cref="ComposablePartDefinition"/> objects for objects that match the constraint specified by <paramref name="definition"/>.
+        /// </returns>
+        /// <param name="definition">The conditions of the <see cref="ExportDefinition"/>
+        /// objects to be returned.</param>
+        /// <exception cref="ObjectDisposedException">The <see cref="ComposablePartCatalog"/> object has been disposed of.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="definition"/> is null.</exception>
         public override IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition)
         {
             if (definition == null) throw new ArgumentNullException("definition");
@@ -57,6 +69,13 @@
             return exports;
         }
 
+        /// <summary>
+        /// Gets the part definitions that are contained in the catalog.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="ComposablePartDefinition"/> contained in the <see cref="ComposablePartCatalog"/>.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">The <see cref="ComposablePartCatalog"/> object has been disposed of.</exception>
         public override IQueryable<ComposablePartDefinition> Parts
         {
             get { return GetParts(); }
@@ -114,6 +133,9 @@
 
         #region INotifyComposablePartCatalogChanged Implementation
 
+        /// <summary>
+        /// Occurs when a <see cref="ComposablePartCatalog"/> has changed.
+        /// </summary>
         public event EventHandler<ComposablePartCatalogChangeEventArgs> Changed
         {
             add
@@ -128,6 +150,9 @@
             }
         }
 
+        /// <summary>
+        /// Occurs when a <see cref="ComposablePartCatalog"/> is changing.
+        /// </summary>
         public event EventHandler<ComposablePartCatalogChangeEventArgs> Changing
         {
             add

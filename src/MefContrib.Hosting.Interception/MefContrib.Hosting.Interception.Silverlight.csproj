@@ -77,7 +77,7 @@
     <Compile Include="Configuration\PredicateInterceptionCriteria.cs" />
     <Compile Include="DisposableInterceptingComposablePart.cs" />
     <Compile Include="Handlers\ConcreteTypeExportHandler.cs" />
-    <Compile Include="Handlers\GenericContractRegistry.cs" />
+    <Compile Include="Handlers\GenericContractRegistryBase.cs" />
     <Compile Include="Handlers\GenericContractTypeMapping.cs" />
     <Compile Include="Handlers\GenericExportHandler.cs" />
     <Compile Include="Handlers\IGenericContractRegistry.cs" />

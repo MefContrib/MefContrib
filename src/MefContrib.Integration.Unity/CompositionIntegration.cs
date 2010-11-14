@@ -54,6 +54,14 @@ namespace MefContrib.Integration.Unity
             this.providers = providers;
         }
 
+        /// <summary>
+        /// Initial the container with this extension's functionality.
+        /// </summary>
+        /// <remarks>
+        /// When overridden in a derived class, this method will modify the given
+        /// <see cref="ExtensionContext"/> by adding strategies, policies, etc.
+        /// to install it's functions into the container.
+        /// </remarks>
         protected override void Initialize()
         {
             TypeRegistrationTrackerExtension.RegisterIfMissing(Container);
@@ -130,6 +138,10 @@ namespace MefContrib.Integration.Unity
 
         #region IDisposable
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing,
+        /// or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             if (compositionContainer != null)

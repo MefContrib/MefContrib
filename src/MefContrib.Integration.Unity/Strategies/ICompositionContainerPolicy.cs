@@ -4,7 +4,7 @@ namespace MefContrib.Integration.Unity.Strategies
     using Microsoft.Practices.ObjectBuilder2;
 
     /// <summary>
-    /// Represents a builder strategy which holds a <see cref="CompositionContainer"/> instance.
+    /// Represents a builder policy which holds a <see cref="CompositionContainer"/> instance.
     /// </summary>
     public interface ICompositionContainerPolicy : IBuilderPolicy
     {
