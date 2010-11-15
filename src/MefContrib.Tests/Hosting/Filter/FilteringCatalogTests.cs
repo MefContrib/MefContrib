@@ -2,10 +2,9 @@ using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
-using MefContrib.Hosting.Filter;
 using NUnit.Framework;
 
-namespace MefContrib.Tests.Hosting
+namespace MefContrib.Hosting.Filter.Tests
 {
     [TestFixture]
     public class FilteringCatalogTests

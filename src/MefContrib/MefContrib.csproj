@@ -100,6 +100,7 @@
     <Compile Include="Hosting\Conventions\ExpressionExtensions.cs" />
     <Compile Include="Hosting\Conventions\IContractService.cs" />
     <Compile Include="Hosting\Conventions\IExportConvention.cs" />
+    <Compile Include="Hosting\Filter\FilteringExportHandler.cs" />
     <Compile Include="IHideObjectMembers.cs" />
     <Compile Include="Hosting\Conventions\IImportConvention.cs" />
     <Compile Include="Hosting\Conventions\ImportConvention.cs" />

@@ -102,7 +102,7 @@
     <Compile Include="Hosting\Conventions\TypeScannerConfiguratorTests.cs" />
     <Compile Include="Hosting\Conventions\TypeScannerTests.cs" />
     <Compile Include="Hosting\FactoryExportDefinitionTests.cs" />
-    <Compile Include="Hosting\FilteringCatalogTests.cs" />
+    <Compile Include="Hosting\Filter\FilteringCatalogTests.cs" />
     <Compile Include="Hosting\FactoryExportProviderTests.cs" />
     <Compile Include="Hosting\Interception\CompositeValueInterceptorTests.cs" />
     <Compile Include="Hosting\Interception\Configuration\InterceptionConfigurationTests.cs" />

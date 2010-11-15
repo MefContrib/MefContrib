@@ -2,10 +2,9 @@ using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
-using MefContrib.Hosting;
 using NUnit.Framework;
 
-namespace MefContrib.Tests.Hosting
+namespace MefContrib.Hosting.Tests
 {
     [TestFixture]
     public class FactoryExportProviderTests

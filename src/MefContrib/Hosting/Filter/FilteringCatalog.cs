@@ -1,10 +1,12 @@
 namespace MefContrib.Hosting.Filter
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
     using System.Linq;
-    using System.Linq.Expressions;
+    using MefContrib.Hosting.Interception;
+    using MefContrib.Hosting.Interception.Configuration;
 
     /// <summary>
     /// Represents a catalog which wraps any <see cref="ComposablePartCatalog"/> and
@@ -12,26 +14,25 @@ namespace MefContrib.Hosting.Filter
     /// </summary>
     public class FilteringCatalog : ComposablePartCatalog, INotifyComposablePartCatalogChanged
     {
-        private readonly INotifyComposablePartCatalogChanged innerNotifyChange;
-        private readonly IQueryable<ComposablePartDefinition> partsQuery;
+        private readonly InterceptingCatalog interceptingCatalog;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FilteringCatalog"/> class.
         /// </summary>
         /// <param name="inner">A <see cref="ComposablePartCatalog"/> whose parts
         /// are to be filtered based on a given criteria.</param>
-        /// <param name="expression">An <see cref="Expression"/> which defines the filter query.</param>
-        public FilteringCatalog(ComposablePartCatalog inner,
-                               Expression<Func<ComposablePartDefinition, bool>> expression)
+        /// <param name="filter">A filter query.</param>
+        public FilteringCatalog(ComposablePartCatalog inner, Func<ComposablePartDefinition, bool> filter)
         {
             if (inner == null)
                 throw new ArgumentNullException("inner");
 
-            if (expression == null)
-                throw new ArgumentNullException("expression");
+            if (filter == null)
+                throw new ArgumentNullException("filter");
 
-            this.innerNotifyChange = inner as INotifyComposablePartCatalogChanged;
-            this.partsQuery = inner.Parts.Where(expression);
+            var cfg = new InterceptionConfiguration()
+                .AddHandler(new FilteringExportHandler(filter));
+            this.interceptingCatalog = new InterceptingCatalog(inner, cfg);
         }
 
         /// <summary>
@@ -42,46 +43,32 @@ namespace MefContrib.Hosting.Filter
         /// <param name="filter">An instance of the <see cref="IFilter"/> interface
         /// to be used as a filter query.</param>
         public FilteringCatalog(ComposablePartCatalog inner, IFilter filter)
-            : this(inner, p => filter.Filter(p))
+            : this(inner, filter.Filter)
         {
         }
 
         public override IQueryable<ComposablePartDefinition> Parts
         {
-            get
-            {
-                return this.partsQuery;
-            }
+            get { return this.interceptingCatalog.Parts; }
         }
 
+        public override IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition)
+        {
+            return this.interceptingCatalog.GetExports(definition);
+        }
+        
         #region INotifyComposablePartCatalogChanged Implementation
 
         public event EventHandler<ComposablePartCatalogChangeEventArgs> Changed
         {
-            add
-            {
-                if (this.innerNotifyChange != null)
-                    this.innerNotifyChange.Changed += value;
-            }
-            remove
-            {
-                if (this.innerNotifyChange != null)
-                    this.innerNotifyChange.Changed -= value;
-            }
+            add { this.interceptingCatalog.Changed += value; }
+            remove { this.interceptingCatalog.Changed -= value; }
         }
 
         public event EventHandler<ComposablePartCatalogChangeEventArgs> Changing
         {
-            add
-            {
-                if (this.innerNotifyChange != null)
-                    this.innerNotifyChange.Changing += value;
-            }
-            remove
-            {
-                if (this.innerNotifyChange != null)
-                    this.innerNotifyChange.Changing -= value;
-            }
+            add { this.interceptingCatalog.Changing += value; }
+            remove { this.interceptingCatalog.Changing -= value; }
         }
 
         #endregion

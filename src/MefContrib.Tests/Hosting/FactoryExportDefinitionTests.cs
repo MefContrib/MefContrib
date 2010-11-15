@@ -2,7 +2,7 @@ using System;
 using MefContrib.Hosting;
 using NUnit.Framework;
 
-namespace MefContrib.Tests.Hosting
+namespace MefContrib.Hosting.Tests
 {
     [TestFixture]
     public class FactoryExportDefinitionTests
@@ -33,7 +33,7 @@ namespace MefContrib.Tests.Hosting
             var exportDefinition = new FactoryExportDefinition(typeof(IComponent), null, ep => null);
             Assert.That(exportDefinition.ContractType, Is.EqualTo(typeof(IComponent)));
             Assert.That(exportDefinition.RegistrationName, Is.Null);
-            Assert.That(exportDefinition.ContractName, Is.EqualTo("MefContrib.Tests.Hosting.FactoryExportDefinitionTests+IComponent"));
+            Assert.That(exportDefinition.ContractName, Is.EqualTo("MefContrib.Hosting.Tests.FactoryExportDefinitionTests+IComponent"));
         }
     }
 }
