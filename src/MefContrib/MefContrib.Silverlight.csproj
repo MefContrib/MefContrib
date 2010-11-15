@@ -64,9 +64,6 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\MefContrib\Properties\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="Hosting\FactoryExportDefinition.cs" />
     <Compile Include="Hosting\FactoryExportProvider.cs" />
     <Compile Include="Hosting\Filter\CommonFilters.cs" />
