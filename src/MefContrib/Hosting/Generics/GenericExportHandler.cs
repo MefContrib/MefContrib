@@ -1,10 +1,12 @@
-﻿namespace MefContrib.Hosting.Interception.Handlers
+﻿namespace MefContrib.Hosting.Generics
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
     using System.Linq;
+    using MefContrib.Hosting.Interception;
+    using MefContrib.Hosting.Interception.Handlers;
 
     /// <summary>
     /// Defines an export handler which enables open generics support.
@@ -19,11 +21,14 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericExportHandler"/> class.
         /// </summary>
-        public GenericExportHandler()
+        /// <param name="registries">A collection of <see cref="IGenericContractRegistry"/> instances.</param>
+        public GenericExportHandler(params IGenericContractRegistry[] registries)
         {
             this.aggregateCatalog = new AggregateCatalog();
             this.genericTypeMapping = new Dictionary<Type, Type>();
             this.manufacturedParts = new List<Type>();
+
+            LoadTypeMappings(registries);
         }
 
         #region IExportHandler Members
@@ -35,17 +40,25 @@
         public void Initialize(ComposablePartCatalog interceptedCatalog)
         {
             this.decoratedCatalog = interceptedCatalog;
-            LoadTypeMappings();
+            LoadRegistriesFromCatalog();
         }
 
-        private void LoadTypeMappings()
+        private void LoadRegistriesFromCatalog()
         {
             using (var ep = new CatalogExportProvider(this.decoratedCatalog))
             {
                 ep.SourceProvider = ep;
-                var locators = ep.GetExportedValues<IGenericContractRegistry>();
+                var registries = ep.GetExportedValues<IGenericContractRegistry>();
                 
-                foreach (var mapping in locators.SelectMany(locator => locator.GetMappings()))
+                LoadTypeMappings(registries);
+            }
+        }
+        
+        private void LoadTypeMappings(IEnumerable<IGenericContractRegistry> registries)
+        {
+            if (registries != null)
+            {
+                foreach (var mapping in registries.SelectMany(registry => registry.GetMappings()))
                 {
                     this.genericTypeMapping.Add(
                         mapping.GenericContractTypeDefinition,
@@ -75,6 +88,11 @@
             if (exports.Any())
             {
                 return exports;
+            }
+
+            if (!TypeHelper.IsReflectionImportDefinition(definition))
+            {
+                return Enumerable.Empty<Tuple<ComposablePartDefinition, ExportDefinition>>();
             }
 
             var contractDef = (ContractBasedImportDefinition)definition;

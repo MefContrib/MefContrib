@@ -1,4 +1,4 @@
-namespace MefContrib.Hosting.Interception.Tests.Handlers
+namespace MefContrib.Hosting.Generics.Tests
 {
     public class Repository<T> : IRepository<T>
     {

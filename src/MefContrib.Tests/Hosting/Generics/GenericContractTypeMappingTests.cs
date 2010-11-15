@@ -1,8 +1,7 @@
 using System;
-using MefContrib.Hosting.Interception.Handlers;
 using NUnit.Framework;
 
-namespace MefContrib.Hosting.Interception.Tests.Handlers
+namespace MefContrib.Hosting.Generics.Tests
 {
     [TestFixture]
     public class GenericContractTypeMappingTests

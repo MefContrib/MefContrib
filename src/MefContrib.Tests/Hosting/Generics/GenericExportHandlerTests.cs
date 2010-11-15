@@ -4,11 +4,10 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
-using MefContrib.Hosting.Interception.Handlers;
 using MefContrib.Tests;
 using NUnit.Framework;
 
-namespace MefContrib.Hosting.Interception.Tests.Handlers
+namespace MefContrib.Hosting.Generics.Tests
 {
     namespace GenericExportHandlerTests
     {
@@ -105,7 +104,7 @@ namespace MefContrib.Hosting.Interception.Tests.Handlers
 
             public GenericExportHandlerContext()
             {
-                var typeCatalog = new TypeCatalog(typeof(OrderProcessor), typeof(CtorOrderProcessor), typeof(ImportDefinitionHelper), typeof(RepositoryTypeLocator));
+                var typeCatalog = new TypeCatalog(typeof(OrderProcessor), typeof(CtorOrderProcessor), typeof(ImportDefinitionHelper), typeof(TestGenericContractRegistry));
                 GenericExportHandler = new GenericExportHandler();
                 GenericExportHandler.Initialize(typeCatalog);
                 
@@ -128,7 +127,8 @@ namespace MefContrib.Hosting.Interception.Tests.Handlers
         }
     }
 
-    public class RepositoryTypeLocator : GenericContractRegistryBase
+    [Export(typeof(IGenericContractRegistry))]
+    public class TestGenericContractRegistry : GenericContractRegistryBase
     {
         protected override void Initialize()
         {

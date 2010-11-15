@@ -1,12 +1,10 @@
-namespace MefContrib.Hosting.Interception.Handlers
+namespace MefContrib.Hosting.Generics
 {
     using System.Collections.Generic;
-    using System.ComponentModel.Composition;
 
     /// <summary>
     /// Defines a generics contract type mapping registry.
     /// </summary>
-    [InheritedExport]
     public interface IGenericContractRegistry
     {
         /// <summary>

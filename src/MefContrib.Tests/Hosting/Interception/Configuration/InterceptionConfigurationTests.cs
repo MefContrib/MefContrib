@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using MefContrib.Hosting.Generics;
 using MefContrib.Hosting.Interception.Configuration;
 using MefContrib.Hosting.Interception.Handlers;
 using NUnit.Framework;

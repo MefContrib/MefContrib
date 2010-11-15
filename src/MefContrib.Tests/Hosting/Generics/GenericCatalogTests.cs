@@ -1,23 +1,20 @@
 using System.ComponentModel.Composition.Hosting;
-using MefContrib.Hosting.Interception.Configuration;
-using MefContrib.Hosting.Interception.Handlers;
 using NUnit.Framework;
 
-namespace MefContrib.Hosting.Interception.Tests.Handlers
+namespace MefContrib.Hosting.Generics.Tests
 {
     [TestFixture]
-    public class GenericExportHandlerIntegrationTests
+    public class GenericCatalogTests
     {
         public ExportProvider ExportProvider;
 
         [TestFixtureSetUp]
         public void TestSetUp()
         {
-            var typeCatalog = new TypeCatalog(typeof(CtorOrderProcessor), typeof(OrderProcessor), typeof(RepositoryTypeLocator));
-            var cfg = new InterceptionConfiguration().AddHandler(new GenericExportHandler());
-            var catalog = new InterceptingCatalog(typeCatalog, cfg);
-
-            var provider = new CatalogExportProvider(catalog);
+            var typeCatalog = new TypeCatalog(typeof(CtorOrderProcessor), typeof(OrderProcessor));
+            var genericCatalog = new GenericCatalog(new TestGenericContractRegistry());
+            var aggregateCatalog = new AggregateCatalog(typeCatalog, genericCatalog);
+            var provider = new CatalogExportProvider(aggregateCatalog);
             provider.SourceProvider = provider;
 
             ExportProvider = provider;

@@ -6,7 +6,7 @@ namespace MefContrib.Hosting.Interception.Configuration
     /// <summary>
     /// Defines the functionality of the interception configuration.
     /// </summary>
-    public interface IInterceptionConfiguration
+    public interface IInterceptionConfiguration : IHideObjectMembers
     {
         /// <summary>
         /// Gets a collection of the catalog wide interceptors.

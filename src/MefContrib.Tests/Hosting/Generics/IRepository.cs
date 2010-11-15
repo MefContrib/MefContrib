@@ -1,6 +1,6 @@
 using System.ComponentModel.Composition;
 
-namespace MefContrib.Hosting.Interception.Tests.Handlers
+namespace MefContrib.Hosting.Generics.Tests
 {
     [InheritedExport]
     public interface IRepository<T>

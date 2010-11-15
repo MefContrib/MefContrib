@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
+using MefContrib.Hosting.Generics.Tests;
 using MefContrib.Hosting.Interception.Handlers;
 using NUnit.Framework;
 

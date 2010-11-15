@@ -10,7 +10,6 @@
     {
         public static Type GetImportDefinitionType(ImportDefinition definition)
         {
-            
             Type importDefinitionType = null;
             importDefinitionType = ReflectionModelServices.IsImportingParameter(definition)
                                        ? GetParameterType(definition)
@@ -53,6 +52,13 @@
             var genericType = genericTypeLocator.MakeGenericType(importDefinitionType.GetGenericArguments());
             
             return genericType;
+        }
+
+        public static bool IsReflectionImportDefinition(ImportDefinition definition)
+        {
+            var name = definition.GetType().Name;
+            return name == "ReflectionMemberImportDefinition" ||
+                   name == "ReflectionParameterImportDefinition";
         }
 
         public static bool ShouldCreateClosedGenericPart(ContractBasedImportDefinition contractDef, Type importDefinitionType)
