@@ -1,12 +1,11 @@
-﻿namespace MefContrib.Hosting.Interception.Handlers
+namespace MefContrib.Hosting
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.Composition.Primitives;
     using System.ComponentModel.Composition.ReflectionModel;
     using System.Reflection;
 
-    public static class TypeHelper
+    public static class CompositionServices
     {
         public static Type GetImportDefinitionType(ImportDefinition definition)
         {
@@ -14,7 +13,7 @@
             importDefinitionType = ReflectionModelServices.IsImportingParameter(definition)
                                        ? GetParameterType(definition)
                                        : GetMethodType(definition, importDefinitionType);
-            
+
             return importDefinitionType;
         }
 
@@ -41,17 +40,8 @@
             var importingParameter = ReflectionModelServices.GetImportingParameter(definition);
             var parameterInfo = importingParameter.Value;
             var importDefinitionType = parameterInfo.ParameterType;
-            
-            return importDefinitionType;
-        }
 
-        public static Type BuildGenericType(Type importDefinitionType, IDictionary<Type, Type> genericTypes)
-        {
-            var genericImportTypeDefinition = importDefinitionType.GetGenericTypeDefinition();
-            var genericTypeLocator = genericTypes[genericImportTypeDefinition];
-            var genericType = genericTypeLocator.MakeGenericType(importDefinitionType.GetGenericArguments());
-            
-            return genericType;
+            return importDefinitionType;
         }
 
         public static bool IsReflectionImportDefinition(ImportDefinition definition)
@@ -59,11 +49,6 @@
             var name = definition.GetType().Name;
             return name == "ReflectionMemberImportDefinition" ||
                    name == "ReflectionParameterImportDefinition";
-        }
-
-        public static bool ShouldCreateClosedGenericPart(ContractBasedImportDefinition contractDef, Type importDefinitionType)
-        {
-            return contractDef.Cardinality != ImportCardinality.ZeroOrMore && importDefinitionType.IsGenericType;
         }
     }
 }

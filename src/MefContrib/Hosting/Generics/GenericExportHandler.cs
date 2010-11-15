@@ -90,14 +90,14 @@
                 return exports;
             }
 
-            if (!TypeHelper.IsReflectionImportDefinition(definition))
+            if (!CompositionServices.IsReflectionImportDefinition(definition))
             {
                 return Enumerable.Empty<Tuple<ComposablePartDefinition, ExportDefinition>>();
             }
 
             var contractDef = (ContractBasedImportDefinition)definition;
             var returnedExports = new List<Tuple<ComposablePartDefinition, ExportDefinition>>();
-            var importDefinitionType = TypeHelper.GetImportDefinitionType(definition);
+            var importDefinitionType = CompositionServices.GetImportDefinitionType(definition);
             
             if (this.manufacturedParts.Contains(importDefinitionType))
             {
