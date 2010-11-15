@@ -77,10 +77,6 @@
     <Compile Include="DynamicProxyInterceptor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MefContrib.Hosting.Interception\MefContrib.Hosting.Interception.Silverlight.csproj">
-      <Project>{5D7CF974-B690-46FE-B0F1-A11F177A900B}</Project>
-      <Name>MefContrib.Hosting.Interception.Silverlight</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MefContrib\MefContrib.Silverlight.csproj">
       <Project>{5E0C64E0-D2B5-4E50-BD5C-7DA1BFABE3EA}</Project>
       <Name>MefContrib.Silverlight</Name>
