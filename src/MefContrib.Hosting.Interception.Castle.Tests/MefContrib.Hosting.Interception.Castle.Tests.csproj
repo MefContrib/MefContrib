@@ -8,8 +8,8 @@
     <ProjectGuid>{3286DDD8-4D65-499F-A3A7-ED9A29B4DA95}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MefContrib.Hosting.Interception.Castle</RootNamespace>
-    <AssemblyName>MefContrib.Hosting.Interception.Castle</AssemblyName>
+    <RootNamespace>MefContrib.Hosting.Interception.Castle.Tests</RootNamespace>
+    <AssemblyName>MefContrib.Hosting.Interception.Castle.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

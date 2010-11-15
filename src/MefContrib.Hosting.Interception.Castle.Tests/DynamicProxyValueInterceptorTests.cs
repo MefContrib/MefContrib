@@ -1,14 +1,13 @@
-﻿using System;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using Castle.DynamicProxy;
-using MefContrib.Hosting.Interception.Castle;
-using MefContrib.Hosting.Interception.Configuration;
-using MefContrib.Tests;
-using NUnit.Framework;
-
-namespace MefContrib.Hosting.Interception.Tests.Castle
+﻿namespace MefContrib.Hosting.Interception.Castle.Tests
 {
+    using System;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using global::Castle.DynamicProxy;
+    using MefContrib.Hosting.Interception.Configuration;
+    using MefContrib.Tests;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DynamicProxyValueInterceptorTests
     {
