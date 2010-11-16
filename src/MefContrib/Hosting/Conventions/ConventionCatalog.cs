@@ -5,24 +5,23 @@ namespace MefContrib.Hosting.Conventions
     using System.ComponentModel.Composition.Primitives;
     using System.Linq;
     using MefContrib.Hosting.Conventions.Configuration;
+    using MefContrib.Hosting.Interception;
+    using MefContrib.Hosting.Interception.Configuration;
 
     /// <summary>
     /// Defines the class for composable part catalogs, which produce and return <see cref="ComposablePartDefinition"/> objects based on conventions.
     /// </summary>
     public class ConventionCatalog : ComposablePartCatalog
     {
+        private readonly InterceptingCatalog interceptingCatalog;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ConventionCatalog"/> class.
         /// </summary>
         /// <param name="locator">The locator.</param>
         public ConventionCatalog(IPartRegistryLocator locator)
+            : this (locator.GetRegistries().ToArray())
         {
-            if (locator == null)
-            {
-                throw new ArgumentNullException("locator", "The locator parameter cannot be null.");
-            }
-
-            this.Registries = locator.GetRegistries();
         }
 
         /// <summary>
@@ -36,14 +35,10 @@ namespace MefContrib.Hosting.Conventions
                 throw new ArgumentNullException("registries", "The registries parameter cannot be null.");
             }
 
-            this.Registries = registries;
+            var cfg = new InterceptionConfiguration()
+                .AddHandler(new ConventionsExportHandler(registries));
+            this.interceptingCatalog = new InterceptingCatalog(new EmptyCatalog(), cfg);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public IEnumerable<IPartRegistry<IContractService>> Registries { get; private set; }
 
         /// <summary>
         /// Gets the part definitions of the catalog.
@@ -51,20 +46,20 @@ namespace MefContrib.Hosting.Conventions
         /// <value>A <see cref="IQueryable{T}"/> of <see cref="ComposablePartDefinition"/> objects of the <see cref="ConventionCatalog"/>.</value>
         public override IQueryable<ComposablePartDefinition> Parts
         {
-            get { return this.CreateParts().AsQueryable(); }
+            get { return this.interceptingCatalog.Parts; }
         }
-       
-        /// <summary>
-        /// Creates <see cref="ComposablePartDefinition"/> instances from the <see cref="IPartConvention"/> and types.
-        /// </summary>
-        /// <returns>An <see cref="IEnumerable{T}"/>, containing <see cref="ComposablePartDefinition"/> instances.</returns>
-        private IEnumerable<ComposablePartDefinition> CreateParts()
-        {
-            var definitionsFromRegistries = 
-                this.Registries.SelectMany(x =>
-                    (new ConventionPartCreator(x)).CreateParts());
 
-            return definitionsFromRegistries;
+        public override IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition)
+        {
+            return this.interceptingCatalog.GetExports(definition);
+        }
+
+        private class EmptyCatalog : ComposablePartCatalog
+        {
+            public override IQueryable<ComposablePartDefinition> Parts
+            {
+                get { return Enumerable.Empty<ComposablePartDefinition>().AsQueryable(); }
+            }
         }
     }
 }

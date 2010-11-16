@@ -26,20 +26,6 @@ namespace MefContrib.Hosting.Conventions
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConventionCatalog"/> class.
-        /// </summary>
-        /// <param name="locator">The locator.</param>
-        public ConventionsExportHandler(IPartRegistryLocator locator)
-        {
-            if (locator == null)
-            {
-                throw new ArgumentNullException("locator", "The locator parameter cannot be null.");
-            }
-
-            this.registries = locator.GetRegistries();
-        }
-
-        /// <summary>
         /// Method which can filter exports for given <see cref="ImportDefinition"/> or produce new exports.
         /// </summary>
         /// <param name="definition"><see cref="ImportDefinition"/> instance.</param>
@@ -51,20 +37,10 @@ namespace MefContrib.Hosting.Conventions
         /// </returns>
         public IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition, IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> exports)
         {
-            var values = new List<Tuple<ComposablePartDefinition, ExportDefinition>>();
-
-            foreach (var part in this.CreateParts())
-            {
-                foreach (var export in part.ExportDefinitions)
-                {
-                    if (definition.IsConstraintSatisfiedBy(export))
-                    {
-                        values.Add(new Tuple<ComposablePartDefinition, ExportDefinition>(part, export));
-                    }
-                }
-            }
-
-            return values;
+            return (from part in this.CreateParts()
+                    from export in part.ExportDefinitions
+                    where definition.IsConstraintSatisfiedBy(export)
+                    select new Tuple<ComposablePartDefinition, ExportDefinition>(part, export)).ToList();
         }
 
         /// <summary>
