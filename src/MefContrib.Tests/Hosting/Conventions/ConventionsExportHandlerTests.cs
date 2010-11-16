@@ -13,12 +13,7 @@ namespace MefContrib.Hosting.Conventions.Tests
     using MefContrib.Tests;
 
     [TestFixture]
-    public class TypeScannerPartRegistryLocatorFixture
-    {
-    }
-
-    [TestFixture]
-    public class ConventionCatalogTests
+    public class ConventionsExportHandlerTests
     {
         [Test]
         public void Ctor_should_throw_argumentnullexception_is_called_with_null_params_array_of_registries()
