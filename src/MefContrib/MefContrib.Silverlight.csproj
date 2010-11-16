@@ -64,22 +64,26 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hosting\CompositionServices.cs" />
     <Compile Include="Hosting\FactoryExportDefinition.cs" />
     <Compile Include="Hosting\FactoryExportProvider.cs" />
     <Compile Include="Hosting\Filter\CommonFilters.cs" />
     <Compile Include="Hosting\Filter\FilteringCatalog.cs" />
+    <Compile Include="Hosting\Filter\FilteringExportHandler.cs" />
     <Compile Include="Hosting\Filter\IFilter.cs" />
+    <Compile Include="Hosting\Generics\GenericCatalog.cs" />
+    <Compile Include="Hosting\Generics\GenericContractRegistryBase.cs" />
+    <Compile Include="Hosting\Generics\GenericContractTypeMapping.cs" />
+    <Compile Include="Hosting\Generics\GenericExportHandler.cs" />
+    <Compile Include="Hosting\Generics\IGenericContractRegistry.cs" />
+    <Compile Include="Hosting\Generics\MappingNotFoundException.cs" />
+    <Compile Include="Hosting\Generics\TypeHelper.cs" />
     <Compile Include="Hosting\Interception\Configuration\IInterceptionConfiguration.cs" />
     <Compile Include="Hosting\Interception\Configuration\InterceptionConfiguration.cs" />
     <Compile Include="Hosting\Interception\Configuration\IPartInterceptionCriteria.cs" />
     <Compile Include="Hosting\Interception\Configuration\PredicateInterceptionCriteria.cs" />
     <Compile Include="Hosting\Interception\DisposableInterceptingComposablePart.cs" />
     <Compile Include="Hosting\Interception\Handlers\ConcreteTypeExportHandler.cs" />
-    <Compile Include="Hosting\Interception\Handlers\GenericContractRegistryBase.cs" />
-    <Compile Include="Hosting\Interception\Handlers\GenericContractTypeMapping.cs" />
-    <Compile Include="Hosting\Interception\Handlers\GenericExportHandler.cs" />
-    <Compile Include="Hosting\Interception\Handlers\IGenericContractRegistry.cs" />
-    <Compile Include="Hosting\Interception\Handlers\TypeHelper.cs" />
     <Compile Include="Hosting\Interception\IExportedValueInterceptor.cs" />
     <Compile Include="Hosting\Interception\IExportHandler.cs" />
     <Compile Include="Hosting\Interception\InterceptingCatalog.cs" />
