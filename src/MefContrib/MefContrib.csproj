@@ -100,7 +100,7 @@
     <Compile Include="Hosting\Conventions\ExpressionExtensions.cs" />
     <Compile Include="Hosting\Conventions\IContractService.cs" />
     <Compile Include="Hosting\Conventions\IExportConvention.cs" />
-    <Compile Include="Hosting\Filter\FilteringExportHandler.cs" />
+    <Compile Include="Hosting\Filter\FilteringPartHandler.cs" />
     <Compile Include="Hosting\Generics\GenericCatalog.cs" />
     <Compile Include="Hosting\CompositionServices.cs" />
     <Compile Include="Hosting\Generics\MappingNotFoundException.cs" />

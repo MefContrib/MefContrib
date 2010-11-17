@@ -31,7 +31,7 @@ namespace MefContrib.Hosting.Filter
                 throw new ArgumentNullException("filter");
 
             var cfg = new InterceptionConfiguration()
-                .AddHandler(new FilteringExportHandler(filter));
+                .AddHandler(new FilteringPartHandler(filter));
             this.interceptingCatalog = new InterceptingCatalog(inner, cfg);
         }
 
