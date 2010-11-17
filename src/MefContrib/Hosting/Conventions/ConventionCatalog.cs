@@ -36,7 +36,7 @@ namespace MefContrib.Hosting.Conventions
             }
 
             var cfg = new InterceptionConfiguration()
-                .AddHandler(new ConventionsExportHandler(registries));
+                .AddHandler(new ConventionsPartHandler(registries));
             this.interceptingCatalog = new InterceptingCatalog(new EmptyCatalog(), cfg);
         }
 
@@ -49,17 +49,20 @@ namespace MefContrib.Hosting.Conventions
             get { return this.interceptingCatalog.Parts; }
         }
 
+        /// <summary>
+        /// Method which can filter exports for given <see cref="ImportDefinition"/> or produce new exports.
+        /// </summary>
+        /// <param name="definition"><see cref="ImportDefinition"/> instance.</param>
+        /// <returns>
+        /// A collection of <see cref="ExportDefinition"/>
+        /// instances along with their <see cref="ComposablePartDefinition"/> instances which match given <see cref="ImportDefinition"/>.
+        /// </returns>
         public override IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition)
         {
-            return this.interceptingCatalog.GetExports(definition);
-        }
-
-        private class EmptyCatalog : ComposablePartCatalog
-        {
-            public override IQueryable<ComposablePartDefinition> Parts
-            {
-                get { return Enumerable.Empty<ComposablePartDefinition>().AsQueryable(); }
-            }
+            return (from part in this.Parts
+                    from export in part.ExportDefinitions
+                    where definition.IsConstraintSatisfiedBy(export)
+                    select new Tuple<ComposablePartDefinition, ExportDefinition>(part, export)).ToList();
         }
     }
 }

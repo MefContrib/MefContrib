@@ -13,7 +13,7 @@ namespace MefContrib.Hosting.Conventions.Tests
     using MefContrib.Tests;
 
     [TestFixture]
-    public class ConventionsExportHandlerTests
+    public class ConventionsCatalogTests
     {
         [Test]
         public void Ctor_should_throw_argumentnullexception_is_called_with_null_params_array_of_registries()
@@ -33,15 +33,6 @@ namespace MefContrib.Hosting.Conventions.Tests
                 new ConventionCatalog(locator.Object);
 
             locator.Verify(x => x.GetRegistries(), Times.Once());
-        }
-
-        [Test]
-        public void Ctor_should_throw_argument_null_exception_when_created_with_null_value_for_locator()
-        {
-            var exception =
-                Catch.Exception(() => new ConventionCatalog((IPartRegistryLocator)null));
-
-            exception.ShouldBeOfType<ArgumentNullException>();
         }
 
         [Test]

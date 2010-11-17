@@ -61,13 +61,5 @@ namespace MefContrib.Hosting.Generics
         }
 
         #endregion
-
-        private class EmptyCatalog : ComposablePartCatalog
-        {
-            public override IQueryable<ComposablePartDefinition> Parts
-            {
-                get { return Enumerable.Empty<ComposablePartDefinition>().AsQueryable(); }
-            }
-        }
     }
 }

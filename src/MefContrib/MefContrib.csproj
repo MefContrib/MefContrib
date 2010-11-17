@@ -93,7 +93,7 @@
     <Compile Include="Hosting\Conventions\ConventionContractService.cs" />
     <Compile Include="Hosting\Conventions\ConventionPart.cs" />
     <Compile Include="Hosting\Conventions\ConventionPartCreator.cs" />
-    <Compile Include="Hosting\Conventions\ConventionsExportHandler.cs" />
+    <Compile Include="Hosting\Conventions\ConventionsPartHandler.cs" />
     <Compile Include="Hosting\Conventions\DefaultConventionContractService.cs" />
     <Compile Include="Hosting\Conventions\DirectoryTypeScanner.cs" />
     <Compile Include="Hosting\Conventions\EnumerableExtensions.cs" />
@@ -101,6 +101,7 @@
     <Compile Include="Hosting\Conventions\ExpressionExtensions.cs" />
     <Compile Include="Hosting\Conventions\IContractService.cs" />
     <Compile Include="Hosting\Conventions\IExportConvention.cs" />
+    <Compile Include="Hosting\EmptyCatalog.cs" />
     <Compile Include="Hosting\Filter\FilteringPartHandler.cs" />
     <Compile Include="Hosting\Generics\GenericCatalog.cs" />
     <Compile Include="Hosting\CompositionServices.cs" />

@@ -7,15 +7,15 @@ namespace MefContrib.Hosting.Conventions
     using MefContrib.Hosting.Conventions.Configuration;
     using MefContrib.Hosting.Interception;
 
-    public class ConventionsExportHandler : IExportHandler
+    public class ConventionsPartHandler : IPartHandler
     {
         private readonly IEnumerable<IPartRegistry<IContractService>> registries;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConventionCatalog"/> class, using the provided array part registries.
+        /// Initializes a new instance of the <see cref="ConventionsPartHandler"/> class, using the provided array part registries.
         /// </summary>
         /// <param name="registries">An array of <see cref="IPartRegistry{T}"/> instance.</param>
-        public ConventionsExportHandler(params IPartRegistry<IContractService>[] registries)
+        public ConventionsPartHandler(params IPartRegistry<IContractService>[] registries)
         {
             if (registries == null)
             {
@@ -26,29 +26,16 @@ namespace MefContrib.Hosting.Conventions
         }
 
         /// <summary>
-        /// Method which can filter exports for given <see cref="ImportDefinition"/> or produce new exports.
-        /// </summary>
-        /// <param name="definition"><see cref="ImportDefinition"/> instance.</param>
-        /// <param name="exports">A collection of <see cref="ExportDefinition"/>
-        /// instances along with their <see cref="ComposablePartDefinition"/> instances which match given <see cref="ImportDefinition"/>.</param>
-        /// <returns>
-        /// A collection of <see cref="ExportDefinition"/>
-        /// instances along with their <see cref="ComposablePartDefinition"/> instances which match given <see cref="ImportDefinition"/>.
-        /// </returns>
-        public IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition, IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> exports)
-        {
-            return (from part in this.CreateParts()
-                    from export in part.ExportDefinitions
-                    where definition.IsConstraintSatisfiedBy(export)
-                    select new Tuple<ComposablePartDefinition, ExportDefinition>(part, export)).ToList();
-        }
-
-        /// <summary>
         /// Initializes this export handler.
         /// </summary>
         /// <param name="interceptedCatalog">The <see cref="ComposablePartCatalog"/> being intercepted.</param>
         public void Initialize(ComposablePartCatalog interceptedCatalog)
         {
+        }
+
+        public IEnumerable<ComposablePartDefinition> GetParts(IEnumerable<ComposablePartDefinition> parts)
+        {
+            return this.CreateParts();
         }
 
         /// <summary>
