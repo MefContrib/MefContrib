@@ -67,6 +67,7 @@
     <Compile Include="Hosting\Conventions\ContextSpecificationAssertions.cs" />
     <Compile Include="Hosting\Conventions\ConventionsExportHandlerTests.cs" />
     <Compile Include="Hosting\Conventions\ConventionPartCreatorTests.cs" />
+    <Compile Include="Hosting\Conventions\ConventionCatalogTests.cs" />
     <Compile Include="Hosting\Conventions\CSharpAssemblyFactory.cs" />
     <Compile Include="Hosting\Conventions\CSharpAssemblyFactoryTests.cs" />
     <Compile Include="Hosting\Conventions\DefaultContractService.cs" />
