@@ -93,7 +93,7 @@
     <Compile Include="Hosting\Conventions\ConventionContractService.cs" />
     <Compile Include="Hosting\Conventions\ConventionPart.cs" />
     <Compile Include="Hosting\Conventions\ConventionPartCreator.cs" />
-    <Compile Include="Hosting\Conventions\ConventionsPartHandler.cs" />
+    <Compile Include="Hosting\Conventions\ConventionPartHandler.cs" />
     <Compile Include="Hosting\Conventions\DefaultConventionContractService.cs" />
     <Compile Include="Hosting\Conventions\DirectoryTypeScanner.cs" />
     <Compile Include="Hosting\Conventions\EnumerableExtensions.cs" />

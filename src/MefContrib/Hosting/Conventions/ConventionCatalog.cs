@@ -36,7 +36,7 @@ namespace MefContrib.Hosting.Conventions
             }
 
             var cfg = new InterceptionConfiguration()
-                .AddHandler(new ConventionsPartHandler(registries));
+                .AddHandler(new ConventionPartHandler(registries));
             this.interceptingCatalog = new InterceptingCatalog(new EmptyCatalog(), cfg);
         }
 

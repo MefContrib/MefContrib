@@ -7,15 +7,15 @@ namespace MefContrib.Hosting.Conventions
     using MefContrib.Hosting.Conventions.Configuration;
     using MefContrib.Hosting.Interception;
 
-    public class ConventionsPartHandler : IPartHandler
+    public class ConventionPartHandler : IPartHandler
     {
         private readonly IEnumerable<IPartRegistry<IContractService>> registries;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConventionsPartHandler"/> class, using the provided array part registries.
+        /// Initializes a new instance of the <see cref="ConventionPartHandler"/> class, using the provided array part registries.
         /// </summary>
         /// <param name="registries">An array of <see cref="IPartRegistry{T}"/> instance.</param>
-        public ConventionsPartHandler(params IPartRegistry<IContractService>[] registries)
+        public ConventionPartHandler(params IPartRegistry<IContractService>[] registries)
         {
             if (registries == null)
             {
