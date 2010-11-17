@@ -130,6 +130,34 @@ namespace MefContrib.Hosting.Interception.Tests
         }
 
         [Test]
+        public void Catalog_should_call_Initialize_on_a_given_export_handlers()
+        {
+            var innerCatalog = new TypeCatalog();
+            var exportHandlerMock = new Mock<IExportHandler>(MockBehavior.Strict);
+            exportHandlerMock.Setup(p => p.Initialize(innerCatalog)).Verifiable();
+
+            var cfg = new InterceptionConfiguration()
+                .AddHandler(exportHandlerMock.Object);
+            var catalog = new InterceptingCatalog(innerCatalog, cfg);
+            Assert.That(catalog, Is.Not.Null);
+            exportHandlerMock.Verify();
+        }
+
+        [Test]
+        public void Catalog_should_call_Initialize_on_a_given_part_handlers()
+        {
+            var innerCatalog = new TypeCatalog();
+            var partHandlerMock = new Mock<IPartHandler>(MockBehavior.Strict);
+            partHandlerMock.Setup(p => p.Initialize(innerCatalog)).Verifiable();
+
+            var cfg = new InterceptionConfiguration()
+                .AddHandler(partHandlerMock.Object);
+            var catalog = new InterceptingCatalog(innerCatalog, cfg);
+            Assert.That(catalog, Is.Not.Null);
+            partHandlerMock.Verify();
+        }
+
+        [Test]
         public void Disposing_catalog_should_dispose_parts_implementing_dispose_pattern()
         {
             var innerCatalog = new TypeCatalog(typeof(DisposablePart));
