@@ -104,6 +104,7 @@
     <Compile Include="Hosting\Generics\GenericCatalog.cs" />
     <Compile Include="Hosting\CompositionServices.cs" />
     <Compile Include="Hosting\Generics\MappingNotFoundException.cs" />
+    <Compile Include="Hosting\Interception\IPartHandler.cs" />
     <Compile Include="IHideObjectMembers.cs" />
     <Compile Include="Hosting\Conventions\IImportConvention.cs" />
     <Compile Include="Hosting\Conventions\ImportConvention.cs" />

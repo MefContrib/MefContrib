@@ -25,6 +25,11 @@ namespace MefContrib.Hosting.Interception.Configuration
         /// <summary>
         /// Gets a collection of <see cref="IExportHandler"/> instances.
         /// </summary>
-        IEnumerable<IExportHandler> Handlers { get; }
+        IEnumerable<IExportHandler> ExportHandlers { get; }
+
+        /// <summary>
+        /// Gets a collection of <see cref="IPartHandler"/> instances.
+        /// </summary>
+        IEnumerable<IPartHandler> PartHandlers { get; }
     }
 }

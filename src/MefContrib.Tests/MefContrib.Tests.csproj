@@ -109,6 +109,7 @@
     <Compile Include="Hosting\Interception\CompositeValueInterceptorTests.cs" />
     <Compile Include="Hosting\Interception\Configuration\InterceptionConfigurationTests.cs" />
     <Compile Include="Hosting\Interception\Configuration\PredicateInterceptionCriteriaTests.cs" />
+    <Compile Include="Hosting\Interception\FakeHandlers.cs" />
     <Compile Include="Hosting\Interception\FakeInterceptor.cs" />
     <Compile Include="Hosting\Interception\FakeParts.cs" />
     <Compile Include="Hosting\Interception\Handlers\ConcreteTypeExportHandlerTests.cs" />

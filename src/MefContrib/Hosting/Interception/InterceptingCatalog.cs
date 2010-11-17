@@ -5,7 +5,6 @@
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
     using System.Linq;
-    using System.Threading;
     using MefContrib.Hosting.Interception.Configuration;
 
     /// <summary>
@@ -38,7 +37,12 @@
 
         private void InitializeHandlers()
         {
-            foreach(var handler in this.configuration.Handlers)
+            foreach(var handler in this.configuration.ExportHandlers)
+            {
+                handler.Initialize(this.interceptedCatalog);
+            }
+
+            foreach (var handler in this.configuration.PartHandlers)
             {
                 handler.Initialize(this.interceptedCatalog);
             }
@@ -61,7 +65,7 @@
             if (definition == null) throw new ArgumentNullException("definition");
 
             var exports = base.GetExports(definition);
-            foreach (var handler in this.configuration.Handlers)
+            foreach (var handler in this.configuration.ExportHandlers)
             {
                 exports = handler.GetExports(definition, exports);
             }
@@ -89,13 +93,18 @@
                 {
                     if (this.innerPartsQueryable == null)
                     {
-                        var parts = this.interceptedCatalog.Parts
-                            .Select(p => GetPart(p))
+                        IEnumerable<ComposablePartDefinition> parts =
+                            new List<ComposablePartDefinition>(this.interceptedCatalog.Parts);
+
+                        foreach (var handler in this.configuration.PartHandlers)
+                        {
+                            parts = handler.GetParts(parts);
+                        }
+
+                        this.innerPartsQueryable = parts
+                            .Select(GetPart)
                             .ToList()
                             .AsQueryable();
-
-                        Thread.MemoryBarrier();
-                        this.innerPartsQueryable = parts;
                     }
                 }
             }

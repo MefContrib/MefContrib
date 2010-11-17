@@ -10,7 +10,8 @@ namespace MefContrib.Hosting.Interception.Configuration
     {
         private readonly List<IExportedValueInterceptor> interceptors;
         private readonly List<IPartInterceptionCriteria> interceptionCriteria;
-        private readonly List<IExportHandler> handlers;
+        private readonly List<IExportHandler> exportHandlers;
+        private readonly List<IPartHandler> partHandlers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InterceptingCatalog"/> class.
@@ -19,7 +20,8 @@ namespace MefContrib.Hosting.Interception.Configuration
         {
             this.interceptors = new List<IExportedValueInterceptor>();
             this.interceptionCriteria = new List<IPartInterceptionCriteria>();
-            this.handlers = new List<IExportHandler>();
+            this.exportHandlers = new List<IExportHandler>();
+            this.partHandlers = new List<IPartHandler>();
         }
         
         /// <summary>
@@ -45,9 +47,17 @@ namespace MefContrib.Hosting.Interception.Configuration
         /// <summary>
         /// Gets a collection of <see cref="IExportHandler"/> instances.
         /// </summary>
-        public IEnumerable<IExportHandler> Handlers
+        public IEnumerable<IExportHandler> ExportHandlers
         {
-            get { return this.handlers; }
+            get { return this.exportHandlers; }
+        }
+
+        /// <summary>
+        /// Gets a collection of <see cref="IPartHandler"/> instances.
+        /// </summary>
+        public IEnumerable<IPartHandler> PartHandlers
+        {
+            get { return this.partHandlers; }
         }
 
         /// <summary>
@@ -67,13 +77,26 @@ namespace MefContrib.Hosting.Interception.Configuration
         /// <summary>
         /// Adds an <see cref="IExportHandler"/> instance.
         /// </summary>
-        /// <param name="handler">Handler to be added.</param>
+        /// <param name="handler">Export handler to be added.</param>
         /// <returns><see cref="InterceptionConfiguration"/> instance to enable fluent configuration.</returns>
         public InterceptionConfiguration AddHandler(IExportHandler handler)
         {
             if (handler == null) throw new ArgumentNullException("handler");
 
-            this.handlers.Add(handler);
+            this.exportHandlers.Add(handler);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds an <see cref="IPartHandler"/> instance.
+        /// </summary>
+        /// <param name="handler">Part handler to be added.</param>
+        /// <returns><see cref="InterceptionConfiguration"/> instance to enable fluent configuration.</returns>
+        public InterceptionConfiguration AddHandler(IPartHandler handler)
+        {
+            if (handler == null) throw new ArgumentNullException("handler");
+
+            this.partHandlers.Add(handler);
             return this;
         }
 
