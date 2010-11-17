@@ -69,7 +69,7 @@
     <Compile Include="Hosting\FactoryExportProvider.cs" />
     <Compile Include="Hosting\Filter\CommonFilters.cs" />
     <Compile Include="Hosting\Filter\FilteringCatalog.cs" />
-    <Compile Include="Hosting\Filter\FilteringExportHandler.cs" />
+    <Compile Include="Hosting\Filter\FilteringPartHandler.cs" />
     <Compile Include="Hosting\Filter\IFilter.cs" />
     <Compile Include="Hosting\Generics\GenericCatalog.cs" />
     <Compile Include="Hosting\Generics\GenericContractRegistryBase.cs" />
@@ -90,6 +90,7 @@
     <Compile Include="Hosting\Interception\InterceptingComposablePart.cs" />
     <Compile Include="Hosting\Interception\InterceptingComposablePartDefinition.cs" />
     <Compile Include="Hosting\Interception\Interceptors\CompositeValueInterceptor.cs" />
+    <Compile Include="Hosting\Interception\IPartHandler.cs" />
     <Compile Include="IHideObjectMembers.cs" />
     <Compile Include="Integration\ContainerAdapterBase.cs" />
     <Compile Include="Integration\ContainerExportProvider.cs" />
