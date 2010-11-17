@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Hosting\CompositionServices.cs" />
+    <Compile Include="Hosting\EmptyCatalog.cs" />
     <Compile Include="Hosting\FactoryExportDefinition.cs" />
     <Compile Include="Hosting\FactoryExportProvider.cs" />
     <Compile Include="Hosting\Filter\CommonFilters.cs" />
