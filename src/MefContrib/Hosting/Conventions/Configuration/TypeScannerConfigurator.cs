@@ -99,8 +99,13 @@
                 throw new ArgumentNullException("condition", "The condition cannot be null.");
             }
 
+#if !SILVERLIGHT
             var matchingAssemblies =
                 AppDomain.CurrentDomain.GetAssemblies().Where(condition);
+#else
+            var matchingAssemblies =
+                Package.CurrentAssemblies.Where(condition);
+#endif
 
             foreach (var matchingAssembly in matchingAssemblies)
             {
@@ -109,6 +114,8 @@
 
             return this;
         }
+        
+#if !SILVERLIGHT
 
         /// <summary>
         /// Adds the <see cref="Assembly(System.Reflection.Assembly)"/> instances that can be found in the directory that is
@@ -144,6 +151,8 @@
 
             return this;
         }
+        
+#endif
 
         /// <summary>
         /// Gets the <see cref="AggregatedTypeScanner"/> that was configured by the configurator.

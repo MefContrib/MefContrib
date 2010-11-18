@@ -31,6 +31,8 @@
         /// <returns>A reference to the current <see cref="ITypeScannerConfigurator"/> instance.</returns>
         ITypeScannerConfigurator Assembly(Func<Assembly, bool> condition);
 
+#if !SILVERLIGHT
+
         /// <summary>
         /// Adds the <see cref="Assembly(System.Reflection.Assembly)"/> instances that can be found in the directory that is
         /// specified by the <paramref name="path"/> parameter.
@@ -38,6 +40,8 @@
         /// <param name="path">A <see cref="string"/> containing the path of the directory that should be inspected for <see cref="Assembly(System.Reflection.Assembly)"/> instances to add.</param>
         /// <returns>A reference to the current <see cref="ITypeScannerConfigurator"/> instance.</returns>
         ITypeScannerConfigurator Directory(string path);
+
+#endif
 
         /// <summary>
         /// Adds a scanner to the configurator.
