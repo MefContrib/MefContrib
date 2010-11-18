@@ -1,8 +1,9 @@
-﻿namespace MefContrib.Hosting.Conventions
+﻿namespace MefContrib
 {
     using System;
     using System.ComponentModel.Composition;
     using System.Reflection;
+    using MefContrib.Hosting.Conventions;
 
     /// <summary>
     /// Contains the methods used to retrive contract name and type identity for imports and exports.
