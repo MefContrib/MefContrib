@@ -64,6 +64,7 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContractService.cs" />
     <Compile Include="Hosting\CompositionServices.cs" />
     <Compile Include="Hosting\Conventions\AggregatedTypeScanner.cs" />
     <Compile Include="Hosting\Conventions\AssemblyTypeScanner.cs" />
@@ -90,7 +91,6 @@
     <Compile Include="Hosting\Conventions\Configuration\TypeDefaultConventionBuilder.cs" />
     <Compile Include="Hosting\Conventions\Configuration\TypeDefaultConventionConfigurator.cs" />
     <Compile Include="Hosting\Conventions\Configuration\TypeScannerConfigurator.cs" />
-    <Compile Include="Hosting\Conventions\ContractService.cs" />
     <Compile Include="Hosting\Conventions\ConventionCatalog.cs" />
     <Compile Include="Hosting\Conventions\ConventionContractService.cs" />
     <Compile Include="Hosting\Conventions\ConventionPart.cs" />
