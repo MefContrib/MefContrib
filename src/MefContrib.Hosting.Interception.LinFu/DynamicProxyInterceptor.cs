@@ -8,8 +8,9 @@
     /// </summary>
     public class DynamicProxyInterceptor : IExportedValueInterceptor
     {
-        private readonly IInterceptor _interceptor;
         private static readonly ProxyFactory Generator = new ProxyFactory();
+
+        private readonly IInterceptor interceptor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicProxyInterceptor"/> class.
@@ -17,7 +18,7 @@
         /// <param name="interceptor">An <see cref="IInterceptor"/> instance.</param>
         public DynamicProxyInterceptor(IInterceptor interceptor)
         {
-            _interceptor = interceptor;
+            this.interceptor = interceptor;
         }
 
         /// <summary>
@@ -31,7 +32,7 @@
             var proxyInterface = interfaces.FirstOrDefault();
             var additionalInterfaces = interfaces.Skip(1).ToArray();
             
-            return Generator.CreateProxy(proxyInterface, _interceptor, additionalInterfaces);
+            return Generator.CreateProxy(proxyInterface, this.interceptor, additionalInterfaces);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 using MefContrib.Hosting.Generics.Tests;
 using NUnit.Framework;
 
-namespace MefContrib.Hosting.Tests
+namespace MefContrib.Tests
 {
     [TestFixture]
     public class CompositionServicesTests : CompositionServicesContext

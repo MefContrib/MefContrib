@@ -12,7 +12,7 @@
     /// The contract name and type identities produced by this class are compatible with those that are 
     /// used by the Attributed Programming Model that ships with the Managed Extensibility Framework.
     /// </remarks>
-    public static class ContractService
+    public static class ContractServices
     {
         /// <summary>
         /// Gets the export contract name based on the provided hints.

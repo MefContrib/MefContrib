@@ -64,8 +64,8 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContractService.cs" />
-    <Compile Include="Hosting\CompositionServices.cs" />
+    <Compile Include="CompositionServices.cs" />
+    <Compile Include="ContractServices.cs" />
     <Compile Include="Hosting\Conventions\AggregatedTypeScanner.cs" />
     <Compile Include="Hosting\Conventions\AssemblyTypeScanner.cs" />
     <Compile Include="Hosting\Conventions\Configuration\ConventionBuilder.cs" />

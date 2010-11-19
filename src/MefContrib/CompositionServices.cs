@@ -1,4 +1,4 @@
-namespace MefContrib.Hosting
+namespace MefContrib
 {
     using System;
     using System.ComponentModel.Composition.Primitives;

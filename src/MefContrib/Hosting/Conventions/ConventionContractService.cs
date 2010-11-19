@@ -27,7 +27,7 @@
                 throw new ArgumentNullException("member", "The member cannot be null.");
             }
 
-            return ContractService.GetExportContractName(
+            return ContractServices.GetExportContractName(
                 (exportConvention.ContractName == null) ? null : exportConvention.ContractName.Invoke(member),
                 (exportConvention.ContractType == null) ? null : exportConvention.ContractType.Invoke(member),
                 member);
@@ -52,7 +52,7 @@
                 throw new ArgumentNullException("member", "The member cannot be null.");
             }
 
-            return ContractService.GetExportTypeIdentity(
+            return ContractServices.GetExportTypeIdentity(
                 (exportConvention.ContractType == null) ? null : exportConvention.ContractType.Invoke(member),
                 member);
         }
@@ -76,7 +76,7 @@
                 throw new ArgumentNullException("member", "The member cannot be null.");
             }
 
-            return ContractService.GetImportContractName(
+            return ContractServices.GetImportContractName(
                 (importConvention.ContractName == null) ? null : importConvention.ContractName.Invoke(member),
                 (importConvention.ContractType == null) ? null : importConvention.ContractType.Invoke(member),
                 member);
@@ -101,7 +101,7 @@
                 throw new ArgumentNullException("member", "The member cannot be null.");
             }
 
-            return ContractService.GetImportTypeIdentity(
+            return ContractServices.GetImportTypeIdentity(
                 (importConvention.ContractType == null) ? null : importConvention.ContractType.Invoke(member),
                 member);
         }
