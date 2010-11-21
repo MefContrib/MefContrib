@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -30,6 +31,24 @@ namespace MefContrib.Tests
         {
             ImportDefinition = DummyPartImports.Single(d => d.ContractName == AttributedModelServices.GetContractName(typeof(IDummyImport3)));
             Assert.AreEqual(typeof(IDummyImport3), CompositionServices.GetImportDefinitionType(ImportDefinition));
+        }
+
+        [Test]
+        public void Calling_GetImportDefinitionType_with_null_importDefinition_throws_an_exception()
+        {
+            Assert.That(delegate
+            {
+                CompositionServices.GetImportDefinitionType(null);
+            }, Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void Calling_IsReflectionImportDefinition_with_null_importDefinition_throws_an_exception()
+        {
+            Assert.That(delegate
+            {
+                CompositionServices.IsReflectionImportDefinition(null);
+            }, Throws.TypeOf<ArgumentNullException>());
         }
     }
 

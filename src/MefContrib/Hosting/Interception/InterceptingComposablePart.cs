@@ -4,11 +4,19 @@
     using System.Collections.Generic;
     using System.ComponentModel.Composition.Primitives;
 
+    /// <summary>
+    /// Defines a <see cref="ComposablePart"/> which supports interception.
+    /// </summary>
     public class InterceptingComposablePart : ComposablePart
     {
         private readonly IExportedValueInterceptor valueInterceptor;
         private readonly IDictionary<ExportDefinition, object> values;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InterceptingComposablePart"/> class.
+        /// </summary>
+        /// <param name="interceptedPart">The <see cref="ComposablePart"/> being intercepted.</param>
+        /// <param name="valueInterceptor">The <see cref="IExportedValueInterceptor"/> instance.</param>
         public InterceptingComposablePart(ComposablePart interceptedPart, IExportedValueInterceptor valueInterceptor)
         {
             if (interceptedPart == null) throw new ArgumentNullException("interceptedPart");
