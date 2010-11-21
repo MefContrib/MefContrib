@@ -3,7 +3,6 @@ namespace MefContrib.Hosting
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
     using System.Linq;
@@ -75,23 +74,9 @@ namespace MefContrib.Hosting
 
         protected override IEnumerable<Export> GetExportsCore(ImportDefinition definition, AtomicComposition atomicComposition)
         {
-            if (definition.Cardinality == ImportCardinality.ExactlyOne || definition.Cardinality == ImportCardinality.ZeroOrOne)
-            {
-                var constraint = definition.Constraint.Compile();
-                return from exportDefinition in this.definitions
-                       where constraint(exportDefinition)
-                       select new Export(exportDefinition, () => exportDefinition.Factory(SourceProvider));
-            }
-
-            if (definition.ContractName != null)
-            {
-                return from exportDefinition in this.definitions
-                       where AttributedModelServices.GetContractName(
-                           exportDefinition.ContractType) == definition.ContractName
-                       select new Export(exportDefinition, () => exportDefinition.Factory(SourceProvider));
-            }
-
-            return Enumerable.Empty<Export>();
+            return from exportDefinition in this.definitions
+                   where definition.IsConstraintSatisfiedBy(exportDefinition)
+                   select new Export(exportDefinition, () => exportDefinition.Factory(SourceProvider));
         }
 
         /// <summary>
@@ -133,8 +118,8 @@ namespace MefContrib.Hosting
             if (type == null) throw new ArgumentNullException("type");
             if (factory == null) throw new ArgumentNullException("factory");
 
-            var trampoline = new SingletonTrampoline<object>(factory);
-            return Register(type, null, trampoline.GetValue);
+            var singleton = new Singleton<object>(factory);
+            return Register(type, null, singleton.GetValue);
         }
 
         /// <summary>
@@ -148,8 +133,8 @@ namespace MefContrib.Hosting
         {
             if (factory == null) throw new ArgumentNullException("factory");
 
-            var trampoline = new SingletonTrampoline<T>(factory);
-            return Register(typeof(T), null, trampoline.GetValueAsObject);
+            var singleton = new Singleton<T>(factory);
+            return Register(typeof(T), null, singleton.GetValueAsObject);
         }
         
         /// <summary>
@@ -166,8 +151,8 @@ namespace MefContrib.Hosting
             if (type == null) throw new ArgumentNullException("type");
             if (factory == null) throw new ArgumentNullException("factory");
 
-            var trampoline = new SingletonTrampoline<object>(factory);
-            return Register(type, registrationName, trampoline.GetValueAsObject);
+            var singleton = new Singleton<object>(factory);
+            return Register(type, registrationName, singleton.GetValueAsObject);
         }
 
         /// <summary>
@@ -183,8 +168,8 @@ namespace MefContrib.Hosting
         {
             if (factory == null) throw new ArgumentNullException("factory");
 
-            var trampoline = new SingletonTrampoline<T>(factory);
-            return Register(typeof(T), registrationName, trampoline.GetValueAsObject);
+            var singleton = new Singleton<T>(factory);
+            return Register(typeof(T), registrationName, singleton.GetValueAsObject);
         }
 
         /// <summary>
@@ -247,12 +232,12 @@ namespace MefContrib.Hosting
         /// </summary>
         public ExportProvider SourceProvider { get; set; }
 
-        private class SingletonTrampoline<T>
+        private class Singleton<T>
         {
             private readonly Func<ExportProvider, T> factory;
             private T value;
 
-            public SingletonTrampoline(Func<ExportProvider, T> factory)
+            public Singleton(Func<ExportProvider, T> factory)
             {
                 this.factory = factory;
             }

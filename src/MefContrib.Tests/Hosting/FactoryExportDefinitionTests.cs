@@ -1,5 +1,4 @@
 using System;
-using MefContrib.Hosting;
 using NUnit.Framework;
 
 namespace MefContrib.Hosting.Tests
@@ -10,7 +9,7 @@ namespace MefContrib.Hosting.Tests
         public interface IComponent {}
 
         [Test]
-        public void CannotPassNullTypeToTheCtorTest()
+        public void Cannot_pass_null_type_to_the_ctor()
         {
             Assert.That(delegate
             {
@@ -19,7 +18,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void ContractTypeAndExplicitNameAreProperlySetTest()
+        public void Contract_type_and_names_are_properly_set()
         {
             var exportDefinition = new FactoryExportDefinition(typeof(IComponent), "ContractName", ep => null);
             Assert.That(exportDefinition.ContractType, Is.EqualTo(typeof(IComponent)));
@@ -28,7 +27,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void ContractTypeAndNullNameAreProperlySetTest()
+        public void When_passing_null_registration_name_the_contract_name_is_properly_set()
         {
             var exportDefinition = new FactoryExportDefinition(typeof(IComponent), null, ep => null);
             Assert.That(exportDefinition.ContractType, Is.EqualTo(typeof(IComponent)));

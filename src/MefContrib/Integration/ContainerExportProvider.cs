@@ -2,6 +2,7 @@ namespace MefContrib.Integration
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
     using System.Linq;
@@ -25,7 +26,7 @@ namespace MefContrib.Integration
             if (containerAdapter == null)
                 throw new ArgumentNullException("containerAdapter");
 
-            this.factoryProvider = new FactoryExportProvider(FactoryMethod);
+            this.factoryProvider = new PrivateFactoryExportProvider(FactoryMethod);
             this.containerAdapter = containerAdapter;
             this.containerAdapter.RegisteringComponent += OnRegisteringComponentHandler;
             
@@ -70,6 +71,26 @@ namespace MefContrib.Integration
         public FactoryExportProvider FactoryExportProvider
         {
             get { return factoryProvider; }
+        }
+
+        private class PrivateFactoryExportProvider : FactoryExportProvider
+        {
+            public PrivateFactoryExportProvider(Func<Type, string, object> factoryMethod) : base(factoryMethod)
+            {
+            }
+
+            protected override IEnumerable<Export> GetExportsCore(ImportDefinition definition, AtomicComposition atomicComposition)
+            {
+                if (definition.Cardinality == ImportCardinality.ZeroOrMore)
+                {
+                    return from exportDefinition in this.ReadOnlyDefinitions
+                           let contractName = AttributedModelServices.GetContractName(exportDefinition.ContractType)
+                           where contractName == definition.ContractName
+                           select new Export(exportDefinition, () => exportDefinition.Factory(SourceProvider));
+                }
+
+                return base.GetExportsCore(definition, atomicComposition);
+            }
         }
     }
 }

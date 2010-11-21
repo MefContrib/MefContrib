@@ -162,7 +162,7 @@ namespace MefContrib.Hosting.Tests
         #endregion
 
         [Test]
-        public void ExportProviderResolvesServiceRegisteredByTypeTest()
+        public void Export_provider_can_resolve_service_registered_by_type()
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
@@ -183,7 +183,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void ExportProviderResolvesServiceRegisteredByTypeAndRegistrationNameTest()
+        public void Export_provider_can_resolve_service_registered_by_type_and_registration_name()
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
@@ -204,7 +204,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void ExportProviderResolvesServiceRegisteredByTypeAndOrRegistrationNameTest()
+        public void Export_provider_can_resolve_service_registered_by_type_and_or_registration_name()
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
@@ -222,7 +222,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void ExportProviderProperlyResolvesServicesFromManyExportProvidersTest()
+        public void Container_can_resolve_services_from_two_factory_export_providers()
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
@@ -273,7 +273,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void FactoryExportProviderResolvesServiceRegisteredUsingGivenFactoryMethodTest()
+        public void Factory_export_provider_can_resolve_service_registered_using_factory_method()
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
@@ -297,7 +297,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void FactoryExportProviderExecutesTheFactoryEachTimeTheInstanceIsNeadedTest()
+        public void Factory_export_provider_executes_the_factory_each_time_the_instance_is_requested()
         {
             var count = 0;
 
@@ -322,7 +322,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void FactoryExportProviderResolvesSingleInstanceTest()
+        public void Factory_export_provider_can_resolve_single_instance()
         {
             var count = 0;
 
@@ -350,7 +350,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void FactoryExportProviderResolvesSingleInstanceGenericTest()
+        public void Factory_export_provider_can_resolve_single_instance_registered_using_generic_overload()
         {
             var count = 0;
 
@@ -378,7 +378,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void FactoryExportProviderResolvesSingleInstanceGivenByRegistrationNameTest()
+        public void Factory_export_provider_can_resolve_single_instance_given_by_registration_name()
         {
             var count = 0;
 
@@ -406,7 +406,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void FactoryExportProviderResolvesSingleInstanceGivenByRegistrationNameGenericTest()
+        public void Factory_export_provider_can_resolve_single_instance_given_by_registration_name_registered_using_generic_overload()
         {
             var count = 0;
 
@@ -435,7 +435,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void FactoryExportProviderResolvesAdditionalExportsFromTheFactoryTest()
+        public void Factory_export_provider_can_resolve_additional_exports_from_the_factory()
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
@@ -464,7 +464,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void FactoryExportProviderResolvesAdditionalExportsFromTheContainerTest()
+        public void Factory_export_provider_can_resolve_additional_exports_from_the_container()
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
@@ -488,7 +488,7 @@ namespace MefContrib.Hosting.Tests
         }
 
         [Test]
-        public void FactoryExportProviderDoesNotResolveUnknownPartsTest()
+        public void Factory_export_provider_throws_exception_when_resolving_unknown_parts()
         {
             // Setup
             var assemblyCatalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());

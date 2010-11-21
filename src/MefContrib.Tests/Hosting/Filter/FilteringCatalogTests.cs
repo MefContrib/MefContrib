@@ -23,7 +23,7 @@ namespace MefContrib.Hosting.Filter.Tests
         }
 
         [Test]
-        public void FilterBasedOnMetadataUsingContainsMetadataTest()
+        public void Parts_are_filtered_based_on_metadata_using_ContainsMetadata_filter()
         {
             var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
             var filteredCatalog = new FilteringCatalog(catalog, new ContainsMetadata("key", "value"));
@@ -35,7 +35,7 @@ namespace MefContrib.Hosting.Filter.Tests
         }
 
         [Test]
-        public void FilterBasedOnMetadataUsingLambdaExpressionTest()
+        public void Parts_are_filtered_using_lambda_expression_filter()
         {
             var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
             var filteredCatalog = new FilteringCatalog(catalog,
@@ -76,7 +76,7 @@ namespace MefContrib.Hosting.Filter.Tests
         }
 
         [Test]
-        public void FilterBasedOnSharedLifetimeUsingHasCreationPolicyTest()
+        public void Parts_are_filtered_based_on_shared_lifetime_using_HasCreationPolicy_filter()
         {
             var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
             var filteredCatalog = new FilteringCatalog(catalog, new HasCreationPolicy(CreationPolicy.Shared));
@@ -89,7 +89,7 @@ namespace MefContrib.Hosting.Filter.Tests
         }
 
         [Test]
-        public void FilterBasedOnNonSharedLifetimeUsingHasCreationPolicyTest()
+        public void Parts_are_filtered_based_on_nonshared_lifetime_using_HasCreationPolicy_filter()
         {
             var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
             var filteredCatalog = new FilteringCatalog(catalog, new HasCreationPolicy(CreationPolicy.NonShared));
@@ -102,7 +102,7 @@ namespace MefContrib.Hosting.Filter.Tests
         }
 
         [Test]
-        public void FilterBasedOnAnyLifetimeUsingHasCreationPolicyTest()
+        public void Parts_are_filtered_based_on_any_lifetime_using_HasCreationPolicy_filter()
         {
             var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
             var filteredCatalog = new FilteringCatalog(catalog, new HasCreationPolicy(CreationPolicy.Any));
@@ -173,7 +173,7 @@ namespace MefContrib.Hosting.Filter.Tests
         }
 
         [Test]
-        public void ParentChildContainerTest()
+        public void Parts_created_by_the_child_container_are_disposed()
         {
             var catalog = new AssemblyCatalog(typeof(FilteringCatalogTests).Assembly);
             var parent = new CompositionContainer(catalog);
