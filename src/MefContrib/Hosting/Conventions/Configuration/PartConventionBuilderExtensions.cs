@@ -54,7 +54,7 @@ namespace MefContrib.Hosting.Conventions.Configuration
             this PartConventionBuilder<PartConvention> builder, string value)
         {
             Predicate<Type> condition =
-                t => t.Namespace.Contains(value) && !t.IsInterface && t.IsPublic;
+                t => t.Namespace != null && t.Namespace.Contains(value) && !t.IsInterface && t.IsPublic;
 
             builder.ProvideValueFor(x => x.Condition, condition);
 

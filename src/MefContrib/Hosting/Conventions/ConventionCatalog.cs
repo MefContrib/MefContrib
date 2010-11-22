@@ -59,10 +59,7 @@ namespace MefContrib.Hosting.Conventions
         /// </returns>
         public override IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition)
         {
-            return (from part in this.Parts
-                    from export in part.ExportDefinitions
-                    where definition.IsConstraintSatisfiedBy(export)
-                    select new Tuple<ComposablePartDefinition, ExportDefinition>(part, export)).ToList();
+            return this.interceptingCatalog.GetExports(definition);
         }
     }
 }

@@ -4,7 +4,7 @@
     using global::LinFu.DynamicProxy;
 
     /// <summary>
-    /// Defines an interceptor which creates proxies using the Castle.DynamicProxy library.
+    /// Defines an interceptor which creates proxies using the LinFu.DynamicProxy library.
     /// </summary>
     public class DynamicProxyInterceptor : IExportedValueInterceptor
     {
