@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition.Primitives;
+    using System.ComponentModel.Composition.ReflectionModel;
 
     /// <summary>
     /// Defines a <see cref="ComposablePartDefinition"/> which supports interception.
@@ -33,7 +34,7 @@
         public override ComposablePart CreatePart()
         {
             var interceptedPart = InterceptedPartDefinition.CreatePart();
-            return RequiresDisposal(interceptedPart)
+            return ReflectionModelServices.IsDisposalRequired(InterceptedPartDefinition)
                        ? new DisposableInterceptingComposablePart(interceptedPart, this.valueInterceptor)
                        : new InterceptingComposablePart(interceptedPart, this.valueInterceptor);
         }
@@ -56,11 +57,6 @@
         public override string ToString()
         {
             return InterceptedPartDefinition.ToString();
-        }
-
-        private static bool RequiresDisposal(object obj)
-        {
-            return (obj as IDisposable) != null;
         }
     }
 }
