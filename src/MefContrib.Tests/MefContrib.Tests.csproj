@@ -104,8 +104,10 @@
     <Compile Include="Hosting\FactoryExportDefinitionTests.cs" />
     <Compile Include="Hosting\Filter\FilteringCatalogTests.cs" />
     <Compile Include="Hosting\FactoryExportProviderTests.cs" />
+    <Compile Include="Hosting\Generics\ConcreteRepository.cs" />
     <Compile Include="Hosting\Generics\GenericCatalogTests.cs" />
     <Compile Include="CompositionServicesTests.cs" />
+    <Compile Include="Hosting\Generics\GenericTypeCatalogTests.cs" />
     <Compile Include="Hosting\Interception\CompositeValueInterceptorTests.cs" />
     <Compile Include="Hosting\Interception\Configuration\InterceptionConfigurationTests.cs" />
     <Compile Include="Hosting\Interception\Configuration\PredicateInterceptionCriteriaTests.cs" />

@@ -165,6 +165,25 @@ namespace MefContrib.Hosting.Generics.Tests
         public IRepository<Order> OrderRepository { get; set; }
     }
 
+    [Export]
+    public class ConcreteOrderProcessor
+    {
+        [Import]
+        public ConcreteRepository<Order> OrderRepository { get; set; }
+    }
+
+    [Export]
+    public class ConcreteCtorOrderProcessor
+    {
+        [ImportingConstructor]
+        public ConcreteCtorOrderProcessor(ConcreteRepository<Order> orderRepository)
+        {
+            OrderRepository = orderRepository;
+        }
+
+        public ConcreteRepository<Order> OrderRepository { get; set; }
+    }
+
     public class OrderRepository : IRepository<Order>
     {
     }

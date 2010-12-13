@@ -25,6 +25,11 @@
 
             if (!genericTypes.ContainsKey(genericImportTypeDefinition))
             {
+                if (importDefinitionType.IsClass && !importDefinitionType.IsAbstract)
+                {
+                    return importDefinitionType;
+                }
+
                 throw new MappingNotFoundException(
                     genericImportTypeDefinition,
                     string.Format("Implementation type for {0} has not been found.",

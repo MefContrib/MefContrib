@@ -6,7 +6,6 @@
     using System.ComponentModel.Composition.Primitives;
     using System.Linq;
     using MefContrib.Hosting.Interception;
-    using MefContrib.Hosting.Interception.Handlers;
 
     /// <summary>
     /// Defines an export handler which enables open generics support.
@@ -72,7 +71,7 @@
             var type = TypeHelper.BuildGenericType(importDefinitionType, this.genericTypeMapping);
 
             this.manufacturedParts.Add(importDefinitionType);
-            this.aggregateCatalog.Catalogs.Add(new TypeCatalog(type));
+            this.aggregateCatalog.Catalogs.Add(new GenericTypeCatalog(type, importDefinitionType.GetGenericTypeDefinition()));
         }
 
         /// <summary>

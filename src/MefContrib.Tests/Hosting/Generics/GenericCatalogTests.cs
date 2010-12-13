@@ -11,7 +11,7 @@ namespace MefContrib.Hosting.Generics.Tests
         [TestFixtureSetUp]
         public void TestSetUp()
         {
-            var typeCatalog = new TypeCatalog(typeof(CtorOrderProcessor), typeof(OrderProcessor));
+            var typeCatalog = new TypeCatalog(typeof(CtorOrderProcessor), typeof(OrderProcessor), typeof(ConcreteCtorOrderProcessor), typeof(ConcreteOrderProcessor));
             var genericCatalog = new GenericCatalog(new TestGenericContractRegistry());
             var aggregateCatalog = new AggregateCatalog(typeCatalog, genericCatalog);
             var provider = new CatalogExportProvider(aggregateCatalog);
@@ -32,6 +32,22 @@ namespace MefContrib.Hosting.Generics.Tests
         public void When_querying_for_ctor_order_processor_the_ctor_order_processor_is_created()
         {
             var orderProcessor = ExportProvider.GetExportedValue<CtorOrderProcessor>();
+            Assert.That(orderProcessor, Is.Not.Null);
+            Assert.That(orderProcessor.OrderRepository, Is.Not.Null);
+        }
+
+        [Test]
+        public void When_querying_for_concrete_order_processor_the_order_processor_is_created()
+        {
+            var orderProcessor = ExportProvider.GetExportedValue<ConcreteOrderProcessor>();
+            Assert.That(orderProcessor, Is.Not.Null);
+            Assert.That(orderProcessor.OrderRepository, Is.Not.Null);
+        }
+
+        [Test]
+        public void When_querying_for_concrete_ctor_order_processor_the_ctor_order_processor_is_created()
+        {
+            var orderProcessor = ExportProvider.GetExportedValue<ConcreteCtorOrderProcessor>();
             Assert.That(orderProcessor, Is.Not.Null);
             Assert.That(orderProcessor.OrderRepository, Is.Not.Null);
         }

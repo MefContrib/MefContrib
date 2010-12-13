@@ -53,6 +53,19 @@ namespace MefContrib
             return importDefinitionType;
         }
 
+        public static Type GetExportDefinitionType(ExportDefinition exportDefinition)
+        {
+            var memberInfos = ReflectionModelServices.GetExportingMember(exportDefinition).GetAccessors();
+            var memberInfo = memberInfos[0];
+
+            if (memberInfo.MemberType == MemberTypes.TypeInfo)
+            {
+                return (Type)memberInfo;
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Checks if the given <see cref="ImportDefinition"/> is based on reflection model.
         /// </summary>

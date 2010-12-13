@@ -107,6 +107,7 @@
     <Compile Include="Hosting\Filter\FilteringPartHandler.cs" />
     <Compile Include="Hosting\Generics\GenericCatalog.cs" />
     <Compile Include="CompositionServices.cs" />
+    <Compile Include="Hosting\Generics\GenericTypeCatalog.cs" />
     <Compile Include="Hosting\Generics\MappingNotFoundException.cs" />
     <Compile Include="Hosting\Interception\IPartHandler.cs" />
     <Compile Include="IHideObjectMembers.cs" />
