@@ -133,6 +133,7 @@ namespace MefContrib.Hosting.Generics.Tests
         protected override void Initialize()
         {
             Register(typeof(IRepository<>), typeof(Repository<>));
+            Register(typeof(IMyRepository<>), typeof(MyRepository<>));
         }
     }
 
@@ -182,6 +183,25 @@ namespace MefContrib.Hosting.Generics.Tests
         }
 
         public ConcreteRepository<Order> OrderRepository { get; set; }
+    }
+
+    [Export]
+    public class MyOrderProcessor
+    {
+        [Import]
+        public IMyRepository<Order> OrderRepository { get; set; }
+    }
+
+    [Export]
+    public class MyCtorOrderProcessor
+    {
+        [ImportingConstructor]
+        public MyCtorOrderProcessor(IMyRepository<Order> orderRepository)
+        {
+            OrderRepository = orderRepository;
+        }
+
+        public IMyRepository<Order> OrderRepository { get; set; }
     }
 
     public class OrderRepository : IRepository<Order>

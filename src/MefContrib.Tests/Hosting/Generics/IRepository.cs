@@ -6,4 +6,9 @@ namespace MefContrib.Hosting.Generics.Tests
     public interface IRepository<T>
     {
     }
+
+    // My repository is not exported via InheritedExport attribute
+    public interface IMyRepository<T>
+    {
+    }
 }

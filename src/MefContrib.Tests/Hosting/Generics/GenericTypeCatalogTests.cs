@@ -52,6 +52,22 @@ namespace MefContrib.Hosting.Generics.Tests
                 Is.EqualTo(AttributedModelServices.GetContractName(typeof(Service1<Customer>))));
             Assert.That(parts[0].ExportDefinitions.First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
                 Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(Service1<Customer>))));
+
+            // Assert other export definitions
+            Assert.That(parts[0].ExportDefinitions.Skip(1).First().ContractName,
+                Is.EqualTo("Foo-Bool"));
+            Assert.That(parts[0].ExportDefinitions.Skip(1).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
+                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(bool))));
+
+            Assert.That(parts[0].ExportDefinitions.Skip(2).First().ContractName,
+                Is.EqualTo("Foo-String"));
+            Assert.That(parts[0].ExportDefinitions.Skip(2).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
+                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(string))));
+
+            Assert.That(parts[0].ExportDefinitions.Skip(3).First().ContractName,
+                Is.EqualTo("Foo-Method"));
+            Assert.That(parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
+                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(Action))));
         }
 
         [Test]
@@ -78,6 +94,22 @@ namespace MefContrib.Hosting.Generics.Tests
                 Is.EqualTo(AttributedModelServices.GetContractName(typeof(IService<Customer>))));
             Assert.That(parts[0].ExportDefinitions.First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
                 Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(IService<Customer>))));
+
+            // Assert other export definitions
+            Assert.That(parts[0].ExportDefinitions.Skip(1).First().ContractName,
+                Is.EqualTo("Foo-Bool"));
+            Assert.That(parts[0].ExportDefinitions.Skip(1).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
+                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(bool))));
+
+            Assert.That(parts[0].ExportDefinitions.Skip(2).First().ContractName,
+                Is.EqualTo("Foo-String"));
+            Assert.That(parts[0].ExportDefinitions.Skip(2).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
+                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(string))));
+
+            Assert.That(parts[0].ExportDefinitions.Skip(3).First().ContractName,
+                Is.EqualTo("Foo-Method"));
+            Assert.That(parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
+                Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(Action))));
         }
 
         [Test]
@@ -100,9 +132,9 @@ namespace MefContrib.Hosting.Generics.Tests
             var parts = typeCatalog.Parts.ToList();
 
             Assert.That(parts.Count, Is.EqualTo(1));
-            Assert.That(parts[0].ExportDefinitions.Skip(2).First().ContractName,
+            Assert.That(parts[0].ExportDefinitions.Skip(3).First().ContractName,
                 Is.EqualTo(AttributedModelServices.GetContractName(typeof(IInheritedService1<Customer>))));
-            Assert.That(parts[0].ExportDefinitions.Skip(2).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
+            Assert.That(parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
                 Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(IInheritedService1<Customer>))));
         }
 
@@ -113,9 +145,9 @@ namespace MefContrib.Hosting.Generics.Tests
             var parts = typeCatalog.Parts.ToList();
 
             Assert.That(parts.Count, Is.EqualTo(1));
-            Assert.That(parts[0].ExportDefinitions.Skip(2).First().ContractName,
+            Assert.That(parts[0].ExportDefinitions.Skip(3).First().ContractName,
                 Is.EqualTo("contract-name"));
-            Assert.That(parts[0].ExportDefinitions.Skip(2).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
+            Assert.That(parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
                 Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(IInheritedService2<Customer>))));
         }
 
@@ -126,9 +158,9 @@ namespace MefContrib.Hosting.Generics.Tests
             var parts = typeCatalog.Parts.ToList();
 
             Assert.That(parts.Count, Is.EqualTo(1));
-            Assert.That(parts[0].ExportDefinitions.First().ContractName,
+            Assert.That(parts[0].ExportDefinitions.Skip(3).First().ContractName,
                 Is.EqualTo("contract-name-2"));
-            Assert.That(parts[0].ExportDefinitions.First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
+            Assert.That(parts[0].ExportDefinitions.Skip(3).First().Metadata[CompositionConstants.ExportTypeIdentityMetadataName],
                 Is.EqualTo(AttributedModelServices.GetTypeIdentity(typeof(IService<Customer>))));
         }
     }
@@ -139,11 +171,14 @@ namespace MefContrib.Hosting.Generics.Tests
         [Export("Foo-Method")]
         public void FooMethod() {}
 
-        [Export]
+        [Export("Foo-String")]
         public string FooProperty
         {
             get { return "foo"; }
         }
+
+        [Export("Foo-Bool")]
+        private bool fooValue = true;
     }
 
     [Export("contract-name")]
@@ -152,11 +187,14 @@ namespace MefContrib.Hosting.Generics.Tests
         [Export("Foo-Method")]
         public void FooMethod() { }
 
-        [Export]
+        [Export("Foo-String")]
         public string FooProperty
         {
             get { return "foo"; }
         }
+
+        [Export("Foo-Bool")]
+        private bool fooValue = true;
     }
 
     [Export(typeof(IService<>))]
@@ -165,11 +203,14 @@ namespace MefContrib.Hosting.Generics.Tests
         [Export("Foo-Method")]
         public void FooMethod() { }
 
-        [Export]
+        [Export("Foo-String")]
         public string FooProperty
         {
             get { return "foo"; }
         }
+
+        [Export("Foo-Bool")]
+        private bool fooValue = true;
     }
 
     [Export("contract-name-2", typeof(IService<>))]
@@ -178,11 +219,14 @@ namespace MefContrib.Hosting.Generics.Tests
         [Export("Foo-Method")]
         public void FooMethod() { }
 
-        [Export]
+        [Export("Foo-String")]
         public string FooProperty
         {
             get { return "foo"; }
         }
+
+        [Export("Foo-Bool")]
+        private bool fooValue = true;
     }
 
     public interface IService<T> { }
@@ -195,11 +239,14 @@ namespace MefContrib.Hosting.Generics.Tests
         [Export("Foo-Method")]
         public void FooMethod() { }
 
-        [Export]
+        [Export("Foo-String")]
         public string FooProperty
         {
             get { return "foo"; }
         }
+
+        [Export("Foo-Bool")]
+        private bool fooValue = true;
     }
 
     [InheritedExport("contract-name")]
@@ -210,11 +257,14 @@ namespace MefContrib.Hosting.Generics.Tests
         [Export("Foo-Method")]
         public void FooMethod() { }
 
-        [Export]
+        [Export("Foo-String")]
         public string FooProperty
         {
             get { return "foo"; }
         }
+
+        [Export("Foo-Bool")]
+        private bool fooValue = true;
     }
 
     [InheritedExport("contract-name-2", typeof(IService<>))]
@@ -222,6 +272,17 @@ namespace MefContrib.Hosting.Generics.Tests
 
     public class InheritedService3Impl<T> : IInheritedService3<T>, IService<T>
     {
+        [Export("Foo-Method")]
+        public void FooMethod() { }
+
+        [Export("Foo-String")]
+        public string FooProperty
+        {
+            get { return "foo"; }
+        }
+
+        [Export("Foo-Bool")]
+        private bool fooValue = true;
     }
 
     public class Customer { }
