@@ -17,7 +17,8 @@ namespace MefContrib.Hosting.Generics.Tests
                 typeof(ConcreteCtorOrderProcessor),
                 typeof(ConcreteOrderProcessor),
                 typeof(MyCtorOrderProcessor),
-                typeof(MyOrderProcessor));
+                typeof(MyOrderProcessor),
+                typeof(MyOrderProcessorSetterOnly));
             var genericCatalog = new GenericCatalog(new TestGenericContractRegistry());
             var aggregateCatalog = new AggregateCatalog(typeCatalog, genericCatalog);
             var provider = new CatalogExportProvider(aggregateCatalog);
@@ -64,6 +65,14 @@ namespace MefContrib.Hosting.Generics.Tests
             var orderProcessor = ExportProvider.GetExportedValue<MyOrderProcessor>();
             Assert.That(orderProcessor, Is.Not.Null);
             Assert.That(orderProcessor.OrderRepository, Is.Not.Null);
+        }
+
+        [Test]
+        public void When_querying_for_my_order_processor_with_setter_only_the_order_processor_is_created()
+        {
+            var orderProcessor = ExportProvider.GetExportedValue<MyOrderProcessorSetterOnly>();
+            Assert.That(orderProcessor, Is.Not.Null);
+            Assert.That(orderProcessor.orderRepository, Is.Not.Null);
         }
 
         [Test]

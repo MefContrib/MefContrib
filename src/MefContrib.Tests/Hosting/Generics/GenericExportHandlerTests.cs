@@ -193,6 +193,18 @@ namespace MefContrib.Hosting.Generics.Tests
     }
 
     [Export]
+    public class MyOrderProcessorSetterOnly
+    {
+        public IMyRepository<Order> orderRepository;
+
+        [Import]
+        public IMyRepository<Order> OrderRepository
+        {
+            set { this.orderRepository = value; }
+        }
+    }
+
+    [Export]
     public class MyCtorOrderProcessor
     {
         [ImportingConstructor]

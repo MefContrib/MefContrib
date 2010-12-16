@@ -18,29 +18,33 @@ namespace MefContrib
         /// <remarks>Works only for reflection model import definitions.</remarks>
         public static Type GetImportDefinitionType(ImportDefinition definition)
         {
-            Type importDefinitionType = null;
-            importDefinitionType = ReflectionModelServices.IsImportingParameter(definition)
-                                       ? GetParameterType(definition)
-                                       : GetMethodType(definition, importDefinitionType);
+            var importDefinitionType = ReflectionModelServices.IsImportingParameter(definition)
+                                           ? GetParameterType(definition)
+                                           : GetMethodType(definition);
 
             return importDefinitionType;
         }
 
-        private static Type GetMethodType(ImportDefinition definition, Type importDefinitionType)
+        private static Type GetMethodType(ImportDefinition definition)
         {
-            var memberInfos = ReflectionModelServices.GetImportingMember(definition).GetAccessors();
-            var memberInfo = memberInfos[0];
-
-            if (memberInfo.MemberType == MemberTypes.Method)
+            Type importDefinitionType = null;
+            var member = ReflectionModelServices.GetImportingMember(definition);
+            if (member.MemberType == MemberTypes.Property)
             {
-                var methodInfo = (MethodInfo)memberInfo;
+                var methodInfo = (MethodInfo) member.GetAccessors()[1];
+                importDefinitionType = methodInfo.GetParameters()[0].ParameterType;
+            }
+            else if (member.MemberType == MemberTypes.Method)
+            {
+                var methodInfo = (MethodInfo) member.GetAccessors()[0];
                 importDefinitionType = methodInfo.ReturnType;
             }
-            else if (memberInfo.MemberType == MemberTypes.Field)
+            else if (member.MemberType == MemberTypes.Field)
             {
-                var fieldInfo = (FieldInfo)memberInfo;
+                var fieldInfo = (FieldInfo) member.GetAccessors()[0];
                 importDefinitionType = fieldInfo.FieldType;
             }
+
             return importDefinitionType;
         }
 
@@ -51,19 +55,6 @@ namespace MefContrib
             var importDefinitionType = parameterInfo.ParameterType;
 
             return importDefinitionType;
-        }
-
-        public static Type GetExportDefinitionType(ExportDefinition exportDefinition)
-        {
-            var memberInfos = ReflectionModelServices.GetExportingMember(exportDefinition).GetAccessors();
-            var memberInfo = memberInfos[0];
-
-            if (memberInfo.MemberType == MemberTypes.TypeInfo)
-            {
-                return (Type)memberInfo;
-            }
-
-            return null;
         }
 
         /// <summary>
