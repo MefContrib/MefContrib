@@ -11,4 +11,9 @@ namespace MefContrib.Hosting.Generics.Tests
     public interface IMyRepository<T>
     {
     }
+
+    // Multi repository has two implementations
+    public interface IMultiRepository<T>
+    {
+    }
 }

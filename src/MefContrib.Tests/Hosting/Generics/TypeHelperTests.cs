@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 
 namespace MefContrib.Hosting.Generics.Tests
@@ -11,33 +13,76 @@ namespace MefContrib.Hosting.Generics.Tests
         public void When_building_a_closed_generic_repository_Order_repository_is_returned()
         {
             var importDefinitionType = typeof(IRepository<Order>);
-            var typeMapping = new Dictionary<Type, Type>
+            var implementations = new List<Type>
             {
-                {typeof (IRepository<>), typeof (Repository<>)}
+                typeof (Repository<>)
             };
-            var orderRepositoryType = TypeHelper.BuildGenericType(importDefinitionType, typeMapping);
+            var orderRepositoryTypes = TypeHelper.BuildGenericTypes(importDefinitionType, implementations);
 
-            Assert.AreEqual(typeof(Repository<Order>), orderRepositoryType);
+            Assert.AreEqual(typeof(Repository<Order>), orderRepositoryTypes.Single());
         }
 
         [Test]
-        public void When_building_a_closed_generic_repository_and_no_mapping_is_present_MappingNotFoundException_is_thrown()
+        public void When_building_a_closed_generic_repository_and_no_implementations_are_present_ArgumentException_is_thrown()
         {
             var importDefinitionType = typeof(IRepository<Order>);
-            var typeMapping = new Dictionary<Type, Type>();
-
-            Type mappingTypeFromException = null;
-
-            try
+            var implementations = new List<Type>();
+            
+            Assert.That(() =>
             {
-                TypeHelper.BuildGenericType(importDefinitionType, typeMapping);
-            }
-            catch (MappingNotFoundException ex)
-            {
-                mappingTypeFromException = ex.Type;
-            }
-
-            Assert.That(mappingTypeFromException, Is.SameAs(typeof(IRepository<>)));
+                TypeHelper.BuildGenericTypes(importDefinitionType, implementations);
+            }, Throws.InstanceOf<ArgumentException>());
         }
+
+        [Test]
+        public void IsCollection_method_test()
+        {
+            Assert.That(TypeHelper.IsCollection(typeof(int)), Is.False);
+            Assert.That(TypeHelper.IsCollection(typeof(string)), Is.False);
+            Assert.That(TypeHelper.IsCollection(typeof(IEnumerable)), Is.True);
+            Assert.That(TypeHelper.IsCollection(typeof(IEnumerable<string>)), Is.True);
+        }
+
+        [Test]
+        public void IsGenericCollection_method_test()
+        {
+            Assert.That(TypeHelper.IsGenericCollection(typeof(int)), Is.False);
+            Assert.That(TypeHelper.IsGenericCollection(typeof(string)), Is.False);
+            Assert.That(TypeHelper.IsGenericCollection(typeof(IEnumerable)), Is.False);
+            Assert.That(TypeHelper.IsGenericCollection(typeof(IEnumerable<string>)), Is.True);
+            Assert.That(TypeHelper.IsGenericCollection(typeof(MyClass)), Is.True);
+        }
+
+        [Test]
+        public void TryGetAncestor_method_test()
+        {
+            var ancestor = TypeHelper.TryGetAncestor(typeof(IList<string>), typeof(IEnumerable<string>));
+            Assert.That(ancestor, Is.Not.Null);
+            Assert.That(ancestor.GetGenericArguments()[0], Is.EqualTo(typeof(string)));
+        }
+
+        [Test]
+        public void TryGetAncestor_method_test_with_open_generics()
+        {
+            var ancestor = TypeHelper.TryGetAncestor(typeof(IList<string>), typeof(IEnumerable<>));
+            Assert.That(ancestor, Is.Not.Null);
+            Assert.That(ancestor.GetGenericArguments()[0], Is.EqualTo(typeof(string)));
+        }
+
+        [Test]
+        public void GetGenericCollectionParameter_method_test()
+        {
+            var ancestor = TypeHelper.GetGenericCollectionParameter(typeof(MyClass));
+            Assert.That(ancestor, Is.Not.Null);
+            Assert.That(ancestor, Is.EqualTo(typeof(string)));
+
+            ancestor = TypeHelper.GetGenericCollectionParameter(typeof(MyClass2));
+            Assert.That(ancestor, Is.Not.Null);
+            Assert.That(ancestor, Is.EqualTo(typeof(string)));
+        }
+
+        private class MyClass : List<string> { }
+
+        private class MyClass2 : MyClass { }
     }
 }

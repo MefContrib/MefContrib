@@ -134,6 +134,8 @@ namespace MefContrib.Hosting.Generics.Tests
         {
             Register(typeof(IRepository<>), typeof(Repository<>));
             Register(typeof(IMyRepository<>), typeof(MyRepository<>));
+            Register(typeof(IMultiRepository<>), typeof(MultiRepository1<>));
+            Register(typeof(IMultiRepository<>), typeof(MultiRepository2<>));
         }
     }
 
@@ -191,7 +193,7 @@ namespace MefContrib.Hosting.Generics.Tests
         [Import]
         public IMyRepository<Order> OrderRepository { get; set; }
     }
-
+    
     [Export]
     public class MyOrderProcessorSetterOnly
     {
@@ -214,6 +216,16 @@ namespace MefContrib.Hosting.Generics.Tests
         }
 
         public IMyRepository<Order> OrderRepository { get; set; }
+    }
+
+    [Export]
+    public class MultiOrderProcessor
+    {
+        [ImportMany]
+        public IMultiRepository<Order>[] OrderRepositoriesAsArray { get; set; }
+
+        [ImportMany]
+        public IEnumerable<Lazy<IMultiRepository<Order>>> OrderRepositoriesAsEnumerable { get; set; }
     }
 
     public class OrderRepository : IRepository<Order>

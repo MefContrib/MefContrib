@@ -1,4 +1,5 @@
 using System.ComponentModel.Composition.Hosting;
+using System.Linq;
 using NUnit.Framework;
 
 namespace MefContrib.Hosting.Generics.Tests
@@ -18,7 +19,8 @@ namespace MefContrib.Hosting.Generics.Tests
                 typeof(ConcreteOrderProcessor),
                 typeof(MyCtorOrderProcessor),
                 typeof(MyOrderProcessor),
-                typeof(MyOrderProcessorSetterOnly));
+                typeof(MyOrderProcessorSetterOnly),
+                typeof(MultiOrderProcessor));
             var genericCatalog = new GenericCatalog(new TestGenericContractRegistry());
             var aggregateCatalog = new AggregateCatalog(typeCatalog, genericCatalog);
             var provider = new CatalogExportProvider(aggregateCatalog);
@@ -81,6 +83,19 @@ namespace MefContrib.Hosting.Generics.Tests
             var orderProcessor = ExportProvider.GetExportedValue<MyCtorOrderProcessor>();
             Assert.That(orderProcessor, Is.Not.Null);
             Assert.That(orderProcessor.OrderRepository, Is.Not.Null);
+        }
+
+        [Test]
+        public void When_querying_for_multi_order_processor_the_multi_order_processor_is_created()
+        {
+            var orderProcessor = ExportProvider.GetExportedValue<MultiOrderProcessor>();
+            Assert.That(orderProcessor, Is.Not.Null);
+            
+            Assert.That(orderProcessor.OrderRepositoriesAsArray, Is.Not.Null);
+            Assert.That(orderProcessor.OrderRepositoriesAsArray.Length, Is.EqualTo(2));
+
+            Assert.That(orderProcessor.OrderRepositoriesAsEnumerable, Is.Not.Null);
+            Assert.That(orderProcessor.OrderRepositoriesAsEnumerable.Count(), Is.EqualTo(2));
         }
     }
 }

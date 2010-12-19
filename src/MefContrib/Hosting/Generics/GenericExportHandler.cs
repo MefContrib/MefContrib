@@ -14,7 +14,7 @@
     {
         private ComposablePartCatalog decoratedCatalog;
         private readonly AggregateCatalog aggregateCatalog;
-        private readonly IDictionary<Type, Type> genericTypeMapping;
+        private readonly IDictionary<Type, ISet<Type>> genericTypeMapping;
         private readonly List<Type> manufacturedParts;
 
         /// <summary>
@@ -24,7 +24,7 @@
         public GenericExportHandler(params IGenericContractRegistry[] registries)
         {
             this.aggregateCatalog = new AggregateCatalog();
-            this.genericTypeMapping = new Dictionary<Type, Type>();
+            this.genericTypeMapping = new Dictionary<Type, ISet<Type>>();
             this.manufacturedParts = new List<Type>();
 
             LoadTypeMappings(registries);
@@ -59,19 +59,51 @@
             {
                 foreach (var mapping in registries.SelectMany(registry => registry.GetMappings()))
                 {
-                    this.genericTypeMapping.Add(
-                        mapping.GenericContractTypeDefinition,
-                        mapping.GenericImplementationTypeDefinition);
+                    var contractType = mapping.GenericContractTypeDefinition;
+                    var implementationType = mapping.GenericImplementationTypeDefinition;
+
+                    ISet<Type> implementationTypes;
+                    if (!this.genericTypeMapping.TryGetValue(contractType, out implementationTypes))
+                    {
+                        implementationTypes = new HashSet<Type>();
+                        this.genericTypeMapping.Add(contractType, implementationTypes);
+                    }
+
+                    implementationTypes.Add(implementationType);
                 }
             }
         }
 
-        private void CreateGenericPart(Type importDefinitionType)
+        private void CreateGenericParts(Type importDefinitionType)
         {
-            var type = TypeHelper.BuildGenericType(importDefinitionType, this.genericTypeMapping);
-
+            var genericImportTypeDefinition = importDefinitionType.GetGenericTypeDefinition();
+            var genericImportTypeImplementations = new List<Type>();
+            if (!this.genericTypeMapping.ContainsKey(genericImportTypeDefinition))
+            {
+                if (importDefinitionType.IsClass && !importDefinitionType.IsAbstract)
+                {
+                    genericImportTypeImplementations.Add(genericImportTypeDefinition);
+                }
+                else
+                {
+                    throw new MappingNotFoundException(
+                        genericImportTypeDefinition,
+                        string.Format("Implementation type for {0} has not been found.",
+                            genericImportTypeDefinition.Name));
+                }
+            }
+            else
+            {
+                genericImportTypeImplementations.AddRange(
+                    this.genericTypeMapping[genericImportTypeDefinition]);
+            }
+            
+            var concreteParts = TypeHelper.BuildGenericTypes(importDefinitionType, genericImportTypeImplementations);
+            foreach (var type in concreteParts)
+            {
+                this.aggregateCatalog.Catalogs.Add(new GenericTypeCatalog(type, genericImportTypeDefinition));
+            }
             this.manufacturedParts.Add(importDefinitionType);
-            this.aggregateCatalog.Catalogs.Add(new GenericTypeCatalog(type, importDefinitionType.GetGenericTypeDefinition()));
         }
 
         /// <summary>
@@ -94,17 +126,21 @@
                 return Enumerable.Empty<Tuple<ComposablePartDefinition, ExportDefinition>>();
             }
 
-            var contractDef = (ContractBasedImportDefinition)definition;
             var returnedExports = new List<Tuple<ComposablePartDefinition, ExportDefinition>>();
             var importDefinitionType = CompositionServices.GetImportDefinitionType(definition);
             
+            if (TypeHelper.IsGenericCollection(importDefinitionType))
+            {
+                importDefinitionType = TypeHelper.GetGenericCollectionParameter(importDefinitionType);
+            }
+
             if (this.manufacturedParts.Contains(importDefinitionType))
             {
                 returnedExports.AddRange(this.aggregateCatalog.GetExports(definition));
             }
-            else if (TypeHelper.ShouldCreateClosedGenericPart(contractDef, importDefinitionType))
+            else if (TypeHelper.ShouldCreateClosedGenericPart(importDefinitionType))
             {
-                CreateGenericPart(importDefinitionType);
+                CreateGenericParts(importDefinitionType);
                 returnedExports.AddRange(this.aggregateCatalog.GetExports(definition));
             }
             
