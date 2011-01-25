@@ -51,7 +51,6 @@
     <Compile Include="CompositionControllerActivator.cs" />
     <Compile Include="CompositionDataAnnotationsModelValidatorProvider.cs" />
     <Compile Include="CompositionDependencyResolver.cs" />
-    <Compile Include="CompositionHttpApplication.cs" />
     <Compile Include="CompositionFilterAttributeFilterProvider.cs" />
     <Compile Include="CompositionModelBinderProvider.cs" />
     <Compile Include="IDependencyBuilder.cs" />

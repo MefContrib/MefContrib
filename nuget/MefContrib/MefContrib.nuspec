@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>MefContrib</id>
+    <version>1.0.0.0</version>
+    <authors>MefContrib</authors>
+    <owners>MefContrib</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>MEF Contrib is a community-developed library of extensions to the Managed Extensibility Framework (MEF).</description>
+    <summary>MEF Contrib is a community-developed library of extensions to the Managed Extensibility Framework (MEF).</summary>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="Castle.Core" version="2.5.2" />
+      <dependency id="Moq" version="3.1.416.3" />
+      <dependency id="NUnit" version="2.5.7.10213" />
+      <dependency id="Unity" version="2.0" />
+    </dependencies>
+    <tags>mef ioc di dependency injection composition</tags>
+  </metadata>
+</package>

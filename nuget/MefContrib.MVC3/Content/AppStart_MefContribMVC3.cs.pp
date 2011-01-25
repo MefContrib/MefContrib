@@ -1,17 +1,14 @@
-﻿namespace MefContrib.Web.Mvc
+﻿[assembly: WebActivator.PreApplicationStartMethod(typeof($rootnamespace$.AppStart_MefContribMVC3), "Start")]
+
+namespace $rootnamespace$
 {
+    using System.ComponentModel.Composition.Primitives;
     using System.Linq;
     using System.Web.Mvc;
 
-    /// <summary>
-    /// CompositionBootstrapper
-    /// </summary>
-    public static class CompositionBootstrapper
+    public static class AppStart_MefContribMVC3
     {
-        /// <summary>
-        /// Bootstraps System.ComponentModel.Composition based application components.
-        /// </summary>
-        public static void Bootstrap()
+        public static void Start()
         {
             // Create MEF catalog based on the contents of ~/bin.
             // Note that any class in the referenced assemblies implementing in "IController"
