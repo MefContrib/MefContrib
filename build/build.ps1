@@ -22,7 +22,7 @@ task Init -description "This tasks makes sure the build environment is correctly
 		-company "MefContrib" `
 		-product "MefContrib $version" `
 		-version $version `
-		-copyright "Copyright © MefContrib 2009 - 2010" `
+		-copyright "Copyright © MefContrib 2009 - 2011" `
 		-clsCompliant "false"
         
     if ((Test-Path $build_directory) -eq $false) {
