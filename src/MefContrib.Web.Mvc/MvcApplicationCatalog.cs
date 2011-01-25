@@ -25,22 +25,22 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="MvcApplicationCatalog"/> class.
         /// </summary>
-        public MvcApplicationCatalog()
+        /// <param name="innerCatalog">The inner catalog.</param>
+        public MvcApplicationCatalog(ComposablePartCatalog innerCatalog)
         {
-            RegisterReferencedAssemblies();
+            RegisterReferencedAssemblies(innerCatalog);
             RegisterReferencedControllers();
         }
 
         /// <summary>
         /// Registers referenced assemblies.
         /// </summary>
-        protected void RegisterReferencedAssemblies()
+        /// <param name="catalog">The catalog.</param>
+        protected void RegisterReferencedAssemblies(ComposablePartCatalog catalog)
         {
             lock (synclock)
             {
-                DirectoryCatalog directoryCatalog
-                    = new DirectoryCatalog(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"));
-                parts.AddRange(directoryCatalog.Parts);
+                parts.AddRange(catalog.Parts);
             }
         }
 
@@ -124,6 +124,7 @@
                         null));
 
             }
+
             return imports.ToArray();
         }
 
