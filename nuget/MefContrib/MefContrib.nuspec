@@ -9,12 +9,6 @@
     <description>MEF Contrib is a community-developed library of extensions to the Managed Extensibility Framework (MEF).</description>
     <summary>MEF Contrib is a community-developed library of extensions to the Managed Extensibility Framework (MEF).</summary>
     <language>en-US</language>
-    <dependencies>
-      <dependency id="Castle.Core" version="2.5.2" />
-      <dependency id="Moq" version="3.1.416.3" />
-      <dependency id="NUnit" version="2.5.7.10213" />
-      <dependency id="Unity" version="2.0" />
-    </dependencies>
     <tags>mef ioc di dependency injection composition</tags>
   </metadata>
 </package>
