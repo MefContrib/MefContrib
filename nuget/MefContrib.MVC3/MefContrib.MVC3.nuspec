@@ -10,7 +10,7 @@
     <summary>An MVC3 IDependencyResolver wrapper for the Managed Extensibility Framework (MEF).</summary>
     <language>en-US</language>
     <dependencies>
-      <dependency id="MefContrib" version="1.0.0.0" />
+      <dependency id="MefContrib1" version="1.0.0.0" />
       <dependency id="WebActivator" version="1.0.0.0" />
     </dependencies>
     <tags>mef ioc di dependency injection mvc composition</tags>
