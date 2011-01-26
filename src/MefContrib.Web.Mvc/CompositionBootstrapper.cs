@@ -1,8 +1,9 @@
 ﻿namespace MefContrib.Web.Mvc
 {
+    using System.ComponentModel.Composition.Hosting;
     using System.Linq;
     using System.Web.Mvc;
-    using System.ComponentModel.Composition.Hosting;
+    using MefContrib.Hosting.Conventions;
 
     /// <summary>
     /// CompositionBootstrapper
@@ -15,15 +16,14 @@
         public static void Bootstrap()
         {
             // Create MEF catalog based on the contents of ~/bin.
+            //
             // Note that any class in the referenced assemblies implementing in "IController"
             // is automatically exported to MEF. There is no need for explicit [Export] attributes
             // on ASP.NET MVC controllers. When implementing multiple constructors ensure that
             // there is one constructor marked with the [ImportingConstructor] attribute.
-            //
-            // The MvcApplicationCatalog only supports constructor injection. If property
-            // injection is needed, do not use MvcApplicationCatalog.
-            // Or contribute to MefContrib and help us out :-)
-            var catalog = new MvcApplicationCatalog(new DirectoryCatalog("bin"));
+            var catalog = new AggregateCatalog(
+                new DirectoryCatalog("bin"),
+                new ConventionCatalog(new MvcApplicationRegistry()));
 
             // Tell MVC3 to use MEF as its dependency resolver.
             var dependencyResolver = new CompositionDependencyResolver(catalog);
