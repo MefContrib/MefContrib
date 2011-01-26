@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MefContrib.MVC3</id>
-    <version>0.1</version>
+    <version>0.9.0.0</version>
     <authors>Maarten Balliauw</authors>
     <owners>MefContrib</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -10,6 +10,7 @@
     <summary>An MVC3 IDependencyResolver wrapper for the Managed Extensibility Framework (MEF).</summary>
     <language>en-US</language>
     <dependencies>
+      <dependency id="MefContrib" version="1.0.0.0" />
       <dependency id="WebActivator" version="1.0.0.0" />
     </dependencies>
     <tags>mef ioc di dependency injection mvc composition</tags>
