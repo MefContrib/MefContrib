@@ -74,11 +74,17 @@
             var exports = this.Container.GetExports(serviceType, null, null);
             if (exports.Any())
             {
-                return exports.AsEnumerable();
+                return exports.Select(e => e.Value).AsEnumerable();
             }
             return new List<object>();
         }
 
+        /// <summary>
+        /// Builds the specified service.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="service">The service.</param>
+        /// <returns></returns>
         public T Build<T>(T service)
         {
             this.Container.SatisfyImportsOnce(service);
