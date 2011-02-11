@@ -1,4 +1,7 @@
-﻿namespace MefContrib.Web.Mvc
+﻿using System.ServiceModel;
+using System.Web.Routing;
+
+namespace MefContrib.Web.Mvc
 {
     using System;
     using System.Collections.Generic;
@@ -13,7 +16,7 @@
     /// CompositionDependencyResolver
     /// </summary>
     public class CompositionDependencyResolver
-        : IDependencyResolver, IDependencyBuilder
+        : IDependencyResolver, IDependencyBuilder, IServiceProvider
     {
         /// <summary>
         /// HttpContext key for the container.
@@ -39,13 +42,13 @@
         {
             get
             {
-                if (!HttpContext.Current.Items.Contains(HttpContextKey))
+                if (!CurrentRequestContext.Items.Contains(HttpContextKey))
                 {
-                    HttpContext.Current.Items.Add(HttpContextKey,
+                    CurrentRequestContext.Items.Add(HttpContextKey,
                         new CompositionContainer(catalog));
                 }
 
-                return (CompositionContainer)HttpContext.Current.Items[HttpContextKey];
+                return (CompositionContainer)CurrentRequestContext.Items[HttpContextKey];
             }
         }
 
