@@ -35,7 +35,7 @@
         /// Gets the container.
         /// </summary>
         /// <value>The container.</value>
-        internal CompositionContainer Container
+        public CompositionContainer Container
         {
             get
             {
