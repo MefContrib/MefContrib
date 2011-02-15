@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MefContrib.Integration.Unity</id>
-    <version>1.0.0.1</version>
+    <version>1.0.0.2</version>
     <authors>MefContrib</authors>
     <owners>MefContrib</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -10,7 +10,7 @@
     <summary>Managed Extensibility Framework (MEF) and Unity integration.</summary>
     <language>en-US</language>
     <dependencies>
-      <dependency id="MefContrib" version="1.0.0.1" />
+      <dependency id="MefContrib" version="1.0.0.2" />
       <dependency id="Unity" version="2.0" />
     </dependencies>
     <tags>mef ioc di dependency injection mvc composition unity</tags>
