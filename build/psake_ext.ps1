@@ -44,3 +44,39 @@ using System.Runtime.InteropServices;
 	Write-Host "Generating assembly info file: $file"
 	out-file -filePath $file -encoding UTF8 -inputObject $asmInfo
 }
+
+function Update-Nuspec-Version 
+{
+param( 
+	[string]$version,
+	[string]$file = $(throw "file is a required parameter.")
+)
+	# Load nuspec file
+	[xml] $spec = gc $file
+	
+	# Generate version number
+	$oldVersion = new-object System.Version($spec.package.metadata.version)	
+	$newVersion = new-object System.Version($version)
+	$newVersionString = $newVersion.Major.ToString() + "." + $newVersion.Minor.ToString() + "." + $newVersion.Build.ToString() + "." + ($oldVersion.Revision + 1).ToString()
+
+	Write-Host "Setting NuSpec file $file version to $newVersionString"
+	
+	# Update nuspec file
+	$spec.package.metadata.version = $newVersionString 
+	$spec.Save($file)  
+}
+
+function Create-NuGet-Package 
+{
+param( 
+	[string]$version,
+	[string]$specfile = $(throw "specfile is a required parameter."),
+	[string]$sourceselection,
+	[string]$librariesroot,
+	[string]$nugetcommand
+)
+	Update-Nuspec-Version -version $version -file $specfile
+    Copy-Item $sourceselection $librariesroot
+    exec { &"$nugetcommand" pack $specfile  }
+    Remove-Item $librariesroot\* -exclude .empty
+}

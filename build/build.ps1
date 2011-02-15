@@ -2,13 +2,14 @@ properties {
     $base_directory   = resolve-path "..\."
     $build_directory  = "$base_directory\release"
     $source_directory = "$base_directory\src"
+    $nuget_directory  = "$base_directory\nuget"
     $tools_directory  = "$base_directory\tools"
     $version          = "1.0.0.0"
 }
 
 include .\psake_ext.ps1
 
-task default -depends Test
+task default -depends NuGet
 
 task Clean -description "This task cleans up the build directory" {
     Remove-Item $build_directory\\$solution -Force -Recurse -ErrorAction SilentlyContinue
@@ -54,4 +55,36 @@ task Compile -depends Clean, Init -description "This task compiles the solution"
             /p:Configuration=Release `
 			/property:WarningLevel=3
     }
+}
+
+task NuGet -depends Test -description "This task creates the NuGet packages" {
+	Create-NuGet-Package `
+		-version $version `
+		-specfile "$nuget_directory\MefContrib\MefContrib.nuspec" `
+		-sourceselection "$base_directory\release\MefContrib\MefContrib.dll" `
+		-librariesroot "$nuget_directory\MefContrib\lib" `
+		-nugetcommand "$tools_directory\nuget\NuGet.exe"
+		
+	Create-NuGet-Package `
+		-version $version `
+		-specfile "$nuget_directory\MefContrib.Interception.Castle\MefContrib.Interception.Castle.nuspec" `
+		-sourceselection "$base_directory\release\MefContrib\MefContrib.Hosting.Interception.Castle.dll" `
+		-librariesroot "$nuget_directory\MefContrib.Interception.Castle\lib" `
+		-nugetcommand "$tools_directory\nuget\NuGet.exe"
+		
+	Create-NuGet-Package `
+		-version $version `
+		-specfile "$nuget_directory\MefContrib.Integration.Unity\MefContrib.Integration.Unity.nuspec" `
+		-sourceselection "$base_directory\release\MefContrib\MefContrib.Integration.Unity.dll" `
+		-librariesroot "$nuget_directory\MefContrib.Integration.Unity\lib" `
+		-nugetcommand "$tools_directory\nuget\NuGet.exe"
+		
+	Create-NuGet-Package `
+		-version $version `
+		-specfile "$nuget_directory\MefContrib.MVC3\MefContrib.MVC3.nuspec" `
+		-sourceselection "$base_directory\release\MefContrib\MefContrib.Web.Mvc.dll" `
+		-librariesroot "$nuget_directory\MefContrib.MVC3\lib" `
+		-nugetcommand "$tools_directory\nuget\NuGet.exe"
+
+    Move-Item *.nupkg $base_directory\release
 }
