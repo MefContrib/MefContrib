@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Web;
-using MefContrib.Web.Mvc.Internal;
-
-namespace MefContrib.Web.Mvc
+﻿namespace MefContrib.Web.Mvc
 {
+    using System.Collections;
+    using System.Web;
+    using MefContrib.Web.Mvc.Internal;
+
     /// <summary>
     /// CurrentRequestContext
     /// </summary>

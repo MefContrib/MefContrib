@@ -1,7 +1,4 @@
-﻿using System.ServiceModel;
-using System.Web.Routing;
-
-namespace MefContrib.Web.Mvc
+﻿namespace MefContrib.Web.Mvc
 {
     using System;
     using System.Collections.Generic;
@@ -9,8 +6,8 @@ namespace MefContrib.Web.Mvc
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
+    using MefContrib.Hosting.Filter;
 
     /// <summary>
     /// CompositionDependencyResolver
@@ -23,7 +20,9 @@ namespace MefContrib.Web.Mvc
         /// </summary>
         const string HttpContextKey = "__CompositionDependencyResolver_Container";
 
-        private ComposablePartCatalog catalog;
+        private ComposablePartCatalog globalCatalog;
+        private CompositionContainer globalContainer;
+        private ComposablePartCatalog filteredCatalog;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositionDependencyResolver"/> class.
@@ -31,7 +30,13 @@ namespace MefContrib.Web.Mvc
         /// <param name="catalog">The catalog.</param>
         public CompositionDependencyResolver(ComposablePartCatalog catalog)
         {
-            this.catalog = catalog;
+            // Global container: all parts
+            this.globalCatalog = catalog;
+            this.globalContainer = new CompositionContainer(this.globalCatalog);
+
+            // Per-request container: only NonShared parts
+            this.filteredCatalog = new FilteringCatalog(
+                this.globalCatalog, new HasCreationPolicy(CreationPolicy.NonShared));
         }
 
         /// <summary>
@@ -45,7 +50,7 @@ namespace MefContrib.Web.Mvc
                 if (!CurrentRequestContext.Items.Contains(HttpContextKey))
                 {
                     CurrentRequestContext.Items.Add(HttpContextKey,
-                        new CompositionContainer(catalog));
+                        new CompositionContainer(this.filteredCatalog, this.globalContainer));
                 }
 
                 return (CompositionContainer)CurrentRequestContext.Items[HttpContextKey];
