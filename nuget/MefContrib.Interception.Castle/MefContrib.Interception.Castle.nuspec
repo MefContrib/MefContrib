@@ -9,10 +9,12 @@
     <description>Managed Extensibility Framework (MEF) interception support using Catle.Core.</description>
     <summary>Managed Extensibility Framework (MEF) interception support using Catle.Core.</summary>
     <language>en-US</language>
+    <tags>mef ioc di dependency injection mvc composition castle</tags>
+    <projectUrl>http://mefcontrib.codeplex.com</projectUrl>
+    <iconUrl>http://download.codeplex.com/Project/Download/FileDownload.aspx?ProjectName=mvcsitemap&amp;DownloadId=208524</iconUrl>
     <dependencies>
       <dependency id="MefContrib" version="1.0.0.2" />
       <dependency id="Castle.Core" version="2.5.2" />
     </dependencies>
-    <tags>mef ioc di dependency injection mvc composition castle</tags>
   </metadata>
 </package>

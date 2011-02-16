@@ -9,10 +9,12 @@
     <description>Managed Extensibility Framework (MEF) and Unity integration.</description>
     <summary>Managed Extensibility Framework (MEF) and Unity integration.</summary>
     <language>en-US</language>
+    <tags>mef ioc di dependency injection mvc composition unity</tags>
+    <projectUrl>http://mefcontrib.codeplex.com</projectUrl>
+    <iconUrl>http://download.codeplex.com/Project/Download/FileDownload.aspx?ProjectName=mvcsitemap&amp;DownloadId=208524</iconUrl>
     <dependencies>
       <dependency id="MefContrib" version="1.0.0.2" />
       <dependency id="Unity" version="2.0" />
     </dependencies>
-    <tags>mef ioc di dependency injection mvc composition unity</tags>
   </metadata>
 </package>

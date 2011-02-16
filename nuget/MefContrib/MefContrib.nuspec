@@ -10,5 +10,7 @@
     <summary>MEF Contrib is a community-developed library of extensions to the Managed Extensibility Framework (MEF).</summary>
     <language>en-US</language>
     <tags>mef ioc di dependency injection composition</tags>
+    <projectUrl>http://mefcontrib.codeplex.com</projectUrl>
+    <iconUrl>http://download.codeplex.com/Project/Download/FileDownload.aspx?ProjectName=mvcsitemap&amp;DownloadId=208524</iconUrl>
   </metadata>
 </package>
