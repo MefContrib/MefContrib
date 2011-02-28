@@ -1,6 +1,6 @@
-﻿[assembly: WebActivator.PreApplicationStartMethod(typeof($rootnamespace$.AppStart_MefContribMVC3), "Start")]
+﻿[assembly: WebActivator.PreApplicationStartMethod(typeof($rootnamespace$.App_Start.AppStart_MefContribMVC3), "Start")]
 
-namespace $rootnamespace$
+namespace $rootnamespace$.App_Start
 {
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
