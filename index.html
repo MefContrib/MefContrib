@@ -1,73 +1,231 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset='utf-8'>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-  <title>MefContrib/MefContrib @ GitHub</title>
-
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #1437b6;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #ebc849; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #ebc849; }
-    h3 { text-align: center; color: #ebc849; }
-    a { color: #ebc849; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
-
-<body>
-  <a href="http://github.com/MefContrib/MefContrib"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-
-  <div id="container">
-
-    <div class="download">
-      <a href="http://github.com/MefContrib/MefContrib/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/MefContrib/MefContrib/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="http://github.com/MefContrib/MefContrib">MefContrib</a>
-      <span class="small">by <a href="http://github.com/MefContrib">MefContrib</a></span></h1>
-
-    <div class="description">
-      User contributed extensions for the Managed Extensibility Framework (MEF)
-    </div>
-
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Conforming XHTML 1.0 Strict Template</title>
     
+   <link rel="stylesheet" type="text/css" href="css/960_24_col.css" media="all"> 	
+    <style type="text/css">
+    
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, font, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td {
+        	margin: 0;
+        	padding: 0;
+        	border: 0;
+        	outline: 0;
+        	font-weight: inherit;
+        	font-style: inherit;
+        	font-size: 100%;
+        	font-family: inherit;
+        	vertical-align: baseline;
+        }
+        
+        :focus {
+        	outline: 0;
+        }
+        
+        body {
+        	line-height: 1;
+        	color: black;
+        	background: white;
+        }
+        
+        ol, ul {
+        	list-style: none;
+        }
+        
+        table {
+        	border-collapse: separate;
+        	border-spacing: 0;
+        }
+        
+        caption, th, td {
+        	text-align: left;
+        	font-weight: normal;
+        }
+        
+        blockquote:before, blockquote:after,
+        q:before, q:after {
+        	content: "";
+        }
+        
+        blockquote, q {
+        	quotes: "" "";
+        }
+        
+        body {
+            background: #fff url('img/background-large.png') top left repeat-x;
+        }
+        
+        #wrapper {
+            background-color: transparent;
+            margin: 0 auto 100px auto;
+            text-align: center;
+            width: 950px;
+        }
+        
+        #contents {
+            background-color: transparent;
+            text-align: left;
+        }
+        
+        #header:after {
+            content: ".";
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+        
+        #header {
+            height: 95px;
+            padding-top: 20px;
+        }
+        
+        ul {
+            list-style-type: none;
+            float: right;
+            font-family: Arial, "Sans-Serif";
+            font-size: 14px;
+            margin-top: 30px;
+        }
+        
+        li {
+            float: left;
+        }
+        
+        li a {
+            border: 2px solid transparent;
+            color: #000;
+            display: block;
+            padding: 7px 15px;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+		
+		li a.disabled {
+            border: 0;
+            color: #666;
+            display: block;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        
+        li a:hover {
+            background-color: #afca38;
+            border: 2px solid #73880a;
+        }
+        
+        #logo {
+            display: block;
+            float: left;
+            height: 70px;
+            width: 220px;
+        }
+        
+        #ribbon-large {
+            background-color: transparent;
+            height: 287px;
+            margin-bottom: 55px;
+            padding: 30px 0 0 0;
+        }
+        
+        #ribbon-large h1 {
+            color: #fff;
+            font-family: 'Arial Narrow', sans-serif;;
+            font-size: 30px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            text-transform: none;
+        }
+        
+        #ribbon-large p {
+            color: #fff;
+            font-family: Arial, "Sans-serif";
+            font-size: 12px;
+            letter-spacing: 1px;
+            line-height: 22px;
+        }
 
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/MefContrib/MefContrib/zipball/master">zip</a> or
-      <a href="http://github.com/MefContrib/MefContrib/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/MefContrib/MefContrib</pre>
-    </p>
+        #footer {
+            background: red url('img/background-footer.png') top left repeat-x;
+            height: 250px;
+            margin: 0 auto;
+            text-align: center;
+        }
+		
+		.container_24 {
+			background-color: transparent;
+		}
+		
+		#columns {
+			background-color: transparent;
+		}
+		
+		#columns:after {
+            content: ".";
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+                
+        #columns h1 {
+            color: #afca38;
+            font-family: Arial, "Sans-serif";
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 26px;
+            text-transform: uppercase;
+        }
+        
+        #columns p {
+			color: #666666;
+			font-family: 'Trebuchet MS', Helvetica, sans-serif;
+			font-size: 12px;
+			letter-spacing: 0px;
+			line-height: 19px;
+			margin-bottom: 19px;
+		}
+    
+    </style>
+	
+	
+	</head>
 
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/MefContrib/MefContrib">MefContrib/MefContrib</a>
-    </div>
+    <body>
+    
+        <div class="container_24">
+            
+                <div id="header">
+                
+                    <a href="#" id="logo" text="Click to get back to the start page">
+                        <img src="img/mefcontrib-logo.png" alt="MefContrib logo">
+                    </a>
+                               
+                </div>
+                
+                <div id="contents">
+                    <div id="ribbon-large">
+                        <h1>Rebuilding the site</h1>
+                        <p>
+                            We are working at rebuilding this site again! Stay tuned
+                        </p>
+                    </div>
+                
+                </div>
+                
+            </div>
+            
+        </div>
 
-  </div>
-
-  
-</body>
+    </body>
 </html>
