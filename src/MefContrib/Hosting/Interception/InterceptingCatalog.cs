@@ -14,10 +14,10 @@
     {
         private readonly object synchRoot = new object();
         private readonly ComposablePartCatalog interceptedCatalog;
-        private readonly INotifyComposablePartCatalogChanged interceptedCatalogNotifyChange;
         private readonly IInterceptionConfiguration configuration;
+        private readonly IDictionary<ComposablePartDefinition, InnerPartDefinition> innerParts;
         private IQueryable<ComposablePartDefinition> innerPartsQueryable;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="InterceptingCatalog"/> class.
         /// </summary>
@@ -29,12 +29,13 @@
             if (configuration == null) throw new ArgumentNullException("configuration");
 
             this.interceptedCatalog = interceptedCatalog;
-            this.interceptedCatalogNotifyChange = interceptedCatalog as INotifyComposablePartCatalogChanged;
             this.configuration = configuration;
+            this.innerParts = new Dictionary<ComposablePartDefinition, InnerPartDefinition>();
             
+            InitializeRecomposition();
             InitializeHandlers();
         }
-
+        
         private void InitializeHandlers()
         {
             foreach(var handler in this.configuration.ExportHandlers)
@@ -45,6 +46,64 @@
             foreach (var handler in this.configuration.PartHandlers)
             {
                 handler.Initialize(this.interceptedCatalog);
+            }
+        }
+
+        private void InitializeRecomposition()
+        {
+            var interceptedCatalogNotifyChange = interceptedCatalog as INotifyComposablePartCatalogChanged;
+            if (interceptedCatalogNotifyChange != null)
+            {
+                interceptedCatalogNotifyChange.Changing += HandleInterceptedCatalogChanging;
+            }
+        }
+
+        private void HandleInterceptedCatalogChanging(object sender, ComposablePartCatalogChangeEventArgs e)
+        {
+            Recompose(e.AddedDefinitions, e.RemovedDefinitions, e.AtomicComposition);
+        }
+
+        private void EnsurePartsInitialized()
+        {
+            if (GetParts() == null)
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        private void Recompose(IEnumerable<ComposablePartDefinition> added, IEnumerable<ComposablePartDefinition> removed, AtomicComposition outerComposition)
+        {
+            EnsurePartsInitialized();
+
+            var addedInnerPartDefinitions = added.Select(GetPart);
+            var removedInnerPartDefinitions = removed.Select(def => innerParts[def]);
+
+            using (var composition = new AtomicComposition(outerComposition))
+            {
+                var addedDefinitions = addedInnerPartDefinitions.Select(p => p.Definition).ToList();
+                var removedDefinitions = removedInnerPartDefinitions.Select(p => p.Definition).ToList();
+
+                composition.AddCompleteAction(() => OnChanged(
+                    addedDefinitions,
+                    removedDefinitions,
+                    null));
+
+                OnChanging(
+                    addedDefinitions,
+                    removedDefinitions,
+                    composition);
+
+                foreach (var innerPart in addedInnerPartDefinitions)
+                {
+                    innerParts.Add(innerPart.Original, innerPart);
+                }
+
+                foreach (var removedDefinition in removedInnerPartDefinitions)
+                {
+                    innerParts.Remove(removedDefinition.Original);
+                }
+
+                composition.Complete();
             }
         }
 
@@ -101,10 +160,12 @@
                             parts = handler.GetParts(parts);
                         }
 
-                        this.innerPartsQueryable = parts
-                            .Select(GetPart)
-                            .ToList()
-                            .AsQueryable();
+                        foreach (var innerPart in parts.Select(GetPart))
+                        {
+                            this.innerParts.Add(innerPart.Original, innerPart);
+                        }
+
+                        this.innerPartsQueryable = this.innerParts.Values.Select(p => p.Definition).AsQueryable();
                     }
                 }
             }
@@ -112,17 +173,21 @@
             return this.innerPartsQueryable;
         }
 
-        private ComposablePartDefinition GetPart(ComposablePartDefinition partDefinition)
+        private InnerPartDefinition GetPart(ComposablePartDefinition partDefinition)
         {
             var interceptor = GetInterceptor(partDefinition);
             if (interceptor == null)
             {
                 // If the part is not being intercepted, suppress interception
                 // by returning the original part
-                return partDefinition;
+                return new InnerPartDefinition(partDefinition);
             }
 
-            return new InterceptingComposablePartDefinition(partDefinition, interceptor);
+            var innerPart = new InnerPartDefinition(
+                partDefinition,
+                new InterceptingComposablePartDefinition(partDefinition, interceptor));
+
+            return innerPart;
         }
 
         private IExportedValueInterceptor GetInterceptor(ComposablePartDefinition partDefinition)
@@ -145,34 +210,50 @@
         /// <summary>
         /// Occurs when a <see cref="ComposablePartCatalog"/> has changed.
         /// </summary>
-        public event EventHandler<ComposablePartCatalogChangeEventArgs> Changed
-        {
-            add
-            {
-                if (this.interceptedCatalogNotifyChange != null)
-                    this.interceptedCatalogNotifyChange.Changed += value;
-            }
-            remove
-            {
-                if (this.interceptedCatalogNotifyChange != null)
-                    this.interceptedCatalogNotifyChange.Changed -= value;
-            }
-        }
+        public event EventHandler<ComposablePartCatalogChangeEventArgs> Changed;
 
         /// <summary>
         /// Occurs when a <see cref="ComposablePartCatalog"/> is changing.
         /// </summary>
-        public event EventHandler<ComposablePartCatalogChangeEventArgs> Changing
+        public event EventHandler<ComposablePartCatalogChangeEventArgs> Changing;
+
+        /// <summary>
+        /// Fires the <see cref="Changing"/> event.
+        /// </summary>
+        /// <param name="addedDefinitions">The collection of added <see cref="ComposablePartDefinition"/> instances.</param>
+        /// <param name="removedDefinitions">The collection of removed <see cref="ComposablePartDefinition"/> instances.</param>
+        /// <param name="composition"><see cref="AtomicComposition"/> instance.</param>
+        protected virtual void OnChanging(IEnumerable<ComposablePartDefinition> addedDefinitions, IEnumerable<ComposablePartDefinition> removedDefinitions, AtomicComposition composition)
         {
-            add
+            if (Changing != null)
             {
-                if (this.interceptedCatalogNotifyChange != null)
-                    this.interceptedCatalogNotifyChange.Changing += value;
+                if (addedDefinitions == null) addedDefinitions = Enumerable.Empty<ComposablePartDefinition>();
+                if (removedDefinitions == null) removedDefinitions = Enumerable.Empty<ComposablePartDefinition>();
+
+                var args = new ComposablePartCatalogChangeEventArgs(
+                    addedDefinitions, removedDefinitions, composition);
+
+                Changing(this, args);
             }
-            remove
+        }
+
+        /// <summary>
+        /// Fires the <see cref="Changed"/> event.
+        /// </summary>
+        /// <param name="addedDefinitions">The collection of added <see cref="ComposablePartDefinition"/> instances.</param>
+        /// <param name="removedDefinitions">The collection of removed <see cref="ComposablePartDefinition"/> instances.</param>
+        /// <param name="composition"><see cref="AtomicComposition"/> instance.</param>
+        protected virtual void OnChanged(IEnumerable<ComposablePartDefinition> addedDefinitions, IEnumerable<ComposablePartDefinition> removedDefinitions, AtomicComposition composition)
+        {
+            if (Changed != null)
             {
-                if (this.interceptedCatalogNotifyChange != null)
-                    this.interceptedCatalogNotifyChange.Changing -= value;
+                if (addedDefinitions == null) addedDefinitions = Enumerable.Empty<ComposablePartDefinition>();
+                if (removedDefinitions == null) removedDefinitions = Enumerable.Empty<ComposablePartDefinition>();
+
+                var args = new ComposablePartCatalogChangeEventArgs(
+                    addedDefinitions, removedDefinitions, composition);
+
+                Changed(this, args);
             }
         }
 
@@ -188,6 +269,49 @@
             IEnumerable<IExportedValueInterceptor> interceptors)
         {
             return new CompositeValueInterceptor(interceptors.ToArray());
+        }
+
+        private class InnerPartDefinition
+        {
+            public InnerPartDefinition(ComposablePartDefinition original)
+            {
+                Original = original;
+            }
+
+            public InnerPartDefinition(ComposablePartDefinition original, ComposablePartDefinition intercepting)
+            {
+                Original = original;
+                Intercepting = intercepting;
+            }
+
+            public ComposablePartDefinition Original { get; private set; }
+
+            private ComposablePartDefinition Intercepting { get; set; }
+
+            public ComposablePartDefinition Definition
+            {
+                get { return Intercepting ?? Original; }
+            }
+            
+            public bool Equals(InnerPartDefinition other)
+            {
+                if (ReferenceEquals(null, other)) return false;
+                if (ReferenceEquals(this, other)) return true;
+                return Equals(other.Original, Original);
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != typeof (InnerPartDefinition)) return false;
+                return Equals((InnerPartDefinition) obj);
+            }
+
+            public override int GetHashCode()
+            {
+                return Original.GetHashCode();
+            }
         }
     }
 }

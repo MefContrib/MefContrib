@@ -49,7 +49,9 @@
             if (definition == null) throw new ArgumentNullException("definition");
 
             if (this.values.ContainsKey(definition))
+            {
                 return this.values[definition];
+            }
 
             var value = InterceptedPart.GetExportedValue(definition);
             var interceptingValue = this.valueInterceptor.Intercept(value);

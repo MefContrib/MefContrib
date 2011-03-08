@@ -127,6 +127,7 @@
     <Compile Include="Hosting\Interception\InterceptingComposablePartTests.cs" />
     <Compile Include="Hosting\Interception\Logger.cs" />
     <Compile Include="Hosting\Interception\OrderProcessor.cs" />
+    <Compile Include="Hosting\Interception\RecompositionTests.cs" />
     <Compile Include="ShouldExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

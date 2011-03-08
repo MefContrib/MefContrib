@@ -114,4 +114,47 @@ namespace MefContrib.Hosting.Interception.Tests
             return value;
         }
     }
+
+    #region Recomposable Parts
+
+    public interface IRecomposablePart
+    {
+        int Count { get; set; }
+    }
+
+    [Export]
+    public class RecomposablePartImporter
+    {
+        [ImportMany(AllowRecomposition = true)]
+        public IRecomposablePart[] Parts { get; set; }
+    }
+
+    [Export(typeof(IRecomposablePart))]
+    public class RecomposablePart1 : IRecomposablePart
+    {
+        public int Count { get; set; }
+    }
+
+    [Export(typeof(IRecomposablePart))]
+    public class RecomposablePart2 : IRecomposablePart
+    {
+        public int Count { get; set; }
+    }
+
+    public class RecomposablePartInterceptor : IExportedValueInterceptor
+    {
+        public object Intercept(object value)
+        {
+            var part = value as IRecomposablePart;
+            if (part != null)
+            {
+                part.Count++;
+            }
+
+            return value;
+        }
+    }
+
+    #endregion
+
 }
