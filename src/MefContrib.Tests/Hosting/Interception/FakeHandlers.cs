@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
+using System.Linq;
 
 namespace MefContrib.Hosting.Interception.Tests
 {
@@ -38,6 +39,8 @@ namespace MefContrib.Hosting.Interception.Tests
         {
             yield break;
         }
+
+        public event EventHandler<PartHandlerChangedEventArgs> Changed;
     }
 
     public class FakePartHandler2 : IPartHandler
@@ -50,5 +53,32 @@ namespace MefContrib.Hosting.Interception.Tests
         {
             yield break;
         }
+
+        public event EventHandler<PartHandlerChangedEventArgs> Changed;
+    }
+
+    public class RecomposablePartHandler : IPartHandler
+    {
+        public void Initialize(ComposablePartCatalog interceptedCatalog)
+        {
+            Changed += delegate { };
+        }
+
+        public IEnumerable<ComposablePartDefinition> GetParts(IEnumerable<ComposablePartDefinition> parts)
+        {
+            return parts;
+        }
+
+        public void AddParts(ComposablePartCatalog catalog)
+        {
+            Changed(this, new PartHandlerChangedEventArgs(catalog.Parts, Enumerable.Empty<ComposablePartDefinition>()));
+        }
+
+        public void RemoveParts(ComposablePartCatalog catalog)
+        {
+            Changed(this, new PartHandlerChangedEventArgs(Enumerable.Empty<ComposablePartDefinition>(), catalog.Parts));
+        }
+
+        public event EventHandler<PartHandlerChangedEventArgs> Changed;
     }
 }

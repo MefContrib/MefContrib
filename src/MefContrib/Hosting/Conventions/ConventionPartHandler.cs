@@ -39,6 +39,11 @@ namespace MefContrib.Hosting.Conventions
         }
 
         /// <summary>
+        /// Occurs when <see cref="ConventionPartHandler"/> is changed.
+        /// </summary>
+        public event EventHandler<PartHandlerChangedEventArgs> Changed;
+
+        /// <summary>
         /// Creates <see cref="ComposablePartDefinition"/> instances from the <see cref="IPartConvention"/> and types.
         /// </summary>
         /// <returns>An <see cref="IEnumerable{T}"/>, containing <see cref="ComposablePartDefinition"/> instances.</returns>

@@ -46,6 +46,7 @@
             foreach (var handler in this.configuration.PartHandlers)
             {
                 handler.Initialize(this.interceptedCatalog);
+                handler.Changed += HandlePartHandlerChanged;
             }
         }
 
@@ -61,6 +62,11 @@
         private void HandleInterceptedCatalogChanging(object sender, ComposablePartCatalogChangeEventArgs e)
         {
             Recompose(e.AddedDefinitions, e.RemovedDefinitions, e.AtomicComposition);
+        }
+
+        private void HandlePartHandlerChanged(object sender, PartHandlerChangedEventArgs e)
+        {
+            Recompose(e.AddedDefinitions, e.RemovedDefinitions, null);
         }
 
         private void EnsurePartsInitialized()

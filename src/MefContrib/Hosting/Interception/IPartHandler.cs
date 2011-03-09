@@ -1,5 +1,6 @@
 namespace MefContrib.Hosting.Interception
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition.Primitives;
 
@@ -23,5 +24,10 @@ namespace MefContrib.Hosting.Interception
         /// <remarks>This method is called at most once when the <see cref="InterceptingCatalog.Parts"/>
         /// property is being calculated.</remarks>
         IEnumerable<ComposablePartDefinition> GetParts(IEnumerable<ComposablePartDefinition> parts);
+
+        /// <summary>
+        /// Occurs when <see cref="IPartHandler"/> is changed.
+        /// </summary>
+        event EventHandler<PartHandlerChangedEventArgs> Changed;
     }
 }

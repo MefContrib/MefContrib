@@ -110,6 +110,7 @@
     <Compile Include="Hosting\Generics\GenericTypeCatalog.cs" />
     <Compile Include="Hosting\Generics\MappingNotFoundException.cs" />
     <Compile Include="Hosting\Interception\IPartHandler.cs" />
+    <Compile Include="Hosting\Interception\PartHandlerChangedEventArgs.cs" />
     <Compile Include="IHideObjectMembers.cs" />
     <Compile Include="Hosting\Conventions\IImportConvention.cs" />
     <Compile Include="Hosting\Conventions\ImportConvention.cs" />

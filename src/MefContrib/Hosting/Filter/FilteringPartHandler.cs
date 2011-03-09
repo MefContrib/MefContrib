@@ -43,5 +43,10 @@ namespace MefContrib.Hosting.Filter
         {
             return parts.Where(part => this.filter(part));
         }
+
+        /// <summary>
+        /// Occurs when <see cref="IPartHandler"/> is changed.
+        /// </summary>
+        public event EventHandler<PartHandlerChangedEventArgs> Changed;
     }
 }

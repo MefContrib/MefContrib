@@ -60,12 +60,18 @@ namespace MefContrib.Hosting.Generics
         
         #region INotifyComposablePartCatalogChanged Implementation
 
+        /// <summary>
+        /// Occurs when a <see cref="ComposablePartCatalog"/> has changed.
+        /// </summary>
         public event EventHandler<ComposablePartCatalogChangeEventArgs> Changed
         {
             add { this.interceptingCatalog.Changed += value; }
             remove { this.interceptingCatalog.Changed -= value; }
         }
 
+        /// <summary>
+        /// Occurs when a <see cref="ComposablePartCatalog"/> is changing.
+        /// </summary>
         public event EventHandler<ComposablePartCatalogChangeEventArgs> Changing
         {
             add { this.interceptingCatalog.Changing += value; }
