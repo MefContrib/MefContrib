@@ -152,5 +152,39 @@ namespace MefContrib.Hosting.Interception.Tests
             Assert.That(catalog.Parts.Count(), Is.EqualTo(3));
             Assert.That(catalog.Parts.OfType<InterceptingComposablePartDefinition>().Count(), Is.EqualTo(3));
         }
+
+        [Test]
+        public void When_removing_existing_part_from_the_part_handler_intercepting_catalog_is_recomposed_and_removes_that_part()
+        {
+            var partHandler = new RecomposablePartHandler();
+            var part2Catalog = new TypeCatalog(typeof (RecomposablePart2));
+            var innerCatalog = new TypeCatalog(typeof(RecomposablePartImporter), typeof(RecomposablePart1));
+            var aggregateCatalog = new AggregateCatalog(innerCatalog, part2Catalog);
+            var cfg = new InterceptionConfiguration()
+                .AddInterceptor(new RecomposablePartInterceptor())
+                .AddHandler(partHandler);
+            var catalog = new InterceptingCatalog(aggregateCatalog, cfg);
+            container = new CompositionContainer(catalog);
+
+            var importer = container.GetExportedValue<RecomposablePartImporter>();
+            Assert.That(importer, Is.Not.Null);
+            Assert.That(importer.Parts, Is.Not.Null);
+            Assert.That(importer.Parts.Length, Is.EqualTo(2));
+            Assert.That(importer.Parts[0].Count, Is.EqualTo(1));
+            Assert.That(importer.Parts[1].Count, Is.EqualTo(1));
+            Assert.That(catalog.Parts.Count(), Is.EqualTo(3));
+            Assert.That(catalog.Parts.OfType<InterceptingComposablePartDefinition>().Count(), Is.EqualTo(3));
+
+            // Recompose
+            partHandler.RemoveParts(part2Catalog);
+
+            Assert.That(importer, Is.Not.Null);
+            Assert.That(importer.Parts, Is.Not.Null);
+            Assert.That(importer.Parts.Length, Is.EqualTo(1));
+            Assert.That(importer.Parts[0].Count, Is.EqualTo(1));
+            Assert.That(importer.Parts[0].GetType(), Is.EqualTo(typeof(RecomposablePart1)));
+            Assert.That(catalog.Parts.Count(), Is.EqualTo(2));
+            Assert.That(catalog.Parts.OfType<InterceptingComposablePartDefinition>().Count(), Is.EqualTo(2));
+        }
     }
 }

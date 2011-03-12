@@ -17,7 +17,7 @@ namespace MefContrib.Hosting.Interception
         void Initialize(ComposablePartCatalog interceptedCatalog);
 
         /// <summary>
-        /// Method which can filter or produce parts.
+        /// Method which can filter or produce <see cref="ComposablePartDefinition"/> instances.
         /// </summary>
         /// <param name="parts">An <see cref="IEnumerable{T}"/> of <see cref="ComposablePartDefinition"/> instances.</param>
         /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="ComposablePartDefinition"/> instances.</returns>
@@ -28,6 +28,8 @@ namespace MefContrib.Hosting.Interception
         /// <summary>
         /// Occurs when <see cref="IPartHandler"/> is changed.
         /// </summary>
+        /// <remarks>This event is used by the <see cref="InterceptingCatalog"/>.
+        /// When the event is raised, the catalog is recomposed.</remarks>
         event EventHandler<PartHandlerChangedEventArgs> Changed;
     }
 }

@@ -281,11 +281,26 @@
         {
             public InnerPartDefinition(ComposablePartDefinition original)
             {
+                if (original == null)
+                {
+                    throw new ArgumentNullException("original");
+                }
+
                 Original = original;
             }
 
             public InnerPartDefinition(ComposablePartDefinition original, ComposablePartDefinition intercepting)
             {
+                if (original == null)
+                {
+                    throw new ArgumentNullException("original");
+                }
+
+                if (intercepting == null)
+                {
+                    throw new ArgumentNullException("intercepting");
+                }
+
                 Original = original;
                 Intercepting = intercepting;
             }
