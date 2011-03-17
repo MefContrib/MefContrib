@@ -3,6 +3,9 @@
     using System.Configuration;
     using System.Diagnostics;
 
+    /// <summary>
+    /// Represents configuration section for configuring parts for <see cref="ConventionCatalog"/>.
+    /// </summary>
     public class ConventionConfigurationSection : ConfigurationSection
     {
         /// <summary>

@@ -19,6 +19,12 @@ namespace MefContrib.Hosting.Conventions.Tests
 
             var exports = new List<ExportDefinition>(parts[0].ExportDefinitions);
             Assert.That(exports.Count, Is.EqualTo(1));
+
+            var imports = new List<ImportDefinition>(parts[0].ImportDefinitions);
+            Assert.That(imports.Count, Is.EqualTo(1));
+            Assert.That(imports[0].ContractName, Is.EqualTo("somestring"));
+            Assert.That(imports[0].IsRecomposable, Is.EqualTo(false));
+            Assert.That(imports[0].IsPrerequisite, Is.EqualTo(false));
         }
     }
 }
