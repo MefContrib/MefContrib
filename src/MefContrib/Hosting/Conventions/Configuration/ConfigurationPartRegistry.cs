@@ -58,19 +58,17 @@ namespace MefContrib.Hosting.Conventions.Configuration
         /// </summary>
         public ConventionConfigurationSection ConfigurationSection { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the contract service used by the registry.
+        /// </summary>
+        /// <value>An <see cref="IContractService"/> instance.</value>
         public DefaultConventionContractService ContractService { get; private set; }
 
-        public ITypeScanner TypeScanner { get; set; }
-
-        public PartConventionBuilder<PartConvention> Part()
-        {
-            throw new NotSupportedException();
-        }
-
-        public PartConventionBuilder<TConvention> Part<TConvention>() where TConvention : IPartConvention, new()
-        {
-            throw new NotSupportedException();
-        }
+        /// <summary>
+        /// Gets the type scanner used to create parts out of the conventions in the registry.
+        /// </summary>
+        /// <value>An <see cref="ITypeScanner"/> instance.</value>
+        public ITypeScanner TypeScanner { get; private set; }
 
         private IList<IExportConvention> CreateExportConventions(ExportElementCollection elementCollection)
         {
