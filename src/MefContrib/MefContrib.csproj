@@ -59,6 +59,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -68,6 +69,7 @@
     <Compile Include="Hosting\Conventions\AggregatedTypeScanner.cs" />
     <Compile Include="Hosting\Conventions\AppDomainPartRegistryLocator.cs" />
     <Compile Include="Hosting\Conventions\AssemblyTypeScanner.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ConfigurationPartRegistry.cs" />
     <Compile Include="Hosting\Conventions\Configuration\ConventionBuilder.cs" />
     <Compile Include="Hosting\Conventions\Configuration\ExportConventionBuilder.cs" />
     <Compile Include="Hosting\Conventions\Configuration\ExportRegistry.cs" />
@@ -103,6 +105,15 @@
     <Compile Include="Hosting\Conventions\ExpressionExtensions.cs" />
     <Compile Include="Hosting\Conventions\IContractService.cs" />
     <Compile Include="Hosting\Conventions\IExportConvention.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\Section\ExportElement.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\Section\ExportElementCollection.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\Section\ImportElement.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\Section\ImportElementCollection.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\Section\MetadataElement.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\Section\MetadataElementCollection.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\Section\PartElement.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\Section\PartElementCollection.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\Section\ConventionConfigurationSection.cs" />
     <Compile Include="Hosting\EmptyCatalog.cs" />
     <Compile Include="Hosting\Filter\FilteringPartHandler.cs" />
     <Compile Include="Hosting\Generics\GenericCatalog.cs" />

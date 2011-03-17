@@ -64,6 +64,7 @@
     <Compile Include="Hosting\Conventions\AssemblyTypeScannerTests.cs" />
     <Compile Include="Hosting\Conventions\AssemblyWrapper.cs" />
     <Compile Include="Hosting\Conventions\Catch.cs" />
+    <Compile Include="Hosting\Conventions\ConfigurationPartRegistryTests.cs" />
     <Compile Include="Hosting\Conventions\ContextSpecificationAssertions.cs" />
     <Compile Include="Hosting\Conventions\ConventionsCatalogTests.cs" />
     <Compile Include="Hosting\Conventions\ConventionPartCreatorTests.cs" />
@@ -138,6 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
