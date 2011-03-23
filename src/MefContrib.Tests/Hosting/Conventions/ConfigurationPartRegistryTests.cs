@@ -15,7 +15,7 @@ namespace MefContrib.Hosting.Conventions.Tests
             var catalog = new ConventionCatalog(registry);
 
             var parts = new List<ComposablePartDefinition>(catalog.Parts);
-            Assert.That(parts.Count, Is.EqualTo(1));
+            Assert.That(parts.Count, Is.Not.EqualTo(0));
 
             var exports = new List<ExportDefinition>(parts[0].ExportDefinitions);
             Assert.That(exports.Count, Is.EqualTo(1));

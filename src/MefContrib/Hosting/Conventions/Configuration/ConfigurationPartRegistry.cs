@@ -37,7 +37,7 @@ namespace MefContrib.Hosting.Conventions.Configuration
             var typeScanner = new TypeScanner();
             foreach (PartElement part in ConfigurationSection.Parts)
             {
-                var type = CreateType(part.Type);
+                var type = GetType(part.Type);
                 typeScanner.Types.Add(type);
             }
 
@@ -57,7 +57,7 @@ namespace MefContrib.Hosting.Conventions.Configuration
                 conventions.Add(
                     new PartConvention
                         {
-                            Condition = t => t == CreateType(innerPart.Type),
+                            Condition = t => t == GetType(innerPart.Type),
                             Exports = CreateExportConventions(innerPart.Exports),
                             Imports = CreateImportConventions(innerPart.Imports),
                             Metadata = CreateMetadataItems(innerPart.Metadata),
@@ -85,11 +85,29 @@ namespace MefContrib.Hosting.Conventions.Configuration
         /// <value>An <see cref="ITypeScanner"/> instance.</value>
         public ITypeScanner TypeScanner { get; private set; }
 
-        private Type CreateType(string typeName)
+        #region Private methods
+
+        private Type GetType(string typeName)
         {
             var type = Type.GetType(typeName, true);
             return type;
         }
+
+        private MemberInfo[] GetMembers(Type type, string memberName)
+        {
+            var members = string.IsNullOrEmpty(memberName)
+                              ? new MemberInfo[] { type }
+                              : type.GetMember(memberName);
+
+            return members;
+        }
+
+        private string GetContractName(MemberInfo member, string givenContractName)
+        {
+            var contractName = string.IsNullOrEmpty(givenContractName) ? null : givenContractName;
+            return contractName;
+        }
+
 
         private IList<IExportConvention> CreateExportConventions(ExportElementCollection elementCollection)
         {
@@ -102,13 +120,13 @@ namespace MefContrib.Hosting.Conventions.Configuration
                     var innerExport = export;
                     exports.Add(
                         new ExportConvention
-                        {
-                            ContractName = m => string.IsNullOrEmpty(innerExport.ContractName) ? null : innerExport.ContractName,
-                            ContractType = m => CreateType(innerExport.ContractType),
-                            Members = t => string.IsNullOrEmpty(innerExport.Member) ? new MemberInfo[] { t } : t.GetMember(innerExport.Member),
-                            Metadata = CreateMetadataItems(export.Metadata)
-                        }
-                    );
+                            {
+                                ContractName = member => GetContractName(member, innerExport.ContractName),
+                                ContractType = member => GetType(innerExport.ContractType),
+                                Members = type => GetMembers(type, innerExport.Member),
+                                Metadata = CreateMetadataItems(export.Metadata)
+                            }
+                        );
                 }
 
             }
@@ -125,16 +143,16 @@ namespace MefContrib.Hosting.Conventions.Configuration
                 var innerImport = import;
                 imports.Add(
                     new ImportConvention
-                    {
-                        ContractName = t => string.IsNullOrEmpty(innerImport.ContractName) ? null : innerImport.ContractName,
-                        ContractType = t => CreateType(innerImport.ContractType),
-                        Members = t => string.IsNullOrEmpty(innerImport.Member) ? new MemberInfo[] { t } : t.GetMember(innerImport.Member),
-                        AllowDefaultValue = import.AllowDefault,
-                        CreationPolicy = import.CreationPolicy,
-                        Recomposable = import.IsRecomposable,
-                        RequiredMetadata = CreateRequiredMetadataItems(innerImport.RequiredMetadata)
-                    }
-                );
+                        {
+                            ContractName = member => GetContractName(member, innerImport.ContractName),
+                            ContractType = member => GetType(innerImport.ContractType),
+                            Members = type => GetMembers(type, innerImport.Member),
+                            AllowDefaultValue = import.AllowDefault,
+                            CreationPolicy = import.CreationPolicy,
+                            Recomposable = import.IsRecomposable,
+                            RequiredMetadata = CreateRequiredMetadataItems(innerImport.RequiredMetadata)
+                        }
+                    );
             }
 
             return imports;
@@ -157,11 +175,13 @@ namespace MefContrib.Hosting.Conventions.Configuration
             var items = new List<RequiredMetadataItem>();
             foreach (MetadataElement configurationMetadata in elementCollection)
             {
-                var item = new RequiredMetadataItem(configurationMetadata.Name, CreateType(configurationMetadata.Type));
+                var item = new RequiredMetadataItem(configurationMetadata.Name, GetType(configurationMetadata.Type));
                 items.Add(item);
             }
 
             return items;
         }
+
+        #endregion
     }
 }
