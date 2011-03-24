@@ -24,7 +24,7 @@ namespace $rootnamespace$.App_Start
             // there is one constructor marked with the [ImportingConstructor] attribute.
             var catalog = new AggregateCatalog(
                 new DirectoryCatalog("bin"),
-                new ConventionCatalog(new MvcApplicationRegistry()));
+                new ConventionCatalog(new MvcApplicationRegistry())); // Note: add your own (convention)catalogs here if needed.
 
             // Tell MVC3 to use MEF as its dependency resolver.
             var dependencyResolver = new CompositionDependencyResolver(catalog);
