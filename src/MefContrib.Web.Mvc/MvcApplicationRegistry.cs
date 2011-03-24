@@ -19,7 +19,8 @@
         /// </summary>
         public MvcApplicationRegistry()
         {
-            Scan(x => {
+            Scan(x =>
+            {
                 x.Assembly(Assembly.GetExecutingAssembly());
                 x.Directory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"));
             });
@@ -27,8 +28,10 @@
             Part()
                 .ForTypesAssignableFrom<IController>()
                 .MakeNonShared()
+                .ExportTypeAs<IController>()
                 .ExportType()
-                .Imports(x => {
+                .Imports(x =>
+                {
                     x.Import().Members(
                         m => new[] { m.GetConstructors().FirstOrDefault(c => c.GetCustomAttributes(typeof(ImportingConstructorAttribute), false).Length > 0) ?? m.GetGreediestConstructor() });
                     x.Import().Members(
