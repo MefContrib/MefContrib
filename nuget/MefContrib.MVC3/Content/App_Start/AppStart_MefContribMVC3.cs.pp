@@ -12,6 +12,10 @@ namespace $rootnamespace$.App_Start
     {
         public static void Start()
         {
+            // Register the CompositionContainerLifetimeHttpModule HttpModule.
+            // This makes sure everything is cleaned up correctly after each request.
+            CompositionContainerLifetimeHttpModule.Register();
+
             // Create MEF catalog based on the contents of ~/bin.
             //
             // Note that any class in the referenced assemblies implementing in "IController"

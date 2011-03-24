@@ -18,7 +18,7 @@
         /// <summary>
         /// HttpContext key for the container.
         /// </summary>
-        const string HttpContextKey = "__CompositionDependencyResolver_Container";
+        public const string HttpContextKey = "__CompositionDependencyResolver_Container";
 
         private ComposablePartCatalog globalCatalog;
         private CompositionContainer globalContainer;

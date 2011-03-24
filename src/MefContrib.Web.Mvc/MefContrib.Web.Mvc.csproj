@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -50,6 +51,7 @@
     </Compile>
     <Compile Include="CompositionActionInvoker.cs" />
     <Compile Include="CompositionBootstrapper.cs" />
+    <Compile Include="CompositionContainerLifetimeHttpModule.cs" />
     <Compile Include="CompositionControllerActivator.cs" />
     <Compile Include="CompositionDataAnnotationsModelValidatorProvider.cs" />
     <Compile Include="CompositionDependencyResolver.cs" />
