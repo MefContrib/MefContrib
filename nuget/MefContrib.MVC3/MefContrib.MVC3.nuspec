@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MefContrib.MVC3</id>
-    <version>1.0.0.3</version>
+    <version>1.0.0.4</version>
     <authors>Maarten Balliauw</authors>
     <owners>MefContrib</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -14,7 +14,7 @@
     <iconUrl>http://download.codeplex.com/Project/Download/FileDownload.aspx?ProjectName=mvcsitemap&amp;DownloadId=208524</iconUrl>
     <dependencies>
       <dependency id="MefContrib" version="1.0.0.2" />
-      <dependency id="WebActivator" version="1.0.0.0" />
+      <dependency id="WebActivator" version="1.4.0.0" />
     </dependencies>
   </metadata>
 </package>
