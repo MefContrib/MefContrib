@@ -2,6 +2,7 @@ namespace MefContrib.Hosting.Conventions.Configuration
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Configuration;
     using System.Reflection;
     using MefContrib.Hosting.Conventions.Configuration.Section;
@@ -163,7 +164,15 @@ namespace MefContrib.Hosting.Conventions.Configuration
             var items = new List<MetadataItem>();
             foreach (MetadataElement configurationMetadata in elementCollection)
             {
-                var item = new MetadataItem(configurationMetadata.Name, configurationMetadata.Value);
+                Type targetType = GetType(configurationMetadata.Type);
+                TypeConverter typeConverter = TypeDescriptor.GetConverter(targetType);
+                if (typeConverter == null)
+                {
+                    throw new InvalidOperationException(string.Format("Type {0} does not provide a type converter.", targetType.Name));
+                }
+
+                var value = typeConverter.ConvertFromString(configurationMetadata.Value);
+                var item = new MetadataItem(configurationMetadata.Name, value);
                 items.Add(item);
             }
 

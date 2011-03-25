@@ -99,11 +99,11 @@
         /// Gets a collection of all the metadata defined for the <see cref="ImportElement"/>.
         /// </summary>
         /// <value>A <see cref="MetadataElementCollection"/> object.</value>
-        [ConfigurationProperty("metadata", IsDefaultCollection = false, IsRequired = false)]
+        [ConfigurationProperty("required-metadata", IsDefaultCollection = false, IsRequired = false)]
         public MetadataElementCollection RequiredMetadata
         {
             [DebuggerStepThrough]
-            get { return (MetadataElementCollection)base["metadata"]; }
+            get { return (MetadataElementCollection)base["required-metadata"]; }
         }
     }
 }
