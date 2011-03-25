@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using MefContrib.Hosting.Conventions.Configuration;
+using MefContrib.Hosting.Conventions.Configuration.Section;
 using NUnit.Framework;
 
 namespace MefContrib.Hosting.Conventions.Tests
@@ -8,6 +10,24 @@ namespace MefContrib.Hosting.Conventions.Tests
     [TestFixture]
     public class ConfigurationPartRegistryTests
     {
+        [Test]
+        public void Invoking_ctor_with_null_string_causes_an_exception()
+        {
+            Assert.That(delegate
+            {
+                new ConfigurationPartRegistry((string)null);
+            }, Throws.InstanceOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void Invoking_ctor_with_null_section_causes_an_exception()
+        {
+            Assert.That(delegate
+            {
+                new ConfigurationPartRegistry((ConventionConfigurationSection)null);
+            }, Throws.InstanceOf<ArgumentNullException>());
+        }
+
         [Test]
         public void FakePart_is_exported_using_xml_configuration()
         {

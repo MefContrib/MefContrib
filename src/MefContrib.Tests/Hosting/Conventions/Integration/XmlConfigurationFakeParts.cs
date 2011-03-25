@@ -33,6 +33,8 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
     public class SimpleContractImporter
     {
         public Lazy<ISimpleContract, ISimpleMetadata>[] SimpleContracts { get; set; }
+
+        public ISimpleContract[] SimpleContractsNoMetadataInterface { get; set; }
     }
 
 }

@@ -56,6 +56,10 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
             Assert.That(simpleExport.Value.SimpleContracts.Length, Is.EqualTo(1));
             Assert.That(simpleExport.Value.SimpleContracts[0].Metadata.IntValue, Is.EqualTo(1234));
             Assert.That(simpleExport.Value.SimpleContracts[0].Metadata.StrValue, Is.EqualTo("some string"));
+
+            Assert.That(simpleExport.Value.SimpleContractsNoMetadataInterface, Is.Not.Null);
+            Assert.That(simpleExport.Value.SimpleContractsNoMetadataInterface.Length, Is.EqualTo(1));
+            Assert.That(simpleExport.Value.SimpleContractsNoMetadataInterface[0].GetType(), Is.EqualTo(typeof(SimpleContract1)));
         }
     }
 }
