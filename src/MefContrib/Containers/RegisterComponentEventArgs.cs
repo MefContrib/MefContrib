@@ -14,6 +14,11 @@ namespace MefContrib.Containers
         /// <param name="name">Optional name.</param>
         public RegisterComponentEventArgs(Type type, string name)
         {
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+
             Type = type;
             Name = name;
         }

@@ -26,6 +26,16 @@ namespace MefContrib.Containers
         /// </remarks>
         public static Lazy<object> Resolve(ExportProvider exportProvider, Type type, string name)
         {
+            if (exportProvider == null)
+            {
+                throw new ArgumentNullException("exportProvider");
+            }
+
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+
             var exports = exportProvider.GetExports(type, null, name);
 
             if (exports.Count() == 0)
@@ -60,6 +70,16 @@ namespace MefContrib.Containers
         /// </remarks>
         public static IEnumerable<Lazy<object>> ResolveAll(ExportProvider exportProvider, Type type, string name)
         {
+            if (exportProvider == null)
+            {
+                throw new ArgumentNullException("exportProvider");
+            }
+
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+
             var exports = exportProvider.GetExports(type, null, name);
 
             if (exports.Count() == 0)
