@@ -3,6 +3,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Reflection;
+using MefContrib.Containers;
 using MefContrib.Integration.Unity.Extensions;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;

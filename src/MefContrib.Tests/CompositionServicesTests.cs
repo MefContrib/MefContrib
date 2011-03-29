@@ -16,21 +16,21 @@ namespace MefContrib.Tests
         public void When_retrieving_import_definition_type_for_constructor_import_import_1_DummyImport1_is_returned()
         {
             ImportDefinition = DummyPartImports.Single(d => d.ContractName == AttributedModelServices.GetContractName(typeof(IDummyImport1)));
-            Assert.AreEqual(typeof(IDummyImport1), CompositionServices.GetImportDefinitionType(ImportDefinition));
+            Assert.AreEqual(typeof(IDummyImport1), ContractServices.GetImportDefinitionType(ImportDefinition));
         }
 
         [Test]
         public void When_retrieving_import_definition_type_for_property_import_import_2_DummyImport2_is_returned()
         {
             ImportDefinition = DummyPartImports.Single(d => d.ContractName == AttributedModelServices.GetContractName(typeof(IDummyImport2)));
-            Assert.AreEqual(typeof(IDummyImport2), CompositionServices.GetImportDefinitionType(ImportDefinition));
+            Assert.AreEqual(typeof(IDummyImport2), ContractServices.GetImportDefinitionType(ImportDefinition));
         }
 
         [Test]
         public void When_retrieving_import_definition_typoe_for_field_import_import_3_DummyImport3_is_returned()
         {
             ImportDefinition = DummyPartImports.Single(d => d.ContractName == AttributedModelServices.GetContractName(typeof(IDummyImport3)));
-            Assert.AreEqual(typeof(IDummyImport3), CompositionServices.GetImportDefinitionType(ImportDefinition));
+            Assert.AreEqual(typeof(IDummyImport3), ContractServices.GetImportDefinitionType(ImportDefinition));
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace MefContrib.Tests
         {
             Assert.That(delegate
             {
-                CompositionServices.GetImportDefinitionType(null);
+                ContractServices.GetImportDefinitionType(null);
             }, Throws.TypeOf<ArgumentNullException>());
         }
 
@@ -47,7 +47,7 @@ namespace MefContrib.Tests
         {
             Assert.That(delegate
             {
-                CompositionServices.IsReflectionImportDefinition(null);
+                ContractServices.IsReflectionImportDefinition(null);
             }, Throws.TypeOf<ArgumentNullException>());
         }
     }

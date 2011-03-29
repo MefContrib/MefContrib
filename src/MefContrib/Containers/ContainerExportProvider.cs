@@ -1,4 +1,4 @@
-namespace MefContrib.Integration
+namespace MefContrib.Containers
 {
     using System;
     using System.Collections.Generic;

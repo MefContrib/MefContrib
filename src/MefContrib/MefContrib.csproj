@@ -117,7 +117,6 @@
     <Compile Include="Hosting\EmptyCatalog.cs" />
     <Compile Include="Hosting\Filter\FilteringPartHandler.cs" />
     <Compile Include="Hosting\Generics\GenericCatalog.cs" />
-    <Compile Include="CompositionServices.cs" />
     <Compile Include="Hosting\Generics\GenericTypeCatalog.cs" />
     <Compile Include="Hosting\Generics\MappingNotFoundException.cs" />
     <Compile Include="Hosting\Interception\IPartHandler.cs" />
@@ -156,14 +155,14 @@
     <Compile Include="Hosting\Interception\InterceptingComposablePart.cs" />
     <Compile Include="Hosting\Interception\InterceptingComposablePartDefinition.cs" />
     <Compile Include="Hosting\Interception\Interceptors\CompositeValueInterceptor.cs" />
-    <Compile Include="Integration\ContainerAdapterBase.cs" />
-    <Compile Include="Integration\ContainerServices.cs" />
-    <Compile Include="Integration\ContainerExportProvider.cs" />
+    <Compile Include="Containers\ContainerAdapterBase.cs" />
+    <Compile Include="Containers\ContainerServices.cs" />
+    <Compile Include="Containers\ContainerExportProvider.cs" />
     <Compile Include="Hosting\FactoryExportDefinition.cs" />
     <Compile Include="Hosting\FactoryExportProvider.cs" />
-    <Compile Include="Integration\IContainerAdapter.cs" />
-    <Compile Include="Integration\PartNotComposableAttribute.cs" />
-    <Compile Include="Integration\RegisterComponentEventArgs.cs" />
+    <Compile Include="Containers\IContainerAdapter.cs" />
+    <Compile Include="Containers\PartNotComposableAttribute.cs" />
+    <Compile Include="Containers\RegisterComponentEventArgs.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

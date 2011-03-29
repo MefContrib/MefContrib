@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.Composition;
+using MefContrib.Containers;
 using Microsoft.Practices.Unity;
 
 namespace MefContrib.Integration.Unity.Tests

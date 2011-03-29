@@ -1,6 +1,7 @@
 namespace MefContrib.Integration.Unity
 {
     using System;
+    using MefContrib.Containers;
     using MefContrib.Integration.Unity.Extensions;
     using Microsoft.Practices.Unity;
 

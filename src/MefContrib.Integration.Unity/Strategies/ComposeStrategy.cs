@@ -2,6 +2,7 @@ namespace MefContrib.Integration.Unity.Strategies
 {
     using System;
     using System.ComponentModel.Composition;
+    using MefContrib.Containers;
     using Microsoft.Practices.ObjectBuilder2;
 
     /// <summary>

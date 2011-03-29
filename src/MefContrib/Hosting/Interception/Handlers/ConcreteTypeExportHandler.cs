@@ -28,7 +28,7 @@
                 return exports;
             
             var returnedExports = new List<Tuple<ComposablePartDefinition, ExportDefinition>>();
-            var importDefinitionType = CompositionServices.GetImportDefinitionType(definition);
+            var importDefinitionType = ContractServices.GetImportDefinitionType(definition);
             
             if (!importDefinitionType.IsAbstract && !importDefinitionType.IsInterface)
             {
