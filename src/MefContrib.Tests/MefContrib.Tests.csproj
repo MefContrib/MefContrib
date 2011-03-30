@@ -89,6 +89,7 @@
     <Compile Include="Hosting\Conventions\ImportConventionTests.cs" />
     <Compile Include="Hosting\Conventions\ImportRegistryTests.cs" />
     <Compile Include="Hosting\Conventions\Integration\ConfigurationPartRegistryIntegrationTests.cs" />
+    <Compile Include="Hosting\Conventions\Integration\IntegrationFakeParts.cs" />
     <Compile Include="Hosting\Conventions\Integration\IntegrationTests.cs" />
     <Compile Include="Hosting\Conventions\Integration\XmlConfigurationFakeParts.cs" />
     <Compile Include="Hosting\Conventions\IPartRegistryTests.cs" />
