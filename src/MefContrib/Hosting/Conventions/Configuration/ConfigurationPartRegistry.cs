@@ -109,6 +109,11 @@ namespace MefContrib.Hosting.Conventions.Configuration
             return contractName;
         }
 
+        private Type GetContractType(MemberInfo member, string givenContractType)
+        {
+            var contractType = string.IsNullOrEmpty(givenContractType) ? member as Type : GetType(givenContractType);
+            return contractType;
+        }
 
         private IList<IExportConvention> CreateExportConventions(ExportElementCollection elementCollection)
         {
@@ -123,7 +128,7 @@ namespace MefContrib.Hosting.Conventions.Configuration
                         new ExportConvention
                             {
                                 ContractName = member => GetContractName(member, innerExport.ContractName),
-                                ContractType = member => GetType(innerExport.ContractType),
+                                ContractType = member => GetContractType(member, innerExport.ContractType),
                                 Members = type => GetMembers(type, innerExport.Member),
                                 Metadata = CreateMetadataItems(export.Metadata)
                             }
@@ -146,7 +151,7 @@ namespace MefContrib.Hosting.Conventions.Configuration
                     new ImportConvention
                         {
                             ContractName = member => GetContractName(member, innerImport.ContractName),
-                            ContractType = member => GetType(innerImport.ContractType),
+                            ContractType = member => GetContractType(member, innerImport.ContractType),
                             Members = type => GetMembers(type, innerImport.Member),
                             AllowDefaultValue = import.AllowDefault,
                             CreationPolicy = import.CreationPolicy,

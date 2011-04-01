@@ -25,7 +25,7 @@
         /// <summary>
         /// Gets or sets the type of the contract.
         /// </summary>
-        [ConfigurationProperty("contractType", DefaultValue = null, IsRequired = true)]
+        [ConfigurationProperty("contractType", DefaultValue = null, IsRequired = false)]
         [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\")]
         public string ContractType
         {
