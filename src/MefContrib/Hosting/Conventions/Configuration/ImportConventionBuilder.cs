@@ -59,7 +59,7 @@
         public ImportConventionBuilder<TImportConvention> ContractName<TContractType>()
         {
             Func<MemberInfo, string> contractNameFunction =
-                x => typeof(TContractType).FullName;
+                x => AttributedModelServices.GetContractName(typeof(TContractType));
 
             this.ProvideValueFor(x => x.ContractName, contractNameFunction);
 

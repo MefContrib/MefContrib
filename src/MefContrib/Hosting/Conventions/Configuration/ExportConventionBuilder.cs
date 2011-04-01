@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.Composition;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -131,8 +132,8 @@
         /// <returns>Returns a reference to the same <see cref="ExportConventionBuilder{TExportConvention}"/> instance as the method was called on.</returns>
         public ExportConventionBuilder<TExportConvention> ContractName<TContractType>()
         {
-            Func<MemberInfo, string> contractNameFunction = 
-                x => typeof(TContractType).FullName;
+            Func<MemberInfo, string> contractNameFunction =
+                x => AttributedModelServices.GetContractName(typeof (TContractType));
 
             this.ProvideValueFor(x => x.ContractName, contractNameFunction);
 
