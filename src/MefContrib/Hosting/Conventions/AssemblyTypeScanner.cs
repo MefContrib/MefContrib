@@ -37,6 +37,11 @@ namespace MefContrib.Hosting.Conventions
         /// <returns>An <see cref="IEnumerable{T}"/> instance containing the matched types.</returns>
         public IEnumerable<Type> GetTypes(Predicate<Type> predicate)
         {
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
             return this.Assembly.GetTypes().Where(x =>
                 predicate(x) &&
                 x.IsPublic &&

@@ -35,6 +35,15 @@
         }
 
         /// <summary>
+        /// Creates a convention builder for <see cref="ExportConvention"/> conventions.
+        /// </summary>
+        /// <returns>A <see cref="ExportConventionBuilder{TPartConvention}"/> instance for the <see cref="ExportConvention"/> type.</returns>
+        public ExportConventionBuilder<TPart, ExportConvention> Export<TPart>()
+        {
+            return this.CreateExpressionBuilder<ExportConventionBuilder<TPart, ExportConvention>>();
+        }
+
+        /// <summary>
         /// Create a convention builder for the <typeparamref name="TConvention"/> convention type.
         /// </summary>
         /// <typeparam name="TConvention">The type of a class which implements the <see cref="IExportConvention"/> interface.</typeparam>

@@ -73,6 +73,7 @@
     <Compile Include="Hosting\Conventions\Configuration\ConventionBuilder.cs" />
     <Compile Include="Hosting\Conventions\Configuration\ExportConventionBuilder.cs" />
     <Compile Include="Hosting\Conventions\Configuration\ExportConventionBuilderExtensions.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ExportConventionBuilderOfT.cs" />
     <Compile Include="Hosting\Conventions\Configuration\ExportRegistry.cs" />
     <Compile Include="Hosting\Conventions\Configuration\ExpressionBuilder.cs" />
     <Compile Include="Hosting\Conventions\Configuration\ExpressionBuilderFactory.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Hosting\Conventions\Configuration\IImportRegistry.cs" />
     <Compile Include="Hosting\Conventions\Configuration\ImportConventionBuilder.cs" />
     <Compile Include="Hosting\Conventions\Configuration\ImportConventionBuilderExtensions.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\ImportConventionBuilderOfT.cs" />
     <Compile Include="Hosting\Conventions\Configuration\ImportRegistry.cs" />
     <Compile Include="Hosting\Conventions\Configuration\IPartRegistry.cs" />
     <Compile Include="Hosting\Conventions\Configuration\ITypeDefaultConvention.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="Hosting\Conventions\Configuration\ITypeScannerConfigurator.cs" />
     <Compile Include="Hosting\Conventions\Configuration\PartConventionBuilder.cs" />
     <Compile Include="Hosting\Conventions\Configuration\PartConventionBuilderExtensions.cs" />
+    <Compile Include="Hosting\Conventions\Configuration\PartConventionBuilderOfT.cs" />
     <Compile Include="Hosting\Conventions\Configuration\PartRegistry.cs" />
     <Compile Include="Hosting\Conventions\Configuration\TypeDefaultConvention.cs" />
     <Compile Include="Hosting\Conventions\Configuration\TypeDefaultConventionBuilder.cs" />

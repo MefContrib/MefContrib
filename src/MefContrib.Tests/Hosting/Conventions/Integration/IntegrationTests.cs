@@ -72,7 +72,7 @@ namespace MefContrib.Hosting.Conventions.Tests.Integration
                 .Part()
                 .ForType<SampleExport>()
                 .ExportProperty("TextValue", "V1");
-
+            
             var catalog =
                new ConventionCatalog(registry);
             

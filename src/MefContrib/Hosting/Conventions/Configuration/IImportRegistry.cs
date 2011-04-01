@@ -13,6 +13,12 @@
         ImportConventionBuilder<ImportConvention> Import();
 
         /// <summary>
+        /// Creates a convention builde for <see cref="ImportConvention"/> conventions.
+        /// </summary>
+        /// <returns>A <see cref="ImportConventionBuilder{TPart, TPartConvention}"/> instance for the <see cref="ImportConvention"/> type.</returns>
+        ImportConventionBuilder<TPart, ImportConvention> Import<TPart>();
+
+        /// <summary>
         /// Create a convention builder for the <typeparamref name="TConvention"/> convention type.
         /// </summary>
         /// <typeparam name="TConvention">The type of a class which implements the <see cref="IImportConvention"/> interface.</typeparam>

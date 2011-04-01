@@ -68,6 +68,19 @@
         }
 
         /// <summary>
+        /// Creates a convention builder for <see cref="PartConvention"/> conventions.
+        /// </summary>
+        /// <typeparam name="TPart">The type of the part this conventions is used for.</typeparam>
+        /// <returns>A <see cref="PartConventionBuilder{TPartConvention}"/> instance for the <see cref="PartConvention"/> type.</returns>
+        public PartConventionBuilder<TPart, PartConvention> Part<TPart>()
+        {
+            var builder = this.CreateExpressionBuilder<PartConventionBuilder<TPart, PartConvention>>();
+            builder.ForType<TPart>();
+
+            return builder;
+        }
+
+        /// <summary>
         /// Create a convention builder for the <typeparamref name="TConvention"/> convention type.
         /// </summary>
         /// <typeparam name="TConvention">The type of a class which implements the <see cref="IPartConvention"/> interface.</typeparam>

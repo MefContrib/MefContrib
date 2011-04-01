@@ -213,7 +213,7 @@
         /// <param name="expression">An expression that idenfies the members which should be used as exports.</param>
         /// <returns>Returns a reference to the same <see cref="ExportConventionBuilder{TExportConvention}"/> instance as the method was called on.</returns>
         /// <exception cref="ArgumentNullException">The value of the <paramref name="expression"/> parameter was null.</exception>
-        public ExportConventionBuilder<TExportConvention> Members<TPart>(Expression<Action<TPart>> expression)
+        public ExportConventionBuilder<TExportConvention> Member<TPart>(Expression<Action<TPart>> expression)
         {
             if (expression == null)
             {
@@ -235,7 +235,7 @@
         /// <param name="expression">An expression that idenfies the members which should be used as exports.</param>
         /// <returns>Returns a reference to the same <see cref="ExportConventionBuilder{TExportConvention}"/> instance as the method was called on.</returns>
         /// <exception cref="ArgumentNullException">The value of the <paramref name="expression"/> parameter was null.</exception>
-        public ExportConventionBuilder<TExportConvention> Members<TPart>(Expression<Func<TPart, object>> expression)
+        public ExportConventionBuilder<TExportConvention> Member<TPart>(Expression<Func<TPart, object>> expression)
         {
             if (expression == null)
             {

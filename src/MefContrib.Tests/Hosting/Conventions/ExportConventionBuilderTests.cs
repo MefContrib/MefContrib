@@ -258,7 +258,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         {
             var reference =
                 this.conventionBuilder
-                    .Members<IExportConvention>(x => x.ContractName);
+                    .Member<IExportConvention>(x => x.ContractName);
 
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
@@ -267,7 +267,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         public void Members_should_throw_argument_null_exception_when_called_with_null_value_expression()
         {
             var exception =
-                Catch.Exception(() => this.conventionBuilder.Members((Expression<Func<IExportConvention, object>>)null));
+                Catch.Exception(() => this.conventionBuilder.Member((Expression<Func<IExportConvention, object>>)null));
 
             exception.ShouldBeOfType<ArgumentNullException>();
         }
@@ -276,7 +276,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         public void Members_should_set_members_on_convention_when_called_with_value_expression()
         {
             this.conventionBuilder
-                .Members<IExportConvention>(x => x.ContractName);
+                .Member<IExportConvention>(x => x.ContractName);
             
             var convention =
                 this.conventionBuilder.GetConvention();
