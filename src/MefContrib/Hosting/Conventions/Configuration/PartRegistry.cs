@@ -72,7 +72,7 @@
         /// </summary>
         /// <typeparam name="TConvention">The type of a class which implements the <see cref="IPartConvention"/> interface.</typeparam>
         /// <returns>A <see cref="PartConventionBuilder{TPartConvention}"/> instance for the part convention type specified by the <typeparamref name="TConvention"/> type parameter.</returns>
-        public PartConventionBuilder<TConvention> Part<TConvention>() where TConvention : IPartConvention, new()
+        public PartConventionBuilder<TConvention> PartWithConvention<TConvention>() where TConvention : IPartConvention, new()
         {
             return this.CreateExpressionBuilder<PartConventionBuilder<TConvention>>();
         }

@@ -47,7 +47,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 new PartRegistry();
 
             var result =
-                registry.Part<PartConvention>();
+                registry.PartWithConvention<PartConvention>();
 
             result.ShouldBeOfType<PartConventionBuilder<PartConvention>>();
         }

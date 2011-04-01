@@ -27,7 +27,7 @@
                 new ImportRegistry();
 
             var result =
-                registry.Import<ImportConvention>();
+                registry.ImportWithConvention<ImportConvention>();
 
             result.ShouldBeOfType<ImportConventionBuilder<ImportConvention>>();
         }

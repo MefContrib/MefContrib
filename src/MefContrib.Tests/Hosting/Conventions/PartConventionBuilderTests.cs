@@ -1,12 +1,11 @@
-﻿using MefContrib.Tests;
-
-namespace MefContrib.Hosting.Conventions.Tests
+﻿namespace MefContrib.Hosting.Conventions.Tests
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
     using MefContrib.Hosting.Conventions.Configuration;
+    using MefContrib.Tests;
     using NUnit.Framework;
 
     [TestFixture]
@@ -31,8 +30,8 @@ namespace MefContrib.Hosting.Conventions.Tests
                 this.conventionBuilder
                     .Exports(x =>
                     {
-                        x.Export<ExportConvention>();
-                        x.Export<ExportConvention>();
+                        x.ExportWithConvention<ExportConvention>();
+                        x.ExportWithConvention<ExportConvention>();
                     });
 
             var convention =
@@ -55,7 +54,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         {
             var reference =
                 this.conventionBuilder
-                    .Exports(x => x.Export<ExportConvention>());
+                    .Exports(x => x.ExportWithConvention<ExportConvention>());
 
             reference.ShouldBeSameAs(this.conventionBuilder);
         }
@@ -67,8 +66,8 @@ namespace MefContrib.Hosting.Conventions.Tests
                 this.conventionBuilder
                     .Imports(x =>
                     {
-                        x.Import<ImportConvention>();
-                        x.Import<ImportConvention>();
+                        x.ImportWithConvention<ImportConvention>();
+                        x.ImportWithConvention<ImportConvention>();
                     });
 
             var convention =
@@ -91,7 +90,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         {
             var reference =
                 this.conventionBuilder
-                    .Imports(x => x.Import<ImportConvention>());
+                    .Imports(x => x.ImportWithConvention<ImportConvention>());
 
             reference.ShouldBeSameAs(this.conventionBuilder);
         }

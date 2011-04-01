@@ -27,7 +27,7 @@
                 new ExportRegistry();
 
             var result =
-                registry.Export<ExportConvention>();
+                registry.ExportWithConvention<ExportConvention>();
 
             result.ShouldBeOfType<ExportConventionBuilder<ExportConvention>>();
         }

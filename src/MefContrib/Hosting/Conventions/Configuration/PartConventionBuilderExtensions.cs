@@ -5,32 +5,6 @@ namespace MefContrib.Hosting.Conventions.Configuration
 
     public static class PartConventionBuilderExtensions
     {
-        public static ImportConventionBuilder<ImportConvention> ImportProperty(
-            this ImportConventionBuilder<ImportConvention> builder, string propertyName)
-        {
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException("propertyName");
-            }
-
-            builder.Members(m => new[] { m.GetProperty(propertyName) });
-
-            return builder;
-        }
-
-        public static ExportConventionBuilder<ExportConvention> ExportProperty(
-            this ExportConventionBuilder<ExportConvention> builder, string propertyName)
-        {
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException("propertyName");
-            }
-
-            builder.Members(m => new[] { m.GetProperty(propertyName) });
-
-            return builder;
-        }
-
         public static PartConventionBuilder<PartConvention> ImportConstructor(
             this PartConventionBuilder<PartConvention> builder)
         {

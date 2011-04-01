@@ -9,11 +9,11 @@
         {
             this.TypeScanner = new TypeScanner();
 
-            Part<PartConvention>()
+            PartWithConvention<PartConvention>()
                 .ForTypesMatching(x => true)
                 .MakeNonShared()
                 .AddMetadata("Foo", "Bar")
-                .Imports(i => i.Import<ImportConvention>()
+                .Imports(i => i.ImportWithConvention<ImportConvention>()
                     .ContractName("Contract")
                     .ContractType<IImportConvention>()
                     .Members(x => new[] 
@@ -21,7 +21,7 @@
                         ReflectionServices.GetProperty<IImportConvention>(z => z.ContractName), 
                         ReflectionServices.GetProperty<IImportConvention>(z => z.ContractType) 
                     }))
-                .Exports(e => e.Export<ExportConvention>()
+                .Exports(e => e.ExportWithConvention<ExportConvention>()
                     .ContractName(x => AttributedModelServices.GetContractName(typeof(FakeExportConvention)))
                     .ContractType<IExportConvention>()
                     .Members(x => new[] 
@@ -30,10 +30,10 @@
                         ReflectionServices.GetProperty<IExportConvention>(z => z.ContractType) 
                     }));
 
-            Part<PartConvention>()
+            PartWithConvention<PartConvention>()
                 .ForTypesMatching(x => x.Equals(typeof(FakePart)));
 
-            Part<PartConvention>()
+            PartWithConvention<PartConvention>()
                 .ForTypesMatching(x => false);
         }
     }

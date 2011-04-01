@@ -39,7 +39,7 @@
         /// </summary>
         /// <typeparam name="TConvention">The type of a class which implements the <see cref="IExportConvention"/> interface.</typeparam>
         /// <returns>A <see cref="ExportConventionBuilder{TPartConvention}"/> instance for the export convention type specified by the <typeparamref name="TConvention"/> type parameter.</returns>
-        public ExportConventionBuilder<TConvention> Export<TConvention>() where TConvention : IExportConvention, new()
+        public ExportConventionBuilder<TConvention> ExportWithConvention<TConvention>() where TConvention : IExportConvention, new()
         {
             return this.CreateExpressionBuilder<ExportConventionBuilder<TConvention>>();
         }
