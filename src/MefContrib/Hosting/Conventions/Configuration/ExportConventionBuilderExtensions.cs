@@ -2,6 +2,9 @@ namespace MefContrib.Hosting.Conventions.Configuration
 {
     using System;
 
+    /// <summary>
+    /// Defines a set of useful <see cref="ExportConventionBuilder{T}"/> extensions.
+    /// </summary>
     public static class ExportConventionBuilderExtensions
     {
         public static ExportConventionBuilder<ExportConvention> ExportProperty(

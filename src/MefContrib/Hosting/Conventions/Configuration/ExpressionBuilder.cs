@@ -7,15 +7,22 @@ namespace MefContrib.Hosting.Conventions.Configuration
     using System.Linq.Expressions;
     using System.Reflection;
 
-    /*
-     *  This class needs refactoring before going live 
-     */
-
+    /// <summary>
+    /// Represents the expression builder.
+    /// </summary>
     public interface IExpressionBuilder
     {
+        /// <summary>
+        /// Builds the specific instance and assigns values using expressions.
+        /// </summary>
+        /// <returns>Initialized instance of an object.</returns>
         object Build();
     }
 
+    /// <summary>
+    /// Abstract expression builder.
+    /// </summary>
+    /// <typeparam name="T">Type of the object to be built.</typeparam>
     public abstract class ExpressionBuilder<T> : IExpressionBuilder where T : new()
     {
         /// <summary>
@@ -26,8 +33,12 @@ namespace MefContrib.Hosting.Conventions.Configuration
             this.MemberValues = new Dictionary<MemberInfo, List<object>>();
         }
 
-        protected IDictionary<MemberInfo, List<object>> MemberValues { get; set; }
+        private IDictionary<MemberInfo, List<object>> MemberValues { get; set; }
 
+        /// <summary>
+        /// Builds the specific instance and assigns values using expressions.
+        /// </summary>
+        /// <returns>Initialized instance of an object.</returns>
         public object Build()
         {
             var instance = new T();
@@ -40,6 +51,11 @@ namespace MefContrib.Hosting.Conventions.Configuration
             return instance;
         }
 
+        /// <summary>
+        /// Assigns given value to a property given by the expression.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        /// <param name="value">Value to be assigned to a property represented by the <paramref name="expression"/>.</param>
         public void ProvideValueFor(Expression<Func<T, object>> expression, object value)
         {
             var member =

@@ -3,6 +3,9 @@ namespace MefContrib.Hosting.Conventions.Configuration
     using System;
     using System.Linq.Expressions;
 
+    /// <summary>
+    /// Defines a set of useful <see cref="PartConventionBuilder{T}"/> extensions.
+    /// </summary>
     public static class PartConventionBuilderExtensions
     {
         public static PartConventionBuilder<PartConvention> ImportConstructor(
