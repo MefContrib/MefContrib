@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProductAttribute("MefContrib 1.0.0.0")]
 [assembly: AssemblyCopyrightAttribute("Copyright © MefContrib 2009 - 2010")]
 [assembly: AssemblyVersionAttribute("1.0.0.0")]
-[assembly: AssemblyInformationalVersionAttribute("1.0.0.0 / c4d93f2")]
+[assembly: AssemblyInformationalVersionAttribute("1.0.0.0 / 9183c3e")]
 [assembly: AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: AssemblyDelaySignAttribute(false)]
 
