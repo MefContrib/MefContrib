@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{24A770F8-AF0E-400F-8ABB-3FD68617103E}</ProjectGuid>
+    <ProjectGuid>{8488B684-0D3A-43A5-B1CB-669488FBCCDF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MefContrib.Integration.Unity</RootNamespace>
-    <AssemblyName>MefContrib.Integration.Unity</AssemblyName>
+    <RootNamespace>MefContrib.Integration.Autofac.Tests</RootNamespace>
+    <AssemblyName>MefContrib.Integration.Autofac.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -31,7 +31,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,7 +42,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\MefContrib.Integration.Unity.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -51,19 +51,15 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\MefContrib.Integration.Unity.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\MefContrib.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Autofac, Version=2.4.5.724, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\dependencies\desktop\autofac\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.5.0.9122, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\dependencies\Desktop\Unity\Microsoft.Practices.Unity.dll</HintPath>
+      <HintPath>..\..\dependencies\Desktop\NUnit\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -72,31 +68,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\MefContrib\Properties\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="CompositionIntegration.cs" />
-    <Compile Include="Extensions\TypeRegistrationEntry.cs" />
-    <Compile Include="Extensions\TypeRegistrationTrackerExtension.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Strategies\ComposeStrategy.cs" />
-    <Compile Include="Strategies\CompositionContainerPolicy.cs" />
-    <Compile Include="Strategies\CompositionStrategy.cs" />
-    <Compile Include="Strategies\EnumerableResolutionStrategy.cs" />
-    <Compile Include="Strategies\ICompositionContainerPolicy.cs" />
-    <Compile Include="Strategies\LazyResolveBuildPlanPolicy.cs" />
-    <Compile Include="UnityContainerAdapter.cs" />
-    <Compile Include="UnityContainerExtensions.cs" />
+    <Compile Include="CompositionIntegrationTests.cs" />
+    <Compile Include="BidirectionalIntegrationTests.cs" />
+    <Compile Include="FakeMefComponents.cs" />
+    <Compile Include="FakeAutofacComponents.cs" />
+    <Compile Include="UnityContainerExtensionsTests.cs" />
+    <Compile Include="ContainerExportProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\MefContrib.Integration.Autofac\MefContrib.Integration.Autofac.csproj">
+      <Project>{95DE4CD7-EA05-4EE0-9BD2-04CDF1C08520}</Project>
+      <Name>MefContrib.Integration.Autofac</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MefContrib\MefContrib.csproj">
+      <Project>{0CCE812A-F4EB-4379-B820-D8ADA4330235}</Project>
+      <Name>MefContrib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -116,10 +103,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MefContrib\MefContrib.csproj">
-      <Project>{0CCE812A-F4EB-4379-B820-D8ADA4330235}</Project>
-      <Name>MefContrib</Name>
-    </ProjectReference>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

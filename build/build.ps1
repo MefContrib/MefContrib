@@ -4,7 +4,7 @@ properties {
     $source_directory = "$base_directory\src"
     $nuget_directory  = "$base_directory\nuget"
     $tools_directory  = "$base_directory\tools"
-    $version          = "1.0.0.0"
+    $version          = "1.1.0.0"
 }
 
 include .\psake_ext.ps1
