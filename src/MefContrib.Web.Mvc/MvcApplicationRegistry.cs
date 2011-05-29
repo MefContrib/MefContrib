@@ -28,8 +28,8 @@
             Part()
                 .ForTypesAssignableFrom<IController>()
                 .MakeNonShared()
-                .ExportTypeAs<IController>()
-                .ExportType()
+                .ExportAs<IController>()
+                .Export()
                 .Imports(x =>
                 {
                     x.Import().Members(
