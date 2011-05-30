@@ -32,7 +32,7 @@
         {
             // Global container: all parts
             this.globalCatalog = catalog;
-            this.globalContainer = new CompositionContainer(this.globalCatalog);
+            this.globalContainer = new CompositionContainer(this.globalCatalog, true, null);
 
             // Per-request container: only NonShared parts
             this.filteredCatalog = new FilteringCatalog(
@@ -50,7 +50,7 @@
                 if (!CurrentRequestContext.Items.Contains(HttpContextKey))
                 {
                     CurrentRequestContext.Items.Add(HttpContextKey,
-                        new CompositionContainer(this.filteredCatalog, this.globalContainer));
+                        new CompositionContainer(this.filteredCatalog, true, this.globalContainer));
                 }
 
                 return (CompositionContainer)CurrentRequestContext.Items[HttpContextKey];
