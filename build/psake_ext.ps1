@@ -57,7 +57,7 @@ param(
 	# Generate version number
 	$oldVersion = new-object System.Version($spec.package.metadata.version)	
 	$newVersion = new-object System.Version($version)
-	$newVersionString = $newVersion.Major.ToString() + "." + $newVersion.Minor.ToString() + "." + $newVersion.Build.ToString() + "." + ($oldVersion.Revision).ToString()
+	$newVersionString = $newVersion.Major.ToString() + "." + $newVersion.Minor.ToString() + "." + $newVersion.Build.ToString() + "." + ($oldVersion.Revision + 1).ToString()
 
 	Write-Host "Setting NuSpec file $file version to $newVersionString"
 	
