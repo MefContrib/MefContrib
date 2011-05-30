@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>MefContrib.Interception.Castle</id>
-    <version>1.0.0.5</version>
+    <version>1.1.0.0</version>
     <authors>MefContrib</authors>
     <owners>MefContrib</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,7 +13,7 @@
     <projectUrl>http://mefcontrib.codeplex.com</projectUrl>
     <iconUrl>http://download.codeplex.com/Project/Download/FileDownload.aspx?ProjectName=mvcsitemap&amp;DownloadId=208524</iconUrl>
     <dependencies>
-      <dependency id="MefContrib" version="1.0.0.2" />
+      <dependency id="MefContrib" version="1.1" />
       <dependency id="Castle.Core" version="2.5.2" />
     </dependencies>
   </metadata>
