@@ -28,6 +28,7 @@
             Part()
                 .ForTypesAssignableFrom<IController>()
                 .MakeNonShared()
+                .AddMetadata(new PartCreationScopeAttribute(PartCreationScope.Default))
                 .ExportAs<IController>()
                 .Export()
                 .Imports(x =>
