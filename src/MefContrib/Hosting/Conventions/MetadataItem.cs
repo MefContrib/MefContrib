@@ -69,7 +69,7 @@ namespace MefContrib.Hosting.Conventions
             {
                 return Equals((MetadataItem)obj);
             }
-             
+
             return false;
         }
 

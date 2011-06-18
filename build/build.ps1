@@ -71,12 +71,26 @@ task NuGet -depends Test -description "This task creates the NuGet packages" {
 		-sourceselection "$base_directory\release\MefContrib\MefContrib.Hosting.Interception.Castle.dll" `
 		-librariesroot "$nuget_directory\MefContrib.Interception.Castle\lib" `
 		-nugetcommand "$tools_directory\nuget\NuGet.exe"
+        
+	Create-NuGet-Package `
+		-version $version `
+		-specfile "$nuget_directory\MefContrib.Interception.LinFu\MefContrib.Interception.LinFu.nuspec" `
+		-sourceselection "$base_directory\release\MefContrib\MefContrib.Hosting.Interception.LinFu.dll" `
+		-librariesroot "$nuget_directory\MefContrib.Interception.LinFu\lib" `
+		-nugetcommand "$tools_directory\nuget\NuGet.exe"
 		
 	Create-NuGet-Package `
 		-version $version `
 		-specfile "$nuget_directory\MefContrib.Integration.Unity\MefContrib.Integration.Unity.nuspec" `
 		-sourceselection "$base_directory\release\MefContrib\MefContrib.Integration.Unity.dll" `
 		-librariesroot "$nuget_directory\MefContrib.Integration.Unity\lib" `
+		-nugetcommand "$tools_directory\nuget\NuGet.exe"
+        
+	Create-NuGet-Package `
+		-version $version `
+		-specfile "$nuget_directory\MefContrib.Integration.Autofac\MefContrib.Integration.Autofac.nuspec" `
+		-sourceselection "$base_directory\release\MefContrib\MefContrib.Integration.Autofac.dll" `
+		-librariesroot "$nuget_directory\MefContrib.Integration.Autofac\lib" `
 		-nugetcommand "$tools_directory\nuget\NuGet.exe"
 		
 	Create-NuGet-Package `

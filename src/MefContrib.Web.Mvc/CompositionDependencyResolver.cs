@@ -8,6 +8,7 @@
     using System.Linq;
     using System.Web.Mvc;
     using MefContrib.Hosting.Filter;
+    using MefContrib.Web.Mvc.Filter;
 
     /// <summary>
     /// CompositionDependencyResolver
@@ -30,16 +31,16 @@
         /// <param name="catalog">The catalog.</param>
         public CompositionDependencyResolver(ComposablePartCatalog catalog)
         {
-            // Global container: all parts
+            // Filter the global part catalog to a set of parts that define PartCreationScope.PerMasterContainer.
             this.globalCatalog = catalog;
-            this.globalContainer = new CompositionContainer(this.globalCatalog);
+            this.globalContainer = new CompositionContainer(this.globalCatalog, true, null);
 
             // Per-request container: only NonShared parts
             this.filteredCatalog = new FilteringCatalog(
-                this.globalCatalog, new HasCreationPolicy(CreationPolicy.NonShared));
+                this.globalCatalog, new HasPartCreationScope(PartCreationScope.PerChildContainer));
         }
 
-        /// <summary>
+        /// <summary> 
         /// Gets the container.
         /// </summary>
         /// <value>The container.</value>
@@ -50,7 +51,7 @@
                 if (!CurrentRequestContext.Items.Contains(HttpContextKey))
                 {
                     CurrentRequestContext.Items.Add(HttpContextKey,
-                        new CompositionContainer(this.filteredCatalog, this.globalContainer));
+                        new CompositionContainer(this.filteredCatalog, true, this.globalContainer));
                 }
 
                 return (CompositionContainer)CurrentRequestContext.Items[HttpContextKey];
