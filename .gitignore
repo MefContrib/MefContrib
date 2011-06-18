@@ -5,6 +5,7 @@
 *.suo
 *.user
 *.orig
+*.docstates
 AssemblyInfo.cs
 SharedAssemblyInfo.cs
 deploy/
