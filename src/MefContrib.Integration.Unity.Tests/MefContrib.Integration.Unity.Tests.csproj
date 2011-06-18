@@ -74,6 +74,7 @@
     <Compile Include="FakeMefComponents.cs" />
     <Compile Include="FakeUnityComponents.cs" />
     <Compile Include="LazyResolutionTests.cs" />
+    <Compile Include="ResolutionOrderTests.cs" />
     <Compile Include="UnityContainerExtensionsTests.cs" />
     <Compile Include="ContainerExportProviderTests.cs" />
   </ItemGroup>

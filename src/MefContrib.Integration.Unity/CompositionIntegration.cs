@@ -83,9 +83,16 @@ namespace MefContrib.Integration.Unity
 
         private CompositionContainer PrepareCompositionContainer()
         {
-            // Create the MEF container based on the catalog
-            var container = new CompositionContainer(this.aggregateCatalog, this.providers);
-
+            // Create the MEF container based on the catalog and given providers
+            // Important: the catalog is wrapped with CatalogExportProvider which is
+            // then added as a LAST catalog, this ensures that when querying Unity/MEF
+            // for a single component, Unity components will always take precedence
+            var catalogExportProvider = new CatalogExportProvider(this.aggregateCatalog);
+            var providerList = new List<ExportProvider>(this.providers);
+            providerList.Add(catalogExportProvider);
+            var container = new CompositionContainer(providerList.ToArray());
+            catalogExportProvider.SourceProvider = container;
+            
             // If desired, register an instance of CompositionContainer and Unity container in MEF,
             // this will also make CompositionContainer available to the Unity
             if (Register)
