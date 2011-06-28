@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Integration.Auto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Integration.Autofac.Tests", "MefContrib.Integration.Autofac.Tests\MefContrib.Integration.Autofac.Tests.csproj", "{8488B684-0D3A-43A5-B1CB-669488FBCCDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Hosting.Interception.Unity", "MefContrib.Hosting.Interception.Unity\MefContrib.Hosting.Interception.Unity.csproj", "{9F62DAD1-3FD1-487D-A516-F3E9DC8BF826}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MefContrib.Hosting.Interception.Unity.Tests", "MefContrib.Hosting.Interception.Unity.Tests\MefContrib.Hosting.Interception.Unity.Tests.csproj", "{51F24800-9A8A-4229-99BA-0FEADFD89723}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,14 @@ Global
 		{8488B684-0D3A-43A5-B1CB-669488FBCCDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8488B684-0D3A-43A5-B1CB-669488FBCCDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8488B684-0D3A-43A5-B1CB-669488FBCCDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F62DAD1-3FD1-487D-A516-F3E9DC8BF826}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F62DAD1-3FD1-487D-A516-F3E9DC8BF826}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F62DAD1-3FD1-487D-A516-F3E9DC8BF826}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F62DAD1-3FD1-487D-A516-F3E9DC8BF826}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51F24800-9A8A-4229-99BA-0FEADFD89723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51F24800-9A8A-4229-99BA-0FEADFD89723}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51F24800-9A8A-4229-99BA-0FEADFD89723}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51F24800-9A8A-4229-99BA-0FEADFD89723}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,11 +100,13 @@ Global
 		{9AF5A200-1BE5-4197-8729-56E7B7A73DF7} = {93CDDE2E-0FBD-45EA-9559-DE9AC6B2B10E}
 		{C9853811-2BB0-4A5E-9488-4A524454AC50} = {93CDDE2E-0FBD-45EA-9559-DE9AC6B2B10E}
 		{95DE4CD7-EA05-4EE0-9BD2-04CDF1C08520} = {93CDDE2E-0FBD-45EA-9559-DE9AC6B2B10E}
+		{9F62DAD1-3FD1-487D-A516-F3E9DC8BF826} = {93CDDE2E-0FBD-45EA-9559-DE9AC6B2B10E}
 		{6E7966F6-E59B-4937-80E5-D4EF19B1A62C} = {D7893BE7-6D8C-47BF-B1D4-FA1ED1FD8E21}
 		{AB89B800-89A4-40A5-84BC-9DD0623D18B7} = {D7893BE7-6D8C-47BF-B1D4-FA1ED1FD8E21}
 		{3286DDD8-4D65-499F-A3A7-ED9A29B4DA95} = {D7893BE7-6D8C-47BF-B1D4-FA1ED1FD8E21}
 		{BF1B3DC0-A9BE-4806-A8A2-91B0D3186B1B} = {D7893BE7-6D8C-47BF-B1D4-FA1ED1FD8E21}
 		{8488B684-0D3A-43A5-B1CB-669488FBCCDF} = {D7893BE7-6D8C-47BF-B1D4-FA1ED1FD8E21}
+		{51F24800-9A8A-4229-99BA-0FEADFD89723} = {D7893BE7-6D8C-47BF-B1D4-FA1ED1FD8E21}
 	EndGlobalSection
 	GlobalSection(SpecExplorer.ActivityCompletionStatus) = preSolution
 		SpecExplorer.ActivityCompletionStatus = TestExisting: ;ModelFromScratch: 
