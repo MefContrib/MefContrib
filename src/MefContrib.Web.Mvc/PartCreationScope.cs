@@ -6,18 +6,18 @@
     public enum PartCreationScope
     {
         /// <summary>
-        /// Default. Registers the part per child container. In default MefContrib.Mvc installations, this will mean a per-request lifetime scope.
+        /// Default. Registers the part per-request lifetime scope.
         /// </summary>
         Default = 0,
 
         /// <summary>
-        /// Registers the part per child container. In default MefContrib.Mvc installations, this will mean a per-request lifetime scope.
+        /// Registers the part per-request lifetime scope.
         /// </summary>
-        PerChildContainer = 0,
+        PerRequest = 0,
 
         /// <summary>
-        /// Registers the part per master container. In default MefContrib.Mvc installations, this will mean a per-application lifetime scope.
+        /// Registers the part per-application lifetime scope.
         /// </summary>
-        PerMasterContainer = 1
+        Global = 1
     }
 }

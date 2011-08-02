@@ -12,15 +12,15 @@ namespace MefContrib.Web.Mvc.Filter
     public class HasPartCreationScope
         : IFilter
     {
-        private readonly PartCreationScope partCreationScope;
+        private readonly PartCreationScope _partCreationScope;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HasPartCreationScope"/> class.
         /// </summary>
-        /// <param name="partCreationScope">The part creation scope.</param>
-        public HasPartCreationScope(PartCreationScope partCreationScope)
+        /// <param name="_partCreationScope">The part creation scope.</param>
+        public HasPartCreationScope(PartCreationScope _partCreationScope)
         {
-            this.partCreationScope = partCreationScope;
+            this._partCreationScope = _partCreationScope;
         }
 
         /// <summary>
@@ -48,16 +48,16 @@ namespace MefContrib.Web.Mvc.Filter
                 }
             }
 
-            // Fetch "Scope"
-            var key = "Scope";
+            // Fetch "scope"
+            var key = "scope";
             if (metadata.ContainsKey(key))
             {
                 PartCreationScope scope = PartCreationScope.Default;
                 Enum.TryParse(metadata[key].ToString(), out scope);
 
-                return scope == partCreationScope;
+                return scope == _partCreationScope;
             }
-            else if (partCreationScope == PartCreationScope.Default)
+            else if (_partCreationScope == PartCreationScope.Default)
             {
                 return true;
             }

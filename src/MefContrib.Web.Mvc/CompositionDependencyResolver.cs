@@ -21,6 +21,7 @@
         /// </summary>
         public const string HttpContextKey = "__CompositionDependencyResolver_Container";
 
+        private ComposablePartCatalog completeCatalog;
         private ComposablePartCatalog globalCatalog;
         private CompositionContainer globalContainer;
         private ComposablePartCatalog filteredCatalog;
@@ -31,13 +32,17 @@
         /// <param name="catalog">The catalog.</param>
         public CompositionDependencyResolver(ComposablePartCatalog catalog)
         {
-            // Filter the global part catalog to a set of parts that define PartCreationScope.PerMasterContainer.
-            this.globalCatalog = catalog;
+            // Keep the original catalog
+            this.completeCatalog = catalog;
+
+            // Filter the global part catalog to a set of parts that define PartCreationScope.Global.
+            this.globalCatalog = new FilteringCatalog(
+                this.completeCatalog, new HasPartCreationScope(PartCreationScope.Global));
             this.globalContainer = new CompositionContainer(this.globalCatalog, true, null);
 
-            // Per-request container: only NonShared parts
+            // Filter the per-request part catalog to a set of parts that define PartCreationScope.PerRequest.
             this.filteredCatalog = new FilteringCatalog(
-                this.globalCatalog, new HasPartCreationScope(PartCreationScope.PerChildContainer));
+                this.completeCatalog, new HasPartCreationScope(PartCreationScope.PerRequest));
         }
 
         /// <summary> 
