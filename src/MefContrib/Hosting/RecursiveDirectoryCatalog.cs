@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-
-namespace MefContrib.Hosting
+﻿namespace MefContrib.Hosting
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+
     /// <summary>
-    /// Extends <see cref="DirecotryCatalog"/> to support discovery of parts in sub-directories.
+    /// Extends <see cref="DirectoryCatalog"/> to support discovery of parts in sub-directories.
     /// </summary>
-    public class RecursiveDirectoryCatalog : ComposablePartCatalog, INotifyComposablePartCatalogChanged,
-                                             ICompositionElement
+    public class RecursiveDirectoryCatalog : ComposablePartCatalog, INotifyComposablePartCatalogChanged, ICompositionElement
     {
         private AggregateCatalog _aggregateCatalog;
         private readonly string _path;
@@ -34,16 +33,16 @@ namespace MefContrib.Hosting
         /// <exception cref="ArgumentNullException">The value of the <paramref name="path"/> parameter was <see langword="null"/>.</exception>
         public RecursiveDirectoryCatalog(string path, string searchPattern)
         {
-            if (path == null)
-                throw new ArgumentNullException("path");
+            if (path == null) throw new ArgumentNullException("path");
 
             _path = path;
+
             Initialize(path, searchPattern);
         }
 
-        private IEnumerable<string> GetFoldersRecursive(string path)
+        private static IEnumerable<string> GetFoldersRecursive(string path)
         {
-            var result = new List<string> {path};
+            var result = new List<string> { path };
             foreach (var child in Directory.GetDirectories(path))
             {
                 result.AddRange(GetFoldersRecursive(child));
@@ -95,18 +94,16 @@ namespace MefContrib.Hosting
 
         private string GetDisplayName()
         {
-
-            return string.Format(CultureInfo.CurrentCulture, "{0} (RecusrivePath=\"{1}\")", new[]
-                                                                                                {
-                                                                                                    GetType().Name,
-                                                                                                    _path
-                                                                                                });
+            return string.Format(
+                CultureInfo.CurrentCulture,
+                "{0} (RecusrivePath=\"{1}\")", new[] { GetType().Name, _path });
         }
 
         public override string ToString()
         {
             return GetDisplayName();
         }
+
         /// <summary>
         /// Gets the display name of the directory catalog.
         /// </summary>
@@ -114,6 +111,7 @@ namespace MefContrib.Hosting
         {
             get { return GetDisplayName(); }
         }
+
         /// <summary>
         /// Gets the composition element from which the directory catalog originated.
         /// </summary>
