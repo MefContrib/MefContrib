@@ -162,6 +162,7 @@ namespace MefContrib.Hosting.Conventions.Tests
                 typeof(ConventionPart),
                 typeof(ConventionPart2),
                 typeof(ConventionPart3),
+                typeof(ConventionPart4),
                 typeof(OtherConventionPart),
                 typeof(NullLogger)
             });
@@ -247,5 +248,15 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         public IRepository<string> Repository { get; private set; }
+    }
+
+    public class ConventionPart4
+    {
+        public ConventionPart4(IEnumerable<IRepository<string>> repositories)
+        {
+            Repositories = repositories;
+        }
+
+        public IEnumerable<IRepository<string>> Repositories { get; private set; }
     }
 }

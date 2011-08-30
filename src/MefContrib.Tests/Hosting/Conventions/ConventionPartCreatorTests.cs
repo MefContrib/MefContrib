@@ -450,7 +450,7 @@ namespace MefContrib.Hosting.Conventions.Tests
         }
 
         [Test]
-        public void CreateParts_should_properly_extract_closed_generic_type_argument()
+        public void CreateParts_should_properly_extract_closed_generic_constructor_argument()
         {
             var exportConvention =
                 new ExportConvention
@@ -472,6 +472,68 @@ namespace MefContrib.Hosting.Conventions.Tests
             convention.Imports.Add(importConvention);
             convention.Exports.Add(exportConvention);
             convention.Condition = t => t == typeof(ConventionPart3);
+
+            var registry =
+                new FakePartRegistry2(convention);
+            ConventionPartCreator creator = new ConventionPartCreator(registry);
+            var partDefinition = creator.CreateParts().First();
+            var importDefinitin = partDefinition.ImportDefinitions.Single();
+            importDefinitin.ContractName.ShouldEqual("MefContrib.Hosting.Conventions.Tests.IRepository(System.String)");
+        }
+
+        [Test]
+        public void CreateParts_should_properly_extract_closed_generic_constructor_argument_when_contract_type_is_not_specified()
+        {
+            var exportConvention =
+                new ExportConvention
+                {
+                    Members = t => new[] { t },
+                    ContractType = x => typeof(ConventionPart3),
+                };
+
+            var importConvention =
+                new ImportConvention
+                {
+                    Members = t => new[] { typeof(ConventionPart3).GetConstructors().Single() }
+                };
+
+            var convention =
+                new PartConvention();
+
+            convention.Imports.Add(importConvention);
+            convention.Exports.Add(exportConvention);
+            convention.Condition = t => t == typeof(ConventionPart3);
+
+            var registry =
+                new FakePartRegistry2(convention);
+            ConventionPartCreator creator = new ConventionPartCreator(registry);
+            var partDefinition = creator.CreateParts().First();
+            var importDefinitin = partDefinition.ImportDefinitions.Single();
+            importDefinitin.ContractName.ShouldEqual("MefContrib.Hosting.Conventions.Tests.IRepository(System.String)");
+        }
+
+        [Test]
+        public void CreateParts_should_properly_extract_closed_generic_constructor_argument_when_importing_collection_and_when_contract_type_is_not_specified()
+        {
+            var exportConvention =
+                new ExportConvention
+                {
+                    Members = t => new[] { t },
+                    ContractType = x => typeof(ConventionPart4),
+                };
+
+            var importConvention =
+                new ImportConvention
+                {
+                    Members = t => new[] { typeof(ConventionPart4).GetConstructors().Single() }
+                };
+
+            var convention =
+                new PartConvention();
+
+            convention.Imports.Add(importConvention);
+            convention.Exports.Add(exportConvention);
+            convention.Condition = t => t == typeof(ConventionPart4);
 
             var registry =
                 new FakePartRegistry2(convention);
