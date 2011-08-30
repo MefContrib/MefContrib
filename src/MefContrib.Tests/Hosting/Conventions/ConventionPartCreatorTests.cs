@@ -418,6 +418,69 @@ namespace MefContrib.Hosting.Conventions.Tests
             inspectedImportDefinition.Cardinality.ShouldEqual(ImportCardinality.ZeroOrMore);
         }
 
+        [Test]
+        public void CreateParts_should_properly_extract_closed_generic_type_parameter()
+        {
+            var exportConvention =
+                new ExportConvention
+                {
+                    Members = t => new[] { t },
+                    ContractType = x => typeof(ConventionPart2),
+                };
+
+            var importConvention =
+                new ImportConvention
+                {
+                    Members = t => new[] { ReflectionServices.GetProperty<ConventionPart2>(p => p.Repository) },
+                    ContractType = x => typeof(IRepository<string>)
+                };
+
+            var convention =
+                new PartConvention();
+
+            convention.Imports.Add(importConvention);
+            convention.Exports.Add(exportConvention);
+            convention.Condition = t => t == typeof(ConventionPart2);
+
+            var registry =
+                new FakePartRegistry2(convention);
+            ConventionPartCreator creator = new ConventionPartCreator(registry);
+            var partDefinition = creator.CreateParts().First();
+            partDefinition.ImportDefinitions.Single().ContractName.ShouldEqual("MefContrib.Hosting.Conventions.Tests.IRepository(System.String)");
+        }
+
+        [Test]
+        public void CreateParts_should_properly_extract_closed_generic_type_argument()
+        {
+            var exportConvention =
+                new ExportConvention
+                {
+                    Members = t => new[] { t },
+                    ContractType = x => typeof(ConventionPart3),
+                };
+
+            var importConvention =
+                new ImportConvention
+                {
+                    Members = t => new[] { typeof(ConventionPart3).GetConstructors().Single() },
+                    ContractType = x => typeof(IRepository<string>)
+                };
+
+            var convention =
+                new PartConvention();
+
+            convention.Imports.Add(importConvention);
+            convention.Exports.Add(exportConvention);
+            convention.Condition = t => t == typeof(ConventionPart3);
+
+            var registry =
+                new FakePartRegistry2(convention);
+            ConventionPartCreator creator = new ConventionPartCreator(registry);
+            var partDefinition = creator.CreateParts().First();
+            var importDefinitin = partDefinition.ImportDefinitions.Single();
+            importDefinitin.ContractName.ShouldEqual("MefContrib.Hosting.Conventions.Tests.IRepository(System.String)");
+        }
+
         private static IEnumerable<ComposablePartDefinition> GetPartDefinitionsFromEmptyRegistry()
         {
             var registry =

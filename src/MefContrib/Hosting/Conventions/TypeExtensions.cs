@@ -53,7 +53,17 @@ namespace MefContrib.Hosting.Conventions
 
         public static Type GetActualType(this Type type)
         {
-            return type.IsGenericType ? type.GetGenericArguments()[0] : type;
+            if (type.IsGenericType)
+            {
+                if (typeof(IEnumerable).IsAssignableFrom(type))
+                {
+                    // if the type is a generic collection,
+                    // we wan to extract a collection item type
+                    return type.GetGenericArguments()[0];
+                }
+            }
+
+            return type;
         }
 
         public static bool HasDefaultConstructor(this Type self)
