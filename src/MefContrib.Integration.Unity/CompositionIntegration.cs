@@ -22,13 +22,14 @@ namespace MefContrib.Integration.Unity
         private AggregateCatalog aggregateCatalog;
         private ExportProvider[] providers;
         private CompositionContainer compositionContainer;
+        private readonly bool isThreadSafe;
 
         /// <summary>
         /// Initializes a new instance of <see cref="CompositionIntegration"/> class.
         /// </summary>
         [InjectionConstructor]
         public CompositionIntegration()
-            : this(true)
+            : this(true, false)
         {
         }
 
@@ -37,7 +38,7 @@ namespace MefContrib.Integration.Unity
         /// </summary>
         /// <param name="providers">An array of export providers.</param>
         public CompositionIntegration(params ExportProvider[] providers)
-            : this(true, providers)
+            : this(true, false, providers)
         {
         }
 
@@ -46,12 +47,14 @@ namespace MefContrib.Integration.Unity
         /// </summary>
         /// <param name="register">If true, <see cref="CompositionContainer"/> instance
         /// will be registered in the Unity container.</param>
+        /// <param name="isThreadSafe">Indicates if this instance is thread safe.</param>
         /// <param name="providers">An array of export providers.</param>
-        public CompositionIntegration(bool register, params ExportProvider[] providers)
+        public CompositionIntegration(bool register, bool isThreadSafe = false, params ExportProvider[] providers)
         {
             this.aggregateCatalog = new AggregateCatalog();
             this.register = register;
             this.providers = providers;
+            this.isThreadSafe = isThreadSafe;
         }
 
         /// <summary>
@@ -87,10 +90,10 @@ namespace MefContrib.Integration.Unity
             // Important: the catalog is wrapped with CatalogExportProvider which is
             // then added as a LAST catalog, this ensures that when querying Unity/MEF
             // for a single component, Unity components will always take precedence
-            var catalogExportProvider = new CatalogExportProvider(this.aggregateCatalog);
+            var catalogExportProvider = new CatalogExportProvider(this.aggregateCatalog, this.isThreadSafe);
             var providerList = new List<ExportProvider>(this.providers);
             providerList.Add(catalogExportProvider);
-            var container = new CompositionContainer(providerList.ToArray());
+            var container = new CompositionContainer(null, this.isThreadSafe, providerList.ToArray());
             catalogExportProvider.SourceProvider = container;
             
             // If desired, register an instance of CompositionContainer and Unity container in MEF,
