@@ -67,6 +67,7 @@
     <Compile Include="CompositionFilterAttributeFilterProvider.cs" />
     <Compile Include="CompositionModelBinderProvider.cs" />
     <Compile Include="Filter\HasPartCreationScope.cs" />
+    <Compile Include="ICompositionContainerProvider.cs" />
     <Compile Include="PartCreationScopeAttribute.cs" />
     <Compile Include="IDependencyBuilder.cs" />
     <Compile Include="IModelBinderMetaData.cs" />

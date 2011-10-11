@@ -14,7 +14,7 @@
     /// CompositionDependencyResolver
     /// </summary>
     public class CompositionDependencyResolver
-        : IDependencyResolver, IDependencyBuilder, IServiceProvider
+        : IDependencyResolver, IDependencyBuilder, IServiceProvider, ICompositionContainerProvider
     {
         /// <summary>
         /// HttpContext key for the container.
@@ -43,6 +43,17 @@
             // Filter the per-request part catalog to a set of parts that define PartCreationScope.PerRequest.
             this.filteredCatalog = new FilteringCatalog(
                 this.completeCatalog, new HasPartCreationScope(PartCreationScope.PerRequest));
+        }
+
+        /// <summary>
+        /// Gets the global container.
+        /// </summary>
+        public CompositionContainer GlobalContainer
+        {
+            get
+            {
+                return this.globalContainer;
+            }
         }
 
         /// <summary> 

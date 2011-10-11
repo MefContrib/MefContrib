@@ -13,15 +13,15 @@
         /// <summary>
         /// The dependency builder.
         /// </summary>
-        private readonly CompositionDependencyResolver resolver;
+        private readonly ICompositionContainerProvider compositionContainerProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositionModelBinderProvider"/> class.
         /// </summary>
-        /// <param name="resolver">The resolver.</param>
-        public CompositionModelBinderProvider(CompositionDependencyResolver resolver)
+        /// <param name="compositionContainerProvider">The compositionContainerProvider.</param>
+        public CompositionModelBinderProvider(ICompositionContainerProvider compositionContainerProvider)
         {
-            this.resolver = resolver;
+            this.compositionContainerProvider = compositionContainerProvider;
         }
 
         /// <summary>
@@ -31,7 +31,7 @@
         /// <returns></returns>
         public IModelBinder GetBinder(Type modelType)
         {
-            var modelBinder = resolver.Container.GetExports<IModelBinder, IModelBinderMetaData>()
+            var modelBinder = compositionContainerProvider.Container.GetExports<IModelBinder, IModelBinderMetaData>()
                 .FirstOrDefault(b => b.Metadata.ModelType.Contains(modelType));
             if (modelBinder != null)
             {
