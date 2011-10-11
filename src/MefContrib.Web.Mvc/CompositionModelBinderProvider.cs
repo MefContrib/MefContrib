@@ -10,15 +10,12 @@
     public class CompositionModelBinderProvider 
         : IModelBinderProvider
     {
-        /// <summary>
-        /// The dependency builder.
-        /// </summary>
         private readonly ICompositionContainerProvider compositionContainerProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositionModelBinderProvider"/> class.
         /// </summary>
-        /// <param name="compositionContainerProvider">The compositionContainerProvider.</param>
+        /// <param name="compositionContainerProvider">The composition container provider.</param>
         public CompositionModelBinderProvider(ICompositionContainerProvider compositionContainerProvider)
         {
             this.compositionContainerProvider = compositionContainerProvider;

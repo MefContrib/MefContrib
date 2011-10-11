@@ -62,6 +62,7 @@
     <Compile Include="CompositionBootstrapper.cs" />
     <Compile Include="CompositionContainerLifetimeHttpModule.cs" />
     <Compile Include="CompositionControllerActivator.cs" />
+    <Compile Include="CompositionControllerFactory.cs" />
     <Compile Include="CompositionDataAnnotationsModelValidatorProvider.cs" />
     <Compile Include="CompositionDependencyResolver.cs" />
     <Compile Include="CompositionFilterAttributeFilterProvider.cs" />

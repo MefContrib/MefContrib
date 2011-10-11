@@ -31,7 +31,7 @@
 
             // Tell MVC3 to resolve dependencies in controllers
             ControllerBuilder.Current.SetControllerFactory(
-                new DefaultControllerFactory(
+                new CompositionControllerFactory(
                     new CompositionControllerActivator(dependencyResolver)));
 
             // Tell MVC3 to resolve dependencies in filters
