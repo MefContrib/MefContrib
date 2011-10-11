@@ -32,7 +32,7 @@ namespace MefContrib.Web.Mvc.Filter
         public bool Filter(ComposablePartDefinition part)
         {
             // Fetch all metadata
-            Dictionary<string, object> metadata = new Dictionary<string, object>();
+            Dictionary<string, object> metadata = new Dictionary<string, object>(StringComparer.InvariantCultureIgnoreCase);
             foreach (var md in part.Metadata)
             {
                 metadata.Add(md.Key, md.Value);
@@ -48,8 +48,8 @@ namespace MefContrib.Web.Mvc.Filter
                 }
             }
 
-            // Fetch "scope"
-            var key = "scope";
+            // Fetch "Scope"
+            var key = "Scope";
             if (metadata.ContainsKey(key))
             {
                 PartCreationScope scope = PartCreationScope.Default;
