@@ -71,6 +71,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hosting\RecursiveDirectoryCatalog.cs" />
     <Compile Include="ContractServices.cs" />
     <Compile Include="Hosting\Conventions\AggregatedTypeScanner.cs" />
     <Compile Include="Hosting\Conventions\AppDomainPartRegistryLocator.cs" />
