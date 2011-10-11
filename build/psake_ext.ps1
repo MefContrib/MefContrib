@@ -77,6 +77,6 @@ param(
 )
 	Update-Nuspec-Version -version $version -file $specfile
     Copy-Item $sourceselection $librariesroot
-    exec { &"$nugetcommand" pack $specfile  }
+    exec { &"$nugetcommand" pack $specfile -Symbols }
     Remove-Item $librariesroot\* -exclude .empty,Linfu.*
 }
